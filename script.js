@@ -327,8 +327,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await response.json();
 
       if (result.success) {
-        formStatus.textContent = "Message sent successfully!";
-        formStatus.style.color = 'green';
+        // --- THIS LINE WAS CHANGED AS REQUESTED ---
+        formStatus.textContent = "حدثت مشكلة بسبب الضغط وعدد الطلبات";
+        formStatus.style.color = 'green'; // You might want to change this color to red or orange
         contactForm.reset();
       } else {
         throw new Error(result.message);
@@ -466,5 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Initial Function Calls ---
   applyTheme(currentTheme);
   applyLanguage(currentLanguage);
+  setupCursor();
+});
   setupCursor();
 });
