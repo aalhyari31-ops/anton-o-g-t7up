@@ -1,6 +1,6 @@
 /* ========================
-   Theme & Variables
-   ======================== */
+    Theme & Variables
+    ======================== */
 :root {
   --bg: #121212;
   --text: #e0e0e0;
@@ -27,7 +27,6 @@ html[data-theme="light"] {
   --shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-/* Respect prefers-color-scheme for first load (overridden by saved choice) */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     --bg: #f7f7f7;
@@ -42,8 +41,8 @@ html[data-theme="light"] {
 }
 
 /* ========================
-   Base & Resets
-   ======================== */
+    Base & Resets
+    ======================== */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -65,10 +64,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .full-page-section {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  position: relative; padding: 6rem 0; scroll-margin-top: 90px;
+  position: relative; padding: 8rem 0; scroll-margin-top: 90px;
 }
 
-/* Skip link */
 .skip-link {
   position: absolute; left: 8px; top: -40px;
   background: var(--primary); color: #000;
@@ -78,8 +76,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .skip-link:focus { top: 8px; }
 
 /* ========================
-   Header & Nav
-   ======================== */
+    Header & Nav
+    ======================== */
 .header {
   position: fixed; inset: 0 0 auto 0; z-index: 1000;
   background: rgba(18,18,18,.75);
@@ -141,8 +139,8 @@ html[data-theme="light"] .header.scrolled { background: rgba(255,255,255,.92); }
 .theme-toggle i { color: var(--primary); }
 
 /* ========================
-   Hero
-   ======================== */
+    Hero
+    ======================== */
 .hero-section { overflow: clip; }
 .spline-container { position: absolute; inset: 0; z-index: 1; }
 #spline { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .6s ease; }
@@ -181,8 +179,8 @@ html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
 }
 
 /* ========================
-   Sections
-   ======================== */
+    Sections
+    ======================== */
 .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
 
 /* Services */
@@ -230,7 +228,7 @@ html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
   border-radius: 12px; overflow: hidden; position: relative; background: var(--surface-2);
   transform: translateZ(0);
 }
-.portfolio-item img { width: 100%; height: 280px; object-fit: cover; transition: transform .35s ease, filter .35s ease; }
+.portfolio-item img { width: 100%; height: 320px; object-fit: cover; transition: transform .35s ease, filter .35s ease; }
 .portfolio-item:hover img { transform: scale(1.045); filter: brightness(.9); }
 .portfolio-item.hide { display: none; }
 .portfolio-item.show { animation: fadeIn .4s ease; }
@@ -292,10 +290,6 @@ html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
   transition: transform .12s ease-out, background-color .2s ease, border-color .2s ease; background: transparent;
 }
 .cursor-follower.cursor-grow { transform: scale(1.4) translate(-36%, -36%); background-color: rgba(205, 164, 94, 0.16); }
-
-/* Scroll animations */
-.animate-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
-.animate-on-scroll.is-visible { opacity: 1; transform: none; }
 
 /* Back to top + WhatsApp */
 .back-to-top {
