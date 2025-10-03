@@ -2,13 +2,13 @@
  * Eng.r Antonio GITHOP - Portfolio Website Script
  *
  * This script handles all dynamic functionality for the site including:
+ * - GSAP professional animations
  * - Theme (Dark/Light) switching and persistence
  * - Multi-language support and persistence
  * - Mobile navigation toggle
  * - Header styling on scroll
  * - Active navigation link highlighting on scroll
  * - Portfolio item filtering
- * - "Reveal on scroll" animations
  * - Contact form submission (using Web3Forms)
  * - Back-to-top button visibility
  * - Custom mouse cursor
@@ -50,6 +50,115 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 500);
   }
+  
+  // --- Professional Animations with GSAP ---
+  const initAnimations = () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Hero Section Animation (on page load)
+    const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
+    heroTimeline
+      .from('.hero-title', { opacity: 0, y: 50, delay: 0.2 })
+      .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.8')
+      .from('.hero-buttons a', { opacity: 0, y: 30, stagger: 0.15 }, '-=0.7');
+
+    // 2. Section Title Animation (on scroll)
+    document.querySelectorAll('.section-title').forEach(title => {
+      gsap.from(title, {
+        scrollTrigger: {
+          trigger: title,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        ease: 'power2.out'
+      });
+    });
+
+    // 3. Staggered Card Animation for Services
+    gsap.from('.service-card', {
+      scrollTrigger: {
+        trigger: '.services-grid',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      y: 50,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power2.out'
+    });
+
+    // 4. Staggered Animation for Process Steps
+    gsap.from('.process-step', {
+      scrollTrigger: {
+        trigger: '.process-timeline',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      scale: 0.9,
+      y: 60,
+      duration: 0.7,
+      stagger: 0.15,
+      ease: 'back.out(1.4)'
+    });
+    
+    // 5. Portfolio Filters and Grid Animation
+     gsap.from('.portfolio-filters .filter-btn', {
+      scrollTrigger: {
+        trigger: '.portfolio-filters',
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      y: 30,
+      stagger: 0.1,
+      duration: 0.5
+    });
+
+    // 6. Testimonials Animation
+    gsap.from('.testimonial-card', {
+      scrollTrigger: {
+        trigger: '.testimonials-grid',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      x: -50,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: 'power3.out'
+    });
+
+    // 7. Contact Section Animation
+    gsap.from('.contact-info > *', {
+      scrollTrigger: {
+        trigger: '.contact-info',
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      x: -40,
+      stagger: 0.1,
+      duration: 0.7
+    });
+    gsap.from('.contact-form > *', {
+      scrollTrigger: {
+        trigger: '.contact-form',
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      y: 40,
+      stagger: 0.1,
+      duration: 0.6
+    });
+
+  };
+
 
   // --- Header Scroll Effect ---
   const handleHeaderScroll = () => {
@@ -298,13 +407,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(contactForm);
-    // Honeypot check
-    if (formData.get('website')) {
-      return;
-    }
+    if (formData.get('website')) return;
 
     const object = {
-      // Replace with your Web3Forms access key
       access_key: "YOUR_ACCESS_KEY_HERE",
       name: formData.get("name"),
       email: formData.get("email"),
@@ -318,18 +423,13 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: json
       });
       const result = await response.json();
-
       if (result.success) {
-        // --- THIS LINE WAS CHANGED AS REQUESTED ---
-        formStatus.textContent = "حدثت مشكلة بسبب الضغط وعدد الطلبات";
-        formStatus.style.color = 'green'; // You might want to change this color to red or orange
+        formStatus.textContent = "Message sent successfully!";
+        formStatus.style.color = 'green';
         contactForm.reset();
       } else {
         throw new Error(result.message);
@@ -338,9 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formStatus.textContent = "An error occurred. Please try again.";
       formStatus.style.color = 'red';
     } finally {
-      setTimeout(() => {
-        formStatus.textContent = "";
-      }, 5000);
+      setTimeout(() => { formStatus.textContent = ""; }, 5000);
     }
   };
 
@@ -358,40 +456,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const follower = document.querySelector('.cursor-follower');
 
   const setupCursor = () => {
-    // Only run if the user is not on a touch device
     if (window.matchMedia('(pointer: coarse)').matches) return;
-
     document.addEventListener('mousemove', e => {
       cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
       follower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
     });
-
     document.querySelectorAll('a, button, .service-card, .filter-btn, .lang-dropdown li').forEach(el => {
       el.addEventListener('mouseenter', () => follower.classList.add('cursor-grow'));
       el.addEventListener('mouseleave', () => follower.classList.remove('cursor-grow'));
     });
   };
-
-  // --- Intersection Observers ---
-  const createObserver = (handler, options) => {
-    return new IntersectionObserver(handler, options);
-  };
-
-  // For scroll animations
-  const animationObserver = createObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        animationObserver.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1
-  });
-  document.querySelectorAll('.animate-on-scroll').forEach(el => animationObserver.observe(el));
-
-  // For active nav links
-  const navObserver = createObserver((entries) => {
+  
+  // --- Active Nav Link on Scroll Observer ---
+  const navObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
@@ -400,9 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
-  }, {
-    rootMargin: '-50% 0px -50% 0px'
-  });
+  }, { rootMargin: '-50% 0px -50% 0px' });
   sections.forEach(section => navObserver.observe(section));
 
 
@@ -412,62 +487,23 @@ document.addEventListener('DOMContentLoaded', () => {
     handleBackToTop();
   });
 
-  if (menuToggle) {
-    menuToggle.addEventListener('click', toggleMobileMenu);
-  }
-
-  if (navbar) {
-    navbar.addEventListener('click', (e) => {
-      if (e.target.matches('.nav-link')) {
-        closeMobileMenu();
-      }
-    });
-  }
-
-  if (themeToggle) {
-    themeToggle.addEventListener('click', toggleTheme);
-  }
-
+  if (menuToggle) menuToggle.addEventListener('click', toggleMobileMenu);
+  if (navbar) navbar.addEventListener('click', (e) => { if (e.target.matches('.nav-link')) closeMobileMenu(); });
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  
   if (langSelector) {
-    langSelector.addEventListener('click', (e) => {
-      e.stopPropagation();
-      langSelector.classList.toggle('open');
-    });
-
-    langDropdown.addEventListener('click', (e) => {
-      if (e.target.matches('[data-lang]')) {
-        applyLanguage(e.target.dataset.lang);
-        langSelector.classList.remove('open');
-      }
-    });
+    langSelector.addEventListener('click', (e) => { e.stopPropagation(); langSelector.classList.toggle('open'); });
+    langDropdown.addEventListener('click', (e) => { if (e.target.matches('[data-lang]')) { applyLanguage(e.target.dataset.lang); langSelector.classList.remove('open'); } });
   }
+  document.addEventListener('click', () => { if(langSelector) langSelector.classList.remove('open'); });
 
-  document.addEventListener('click', () => {
-    langSelector.classList.remove('open');
-  });
-
-  if (filterBtns) {
-    filterBtns.addEventListener('click', handleFilterClick);
-  }
-
-  if (contactForm) {
-    // IMPORTANT: Replace "YOUR_ACCESS_KEY_HERE" in the handleFormSubmit function above
-    contactForm.addEventListener('submit', handleFormSubmit);
-  }
-
-  if (backToTopBtn) {
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  }
+  if (filterBtns) filterBtns.addEventListener('click', handleFilterClick);
+  if (contactForm) contactForm.addEventListener('submit', handleFormSubmit);
+  if (backToTopBtn) backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   // --- Initial Function Calls ---
   applyTheme(currentTheme);
   applyLanguage(currentLanguage);
   setupCursor();
-});
-  setupCursor();
+  initAnimations(); // Initialize all the cool new animations!
 });
