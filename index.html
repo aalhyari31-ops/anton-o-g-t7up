@@ -30,6 +30,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
   <link rel="preconnect" href="https://images.pexels.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
   <link rel="stylesheet" href="styles.css" />
   <script type="application/ld+json">
   {
@@ -50,261 +51,187 @@
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#main-container">Skip to content</a>
+  
+  <div class="loader">
+    <div class="loader-logo">A. GITHOP</div>
+  </div>
 
+  <a class="skip-link" href="#main-container">Skip to content</a>
   <div class="cursor" aria-hidden="true"></div>
   <div class="cursor-follower" aria-hidden="true"></div>
 
-  <header class="header" role="banner">
-    <div class="container header-inner">
-      <a href="#hero" class="logo" data-lang-key="logo" aria-label="Homepage">Eng.r Antonio GITHOP</a>
-
-      <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="menu-icon" aria-hidden="true"></span>
-      </button>
-
-      <nav id="primary-nav" class="navbar" aria-label="Primary">
-        <ul class="nav-links">
-          <li><a href="#services" class="nav-link" data-lang-key="nav_services">Services</a></li>
-          <li><a href="#process" class="nav-link" data-lang-key="nav_process">Process</a></li>
-          <li><a href="#portfolio" class="nav-link" data-lang-key="nav_portfolio">Portfolio</a></li>
-          <li><a href="#testimonials" class="nav-link" data-lang-key="nav_testimonials">Testimonials</a></li>
-          <li><a href="#contact" class="nav-link" data-lang-key="nav_contact">Contact</a></li>
-        </ul>
-      </nav>
-
-      <div class="controls">
-        <div class="language-selector" aria-label="Language selector">
-          <button class="lang-selected" aria-haspopup="listbox" aria-expanded="false">
-            <i class="fas fa-globe" aria-hidden="true"></i>
-            <span id="current-lang">EN</span>
-            <i class="fas fa-chevron-down" aria-hidden="true"></i>
-          </button>
-          <ul class="lang-dropdown" role="listbox">
-            <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
-            <li role="option" data-lang="ar">العربية (AR)</li>
-            <li role="option" data-lang="tr">Türkçe (TR)</li>
-          </ul>
-        </div>
-
-        <button class="theme-toggle" aria-label="Toggle theme">
-          <i class="fas fa-moon" aria-hidden="true"></i>
+  <div data-scroll-container>
+    <header class="header" role="banner" data-scroll-section>
+      <div class="container header-inner">
+        <a href="#hero" class="logo" data-lang-key="logo" aria-label="Homepage">Eng.r Antonio GITHOP</a>
+        <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="menu-icon" aria-hidden="true"></span>
         </button>
-      </div>
-    </div>
-  </header>
-
-  <main id="main-container" tabindex="-1">
-    <section id="hero" class="hero-section full-page-section" aria-label="Hero">
-      <div class="spline-container" aria-hidden="true">
-        <spline-viewer id="spline" url="https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode"></spline-viewer>
-        <div class="spline-fallback"></div>
-      </div>
-
-      <div class="hero-content">
-        <h1 class="hero-title" data-lang-key="hero_title">Shaping Spaces, Building Dreams</h1>
-        <p class="hero-subtitle" data-lang-key="hero_subtitle">
-          Hyper-realistic 3D visualization and innovative architectural design that brings your vision to life.
-        </p>
-        <div class="hero-buttons">
-          <a href="https://drive.google.com/drive/folders/1cxbUPjSZVS2jOr6C4NEvYw6GREUCPeOo?usp=drive_link" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="hero_cta_drive">View Projects on Drive</a>
-          <a href="#portfolio" class="cta-button cta-button-secondary" data-lang-key="hero_cta_portfolio">See Our Portfolio</a>
+        <nav id="primary-nav" class="navbar" aria-label="Primary">
+          <ul class="nav-links">
+            <li><a href="#services" class="nav-link" data-lang-key="nav_services">Services</a></li>
+            <li><a href="#process" class="nav-link" data-lang-key="nav_process">Process</a></li>
+            <li><a href="#portfolio" class="nav-link" data-lang-key="nav_portfolio">Portfolio</a></li>
+            <li><a href="#testimonials" class="nav-link" data-lang-key="nav_testimonials">Testimonials</a></li>
+            <li><a href="#contact" class="nav-link" data-lang-key="nav_contact">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="controls">
+          <div class="language-selector" aria-label="Language selector">
+            <button class="lang-selected" aria-haspopup="listbox" aria-expanded="false">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              <span id="current-lang">EN</span>
+              <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ul class="lang-dropdown" role="listbox">
+              <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
+              <li role="option" data-lang="ar">العربية (AR)</li>
+              <li role="option" data-lang="tr">Türkçe (TR)</li>
+            </ul>
+          </div>
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </button>
         </div>
       </div>
+    </header>
 
-      <a href="#services" class="scroll-down-indicator" aria-label="Scroll to services">
-        <i class="fas fa-arrow-down" aria-hidden="true"></i>
-      </a>
-    </section>
-
-    <section id="services" class="services-section full-page-section" aria-label="Services">
-      <div class="container">
-        <h2 class="section-title" data-lang-key="services_title">Core Expertise</h2>
-        <div class="services-grid">
-          <article class="service-card">
-            <i class="fas fa-drafting-compass" aria-hidden="true"></i>
-            <h3 data-lang-key="service_1_title">Architectural & Interior Design</h3>
-            <p data-lang-key="service_1_desc">Creating functional and aesthetic spaces that reflect your unique identity.</p>
-          </article>
-          <article class="service-card">
-            <i class="fas fa-cube" aria-hidden="true"></i>
-            <h3 data-lang-key="service_2_title">3D Visualization & Rendering</h3>
-            <p data-lang-key="service_2_desc">Bringing concepts to life with hyper-realistic 3D models and interactive renderings.</p>
-          </article>
-          <article class="service-card">
-            <i class="fas fa-lightbulb" aria-hidden="true"></i>
-            <h3 data-lang-key="service_3_title">Smart Lighting & Electrical</h3>
-            <p data-lang-key="service_3_desc">Designing intelligent and efficient lighting and electrical plans for modern living.</p>
-          </article>
-          <article class="service-card">
-            <i class="fas fa-building" aria-hidden="true"></i>
-            <h3 data-lang-key="service_4_title">Commercial & Residential Planning</h3>
-            <p data-lang-key="service_4_desc">Expert planning for both commercial and residential spaces to maximize utility.</p>
-          </article>
-          <article class="service-card">
-            <i class="fas fa-tasks" aria-hidden="true"></i>
-            <h3 data-lang-key="service_5_title">Project Management & B2B</h3>
-            <p data-lang-key="service_5_desc">Providing strategic B2B consulting and end-to-end project management.</p>
-          </article>
-          <article class="service-card">
-            <i class="fas fa-robot" aria-hidden="true"></i>
-            <h3 data-lang-key="service_6_title">Smart Home Solutions</h3>
-            <p data-lang-key="service_6_desc">Integrating cutting-edge technology to create intelligent and secure homes.</p>
-          </article>
+    <main id="main-container" tabindex="-1">
+      <section id="hero" class="hero-section full-page-section" aria-label="Hero" data-scroll-section>
+        <div class="spline-container" aria-hidden="true">
+          <spline-viewer id="spline" url="https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode"></spline-viewer>
+          <div class="spline-fallback"></div>
         </div>
-      </div>
-    </section>
-
-    <section id="process" class="process-section full-page-section" aria-label="Process">
-      <div class="container">
-        <h2 class="section-title" data-lang-key="process_title">Our Methodology</h2>
-        <div class="process-timeline">
-          <div class="process-step">
-            <div class="process-icon"><i class="fas fa-comments" aria-hidden="true"></i></div>
-            <h3 data-lang-key="process_1_title">Consultation & Briefing</h3>
-            <p data-lang-key="process_1_desc">Understanding your vision, requirements, and goals.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-icon"><i class="fas fa-pencil-ruler" aria-hidden="true"></i></div>
-            <h3 data-lang-key="process_2_title">Concept & Design</h3>
-            <p data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></div>
-            <h3 data-lang-key="process_3_title">3D Visualization</h3>
-            <p data-lang-key="process_3_desc">Creating realistic 3D models for review and refinement.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-icon"><i class="fas fa-hard-hat" aria-hidden="true"></i></div>
-            <h3 data-lang-key="process_4_title">Execution & Delivery</h3>
-            <p data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion.</p>
+        <div class="hero-content">
+          <h1 class="hero-title" data-lang-key="hero_title">Shaping Spaces, Building Dreams</h1>
+          <p class="hero-subtitle" data-lang-key="hero_subtitle">
+            Hyper-realistic 3D visualization and innovative architectural design that brings your vision to life.
+          </p>
+          <div class="hero-buttons">
+            <a href="https://drive.google.com/drive/folders/1cxbUPjSZVS2jOr6C4NEvYw6GREUCPeOo?usp=drive_link" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="hero_cta_drive">View Projects on Drive</a>
+            <a href="#portfolio" class="cta-button cta-button-secondary" data-lang-key="hero_cta_portfolio">See Our Portfolio</a>
           </div>
         </div>
-      </div>
-    </section>
+        <a href="#services" class="scroll-down-indicator" aria-label="Scroll to services">
+          <i class="fas fa-arrow-down" aria-hidden="true"></i>
+        </a>
+      </section>
 
-    <section id="portfolio" class="portfolio-section full-page-section" aria-label="Portfolio">
-      <div class="container">
-        <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
-
-        <div class="portfolio-filters" role="tablist" aria-label="Portfolio filters">
-          <button class="filter-btn active" data-filter="all" data-lang-key="filter_all" role="tab" aria-selected="true">All</button>
-          <button class="filter-btn" data-filter="residential" data-lang-key="filter_residential" role="tab" aria-selected="false">Residential</button>
-          <button class="filter-btn" data-filter="commercial" data-lang-key="filter_commercial" role="tab" aria-selected="false">Commercial</button>
-          <button class="filter-btn" data-filter="render" data-lang-key="filter_render" role="tab" aria-selected="false">3D Renders</button>
-        </div>
-
-        <div class="portfolio-grid" role="list">
-          <figure class="portfolio-item" role="listitem" data-category="residential">
-            <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Luxury residential interior with warm lighting" />
-          </figure>
-
-          <figure class="portfolio-item" role="listitem" data-category="commercial">
-            <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Modern office space with glass partitions" />
-          </figure>
-
-          <figure class="portfolio-item" role="listitem" data-category="render">
-            <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="3D architectural exterior render at sunset" />
-          </figure>
-
-          <figure class="portfolio-item" role="listitem" data-category="residential">
-            <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Minimalist living room with neutral palette" />
-          </figure>
-          
-          <figure class="portfolio-item" role="listitem" data-category="commercial">
-              <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Modern hotel lobby with stylish furniture" />
-          </figure>
-
-          <figure class="portfolio-item" role="listitem" data-category="residential">
-              <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Cozy modern bedroom with large window" />
-          </figure>
-
-          <figure class="portfolio-item" role="listitem" data-category="render">
-              <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Detailed 3D render of a modern house exterior" />
-          </figure>
-          
-          <figure class="portfolio-item" role="listitem" data-category="commercial">
-            <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800" srcset="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=480 480w, https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800 800w, https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w" sizes="(max-width: 768px) 100vw, 50vw" alt="Collaborative corporate meeting room" />
-          </figure>
-
-        </div>
-      </div>
-    </section>
-
-    <section id="testimonials" class="testimonials-section full-page-section parallax-bg" aria-label="Testimonials">
-      <div class="container">
-        <h2 class="section-title" data-lang-key="testimonials_title">What Our Clients Say</h2>
-        <div class="testimonials-grid">
-          <blockquote class="testimonial-card">
-            <p class="testimonial-text" data-lang-key="testimonial_1_text">"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer."</p>
-            <footer class="testimonial-author" data-lang-key="testimonial_1_author">- CEO, Tech Innovators Inc.</footer>
-          </blockquote>
-          <blockquote class="testimonial-card">
-            <p class="testimonial-text" data-lang-key="testimonial_2_text">"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional."</p>
-            <footer class="testimonial-author" data-lang-key="testimonial_2_author">- J. Anderson, Private Residence</footer>
-          </blockquote>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact" class="contact-section full-page-section" aria-label="Contact">
-      <div class="container">
-        <h2 class="section-title" data-lang-key="contact_title">Let's Build Together</h2>
-
-        <div class="contact-wrapper">
-          <div class="contact-info">
-            <h3 data-lang-key="contact_info_title">Get in Touch</h3>
-            <p data-lang-key="contact_info_desc">Have a project in mind or need a consultation? We are here to help you.</p>
-
-            <a class="info-item" href="tel:+905315865489" aria-label="Phone">
-              <i class="fas fa-phone" aria-hidden="true"></i>
-              <span>+90 531 586 5489</span>
-            </a>
-            <a class="info-item" href="mailto:mr.ahmad.tr@gmail.com" aria-label="Email">
-              <i class="fas fa-envelope" aria-hidden="true"></i>
-              <span>mr.ahmad.tr@gmail.com</span>
-            </a>
-
-            <div class="custom-apps-promo">
-              <i class="fas fa-laptop-code" aria-hidden="true"></i>
-              <p data-lang-key="custom_apps_text">We can build a website for you and your business.</p>
-            </div>
+      <section id="services" class="services-section full-page-section" aria-label="Services" data-scroll-section>
+        <div class="container">
+          <h2 class="section-title" data-lang-key="services_title">Core Expertise</h2>
+          <div class="services-grid">
+            <article class="service-card"><i class="fas fa-drafting-compass" aria-hidden="true"></i><h3 data-lang-key="service_1_title">Architectural & Interior Design</h3><p data-lang-key="service_1_desc">Creating functional and aesthetic spaces that reflect your unique identity.</p></article>
+            <article class="service-card"><i class="fas fa-cube" aria-hidden="true"></i><h3 data-lang-key="service_2_title">3D Visualization & Rendering</h3><p data-lang-key="service_2_desc">Bringing concepts to life with hyper-realistic 3D models and interactive renderings.</p></article>
+            <article class="service-card"><i class="fas fa-lightbulb" aria-hidden="true"></i><h3 data-lang-key="service_3_title">Smart Lighting & Electrical</h3><p data-lang-key="service_3_desc">Designing intelligent and efficient lighting and electrical plans for modern living.</p></article>
+            <article class="service-card"><i class="fas fa-building" aria-hidden="true"></i><h3 data-lang-key="service_4_title">Commercial & Residential Planning</h3><p data-lang-key="service_4_desc">Expert planning for both commercial and residential spaces to maximize utility.</p></article>
+            <article class="service-card"><i class="fas fa-tasks" aria-hidden="true"></i><h3 data-lang-key="service_5_title">Project Management & B2B</h3><p data-lang-key="service_5_desc">Providing strategic B2B consulting and end-to-end project management.</p></article>
+            <article class="service-card"><i class="fas fa-robot" aria-hidden="true"></i><h3 data-lang-key="service_6_title">Smart Home Solutions</h3><p data-lang-key="service_6_desc">Integrating cutting-edge technology to create intelligent and secure homes.</p></article>
           </div>
-
-          <form id="contact-form" class="contact-form" novalidate>
-            <input type="text" name="name" autocomplete="name" required data-lang-placeholder="contact_form_name" placeholder="Your Name" />
-            <input type="email" name="email" autocomplete="email" required data-lang-placeholder="contact_form_email" placeholder="Your Email" />
-            <textarea name="message" rows="5" required data-lang-placeholder="contact_form_message" placeholder="Your Message"></textarea>
-
-            <input type="text" name="website" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" />
-
-            <button type="submit" class="cta-button" data-lang-key="contact_form_submit">Send Message</button>
-            <p class="form-status" aria-live="polite" role="status"></p>
-          </form>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <button class="back-to-top" aria-label="Back to top">
-    <i class="fas fa-arrow-up" aria-hidden="true"></i>
-  </button>
+      <section id="process" class="process-section full-page-section" aria-label="Process" data-scroll-section>
+        <div class="container">
+          <h2 class="section-title" data-lang-key="process_title">Our Methodology</h2>
+          <div class="process-timeline">
+            <div class="process-step"><div class="process-icon"><i class="fas fa-comments" aria-hidden="true"></i></div><h3 data-lang-key="process_1_title">Consultation & Briefing</h3><p data-lang-key="process_1_desc">Understanding your vision, requirements, and goals.</p></div>
+            <div class="process-step"><div class="process-icon"><i class="fas fa-pencil-ruler" aria-hidden="true"></i></div><h3 data-lang-key="process_2_title">Concept & Design</h3><p data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning.</p></div>
+            <div class="process-step"><div class="process-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></div><h3 data-lang-key="process_3_title">3D Visualization</h3><p data-lang-key="process_3_desc">Creating realistic 3D models for review and refinement.</p></div>
+            <div class="process-step"><div class="process-icon"><i class="fas fa-hard-hat" aria-hidden="true"></i></div><h3 data-lang-key="process_4_title">Execution & Delivery</h3><p data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion.</p></div>
+          </div>
+        </div>
+      </section>
 
-  <a class="floating-whatsapp" href="https://wa.me/905315865489" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <i class="fab fa-whatsapp" aria-hidden="true"></i>
-  </a>
+      <section id="portfolio" class="portfolio-section full-page-section" aria-label="Portfolio" data-scroll-section>
+        <div class="container">
+          <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
+          <div class="portfolio-filters" role="tablist" aria-label="Portfolio filters">
+            <button class="filter-btn active" data-filter="all" data-lang-key="filter_all" role="tab" aria-selected="true">All</button>
+            <button class="filter-btn" data-filter="residential" data-lang-key="filter_residential" role="tab" aria-selected="false">Residential</button>
+            <button class="filter-btn" data-filter="commercial" data-lang-key="filter_commercial" role="tab" aria-selected="false">Commercial</button>
+            <button class="filter-btn" data-filter="render" data-lang-key="filter_render" role="tab" aria-selected="false">3D Renders</button>
+          </div>
+          <div class="portfolio-grid" role="list">
+            <figure class="portfolio-item" role="listitem" data-category="residential">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury residential interior"/>
+                <figcaption class="portfolio-overlay"><h3>Modern Living Room</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="commercial">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern office space"/>
+                <figcaption class="portfolio-overlay"><h3>Corporate Office</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="render">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="3D architectural render"/>
+                <figcaption class="portfolio-overlay"><h3>Villa Exterior Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="residential">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Minimalist living room"/>
+                <figcaption class="portfolio-overlay"><h3>Minimalist Interior</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="commercial">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1454794/pexels-photo-1454794.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern hotel lobby"/>
+                <figcaption class="portfolio-overlay"><h3>Hotel Lobby Design</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="residential">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cozy modern bedroom"/>
+                <figcaption class="portfolio-overlay"><h3>Master Bedroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="render">
+                <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Detailed 3D render of a house"/>
+                <figcaption class="portfolio-overlay"><h3>Modern House Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+            <figure class="portfolio-item" role="listitem" data-category="commercial">
+              <img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Collaborative corporate meeting room"/>
+              <figcaption class="portfolio-overlay"><h3>Startup Meeting Room</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
-    </div>
-  </footer>
+      <section id="testimonials" class="testimonials-section full-page-section" aria-label="Testimonials" data-scroll-section>
+          <div class="parallax-bg" data-scroll data-scroll-speed="-3"></div>
+          <div class="container">
+              <h2 class="section-title" data-lang-key="testimonials_title">What Our Clients Say</h2>
+              <div class="testimonials-grid">
+                  <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_1_text">"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer."</p><footer class="testimonial-author" data-lang-key="testimonial_1_author">- CEO, Tech Innovators Inc.</footer></blockquote>
+                  <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_2_text">"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional."</p><footer class="testimonial-author" data-lang-key="testimonial_2_author">- J. Anderson, Private Residence</footer></blockquote>
+              </div>
+          </div>
+      </section>
 
-  <script>
-    document.documentElement.classList.replace('no-js','js');
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zIAlgasLVRaeTaeccTCEJSKpHhH5lIKJYfhfA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <section id="contact" class="contact-section full-page-section" aria-label="Contact" data-scroll-section>
+        <div class="container">
+          <h2 class="section-title" data-lang-key="contact_title">Let's Build Together</h2>
+          <div class="contact-wrapper">
+            <div class="contact-info"><h3 data-lang-key="contact_info_title">Get in Touch</h3><p data-lang-key="contact_info_desc">Have a project in mind or need a consultation? We are here to help you.</p><a class="info-item" href="tel:+905315865489" aria-label="Phone"><i class="fas fa-phone" aria-hidden="true"></i><span>+90 531 586 5489</span></a><a class="info-item" href="mailto:mr.ahmad.tr@gmail.com" aria-label="Email"><i class="fas fa-envelope" aria-hidden="true"></i><span>mr.ahmad.tr@gmail.com</span></a><div class="custom-apps-promo"><i class="fas fa-laptop-code" aria-hidden="true"></i><p data-lang-key="custom_apps_text">We can build a website for you and your business.</p></div></div>
+            <form id="contact-form" class="contact-form" novalidate><input type="text" name="name" autocomplete="name" required data-lang-placeholder="contact_form_name" placeholder="Your Name" /><input type="email" name="email" autocomplete="email" required data-lang-placeholder="contact_form_email" placeholder="Your Email" /><textarea name="message" rows="5" required data-lang-placeholder="contact_form_message" placeholder="Your Message"></textarea><input type="text" name="website" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" /><button type="submit" class="cta-button" data-lang-key="contact_form_submit">Send Message</button><p class="form-status" aria-live="polite" role="status"></p></form>
+          </div>
+        </div>
+      </section>
+      
+      <footer class="footer" role="contentinfo" data-scroll-section>
+          <div class="container">
+              <div class="footer-content">
+                <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Behance"><i class="fab fa-behance-square"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+              </div>
+          </div>
+      </footer>
+    </main>
+
+    <button class="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+    <a class="floating-whatsapp" href="https://wa.me/905315865489" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+  </div>
+
+  <script>document.documentElement.classList.replace('no-js','js');</script>
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="script.js" defer></script>
 </body>
 </html>
