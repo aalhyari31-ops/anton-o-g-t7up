@@ -53,7 +53,9 @@
     </script>
 
     <style>
-        /* --- Original Site Styles --- */
+        /* ========================
+         Theme & Variables
+        ======================== */
         :root {
             --bg: #121212;
             --text: #e0e0e0;
@@ -78,6 +80,47 @@
             --border: #e2e2e2;
             --shadow: 0 10px 25px rgba(0,0,0,0.08);
         }
+
+        /* ========================
+         Base & Resets
+        ======================== */
+        * { box-sizing: border-box; }
+        html { scroll-behavior: auto; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none; /* For custom cursor */
+        }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; text-decoration: none; cursor: none; }
+        button { font: inherit; color: inherit; background: none; border: none; cursor: none; }
+        :focus { outline: none; }
+        :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+        /* ========================
+         Layout & Helpers
+        ======================== */
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+        .full-page-section {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; padding: 8rem 0;
+        }
+        .skip-link {
+            position: absolute; left: 8px; top: -40px;
+            background: var(--primary); color: #000;
+            padding: 8px 12px; border-radius: 6px; z-index: 9999;
+            transition: top .2s ease;
+        }
+        .skip-link:focus { top: 8px; }
+        
+        /* ========================
+         Loader
+        ======================== */
         .loader {
             position: fixed;
             inset: 0;
@@ -94,44 +137,15 @@
             color: var(--primary);
             animation: pulse 2s infinite ease-in-out;
         }
-        .loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.6; transform: scale(0.98); }
         }
-        * { box-sizing: border-box; }
-        html { scroll-behavior: auto; }
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: var(--font-primary);
-            line-height: 1.7;
-            overflow-x: hidden;
-            cursor: none;
-        }
-        img { max-width: 100%; display: block; }
-        a { color: inherit; text-decoration: none; cursor: none; }
-        button { font: inherit; color: inherit; background: none; border: none; cursor: none; }
-        :focus { outline: none; }
-        :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
-        .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
-        .full-page-section {
-            min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; padding: 8rem 0;
-        }
-        .skip-link {
-            position: absolute; left: 8px; top: -40px;
-            background: var(--primary); color: #000;
-            padding: 8px 12px; border-radius: 6px; z-index: 9999;
-            transition: top .2s ease;
-        }
-        .skip-link:focus { top: 8px; }
 
+        /* ========================
+         Custom Cursor
+        ======================== */
         .cursor, .cursor-follower {
             position: fixed;
             top: 0;
@@ -154,6 +168,9 @@
             transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
         }
 
+        /* ========================
+         Header & Navigation
+        ======================== */
         .header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             background: rgba(18,18,18,.75);
@@ -191,6 +208,10 @@
         .lang-dropdown li:hover { background: var(--primary); color: #111; }
         .theme-toggle { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
         .theme-toggle i { color: var(--primary); }
+
+        /* ========================
+         Hero Section
+        ======================== */
         .hero-section { overflow: clip; }
         .spline-container { position: absolute; inset: 0; z-index: 1; }
         #spline { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .6s ease; }
@@ -206,8 +227,11 @@
         .cta-button-secondary:hover { background: var(--primary); color: #111; }
         .scroll-down-indicator { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 1.25rem; z-index: 3; animation: bounce 2s infinite; }
         @keyframes bounce { 0%,20%,50%,80%,100% { transform: translate(-50%,0); } 40% { transform: translate(-50%,-12px); } 60% { transform: translate(-50%,-4px); } }
-        .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
         
+        /* ========================
+         General Section Styles
+        ======================== */
+        .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
         .process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; position: relative; }
         .process-timeline::before { content: ""; position: absolute; top: 34px; left: 5%; right: 5%; height: 2px; background: repeating-linear-gradient(90deg, var(--border), var(--border) 10px, transparent 10px, transparent 20px); }
         .process-step { text-align: center; position: relative; z-index: 1; }
@@ -248,42 +272,28 @@
         .contact-form input:focus, .contact-form textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(205,164,94,.15); }
         .hp-field { position: absolute; left: -9999px; opacity: 0; }
         .form-status { min-height: 1.2rem; margin: .3rem 0 0; color: var(--muted); }
+        
+        /* ========================
+         Footer
+        ======================== */
         .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
         .social-icons { display: flex; gap: 1.5rem; }
         .social-icons a { font-size: 1.3rem; color: var(--muted); transition: color 0.3s ease, transform 0.3s ease; }
         .social-icons a:hover { color: var(--primary); transform: translateY(-5px); }
+
+        /* ========================
+         Floating Buttons
+        ======================== */
         .back-to-top { position: fixed; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: #111; display: grid; place-items: center; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .2s ease; z-index: 5; }
         .back-to-top.show { opacity: 1; visibility: visible; transform: none; }
         .floating-whatsapp { position: fixed; left: 18px; bottom: 18px; width: 48px; height: 48px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: var(--shadow); z-index: 5; }
-        @media (max-width: 992px) { .contact-wrapper { grid-template-columns: 1fr; } .process-timeline::before { display: none; } }
-        @media (max-width: 860px) { .navbar { display: none; } .menu-toggle { display: inline-flex; } .navbar.open { display: block; position: absolute; top: 100%; right: 0; left: 0; background: var(--surface); border-bottom: 1px solid var(--border); } .nav-links { flex-direction: column; align-items: stretch; gap: 0; } .nav-links li { border-top: 1px solid var(--border); } .nav-links a { padding: 1rem 1.2rem; display: block; } .portfolio-grid { grid-template-columns: 1fr; } }
-        html[dir="rtl"] body { direction: rtl; text-align: right; font-family: var(--font-secondary); }
-        html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
-        html[dir="rtl"] .lang-dropdown { right: auto; left: 0; } 
-        html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); }
-        html[dir="rtl"] .testimonial-author { text-align: left; }
-        @media (pointer: coarse) { body { cursor: auto !important; } .cursor, .cursor-follower { display: none !important; } }
-    </style>
-    <style>
-        /* --- New Premium Services Section Styles --- */
-        :root {
-            /* These variables are scoped to this new section but defined here for clarity */
-            --bg-premium: #0f0f0f;
-            --text-premium: #e6e6e6;
-            --muted-premium: #a0a0a0;
-            --primary-gold: #d4af37;
-            --surface-1-premium: #1a1a1a;
-            --surface-2-premium: #242424;
-            --glass-bg: rgba(26, 26, 26, 0.5);
-            --glass-border: rgba(212, 175, 55, 0.2);
-            --hover-glow: 0 0 40px rgba(212, 175, 55, 0.15);
-            --font-premium-primary: 'Poppins', sans-serif;
-            --font-premium-secondary: 'Cairo', sans-serif;
-        }
         
+        /* ========================
+         New Premium Services Section
+        ======================== */
         .services-section-premium {
-            background-color: var(--bg-premium);
+            background-color: #0f0f0f;
             padding: 120px 0;
             position: relative;
             overflow: hidden;
@@ -292,7 +302,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .section-title-premium {
             font-family: 'Poppins', sans-serif;
             font-size: clamp(2.5rem, 6vw, 4rem);
@@ -302,11 +311,7 @@
             margin-bottom: 80px;
             position: relative;
         }
-
-        .section-title-premium .gold-accent {
-            color: var(--primary-gold);
-        }
-
+        .section-title-premium .gold-accent { color: #d4af37; }
         .section-title-premium::after {
             content: '';
             position: absolute;
@@ -315,7 +320,7 @@
             transform: translateX(-50%);
             width: 100px;
             height: 2px;
-            background: var(--primary-gold);
+            background: #d4af37;
             overflow: hidden;
         }
         .section-title-premium .shimmer {
@@ -328,19 +333,17 @@
             background: linear-gradient(90deg, transparent, white, transparent);
             opacity: 0.8;
         }
-
         .services-grid-premium {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
-
         .service-card-premium {
             position: relative;
             padding: 40px 30px;
             border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             text-align: center;
@@ -349,9 +352,8 @@
         }
         .service-card-premium:hover {
             border-color: rgba(212, 175, 55, 0.4);
-            box-shadow: var(--hover-glow);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
         }
-
         .card-icon {
             margin-bottom: 25px;
             height: 60px;
@@ -362,29 +364,67 @@
         .card-icon svg {
             width: 50px;
             height: 50px;
-            stroke: var(--primary-gold);
+            stroke: #d4af37;
             stroke-width: 1.5;
             fill: none;
         }
-
         .card-content h3 {
-            font-family: var(--font-premium-primary);
+            font-family: 'Poppins', sans-serif;
             font-size: 1.25rem;
             font-weight: 600;
             color: #fff;
             margin-bottom: 15px;
         }
         .card-content p {
-            font-family: var(--font-premium-secondary);
+            font-family: 'Cairo', sans-serif;
             font-size: 0.95rem;
-            color: var(--muted-premium);
+            color: #a0a0a0;
             line-height: 1.7;
         }
 
-        @media (max-width: 768px) {
-            .services-grid-premium {
-                grid-template-columns: 1fr;
+        /* ========================
+         Responsive Media Queries
+        ======================== */
+        @media (max-width: 992px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .process-timeline::before { display: none; }
+        }
+        @media (max-width: 860px) {
+            .navbar { display: none; }
+            .menu-toggle { display: inline-flex; }
+            .navbar.open {
+                display: block; position: absolute; top: 100%; right: 0; left: 0;
+                background: var(--surface); border-bottom: 1px solid var(--border);
             }
+            .nav-links { flex-direction: column; align-items: stretch; gap: 0; }
+            .nav-links li { border-top: 1px solid var(--border); }
+            .nav-links a { padding: 1rem 1.2rem; display: block; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .services-grid-premium { grid-template-columns: 1fr; }
+        }
+
+        /* ========================
+         RTL (Right-to-Left) Styles
+        ======================== */
+        html[dir="rtl"] body { direction: rtl; text-align: right; font-family: var(--font-secondary); }
+        html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
+        html[dir="rtl"] .lang-dropdown { right: auto; left: 0; }
+        html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); }
+        html[dir="rtl"] .testimonial-author { text-align: left; }
+        
+        /* RTL Fix for Locomotive Scroll */
+        .is-rtl [data-scroll-container] {
+            transform-origin: right top !important;
+        }
+        
+        /* ========================
+         Accessibility & Touch Devices
+        ======================== */
+        @media (pointer: coarse) {
+            body { cursor: auto !important; }
+            .cursor, .cursor-follower { display: none !important; }
         }
     </style>
 </head>
@@ -402,33 +442,33 @@
             <div class="container header-inner">
                 <a href="#hero" class="logo" data-lang-key="logo" aria-label="Homepage">Eng.r Antonio GITHOP</a>
                 <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="menu-icon" aria-hidden="true"></span>
+                    <span class="menu-icon" aria-hidden="true"></span>
                 </button>
                 <nav id="primary-nav" class="navbar" aria-label="Primary">
-                <ul class="nav-links">
-                    <li><a href="#services" class="nav-link" data-lang-key="nav_services">Services</a></li>
-                    <li><a href="#process" class="nav-link" data-lang-key="nav_process">Process</a></li>
-                    <li><a href="#portfolio" class="nav-link" data-lang-key="nav_portfolio">Portfolio</a></li>
-                    <li><a href="#testimonials" class="nav-link" data-lang-key="nav_testimonials">Testimonials</a></li>
-                    <li><a href="#contact" class="nav-link" data-lang-key="nav_contact">Contact</a></li>
-                </ul>
+                    <ul class="nav-links">
+                        <li><a href="#services" class="nav-link" data-lang-key="nav_services">Services</a></li>
+                        <li><a href="#process" class="nav-link" data-lang-key="nav_process">Process</a></li>
+                        <li><a href="#portfolio" class="nav-link" data-lang-key="nav_portfolio">Portfolio</a></li>
+                        <li><a href="#testimonials" class="nav-link" data-lang-key="nav_testimonials">Testimonials</a></li>
+                        <li><a href="#contact" class="nav-link" data-lang-key="nav_contact">Contact</a></li>
+                    </ul>
                 </nav>
                 <div class="controls">
-                <div class="language-selector" aria-label="Language selector">
-                    <button class="lang-selected" aria-haspopup="listbox" aria-expanded="false">
-                    <i class="fas fa-globe" aria-hidden="true"></i>
-                    <span id="current-lang">EN</span>
-                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    <div class="language-selector" aria-label="Language selector">
+                        <button class="lang-selected" aria-haspopup="listbox" aria-expanded="false">
+                            <i class="fas fa-globe" aria-hidden="true"></i>
+                            <span id="current-lang">EN</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <ul class="lang-dropdown" role="listbox">
+                            <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
+                            <li role="option" data-lang="ar">العربية (AR)</li>
+                            <li role="option" data-lang="tr">Türkçe (TR)</li>
+                        </ul>
+                    </div>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon" aria-hidden="true"></i>
                     </button>
-                    <ul class="lang-dropdown" role="listbox">
-                    <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
-                    <li role="option" data-lang="ar">العربية (AR)</li>
-                    <li role="option" data-lang="tr">Türkçe (TR)</li>
-                    </ul>
-                </div>
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon" aria-hidden="true"></i>
-                </button>
                 </div>
             </div>
         </header>
@@ -436,182 +476,157 @@
         <main id="main-container" tabindex="-1">
             <section id="hero" class="hero-section full-page-section" aria-label="Hero" data-scroll-section>
                 <div class="spline-container" aria-hidden="true">
-                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
-                <spline-viewer id="spline"></spline-viewer>
-                <div class="spline-fallback"></div>
+                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
+                    <spline-viewer id="spline"></spline-viewer>
+                    <div class="spline-fallback"></div>
                 </div>
                 <div class="hero-content">
-                <h1 class="hero-title" data-lang-key="hero_title">Masterful Designs, Meticulously Crafted.</h1>
-                <p class="hero-subtitle" data-lang-key="hero_subtitle">
-                    We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#portfolio" class="cta-button cta-button-secondary" data-lang-key="hero_cta_portfolio">See Our Portfolio</a>
-                </div>
+                    <h1 class="hero-title" data-lang-key="hero_title">Masterful Designs, Meticulously Crafted.</h1>
+                    <p class="hero-subtitle" data-lang-key="hero_subtitle">
+                        We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#portfolio" class="cta-button cta-button-secondary" data-lang-key="hero_cta_portfolio">See Our Portfolio</a>
+                    </div>
                 </div>
                 <a href="#services" class="scroll-down-indicator" aria-label="Scroll to services">
-                <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                    <i class="fas fa-arrow-down" aria-hidden="true"></i>
                 </a>
             </section>
 
             <section id="services" class="services-section-premium" aria-label="Services" data-scroll-section>
                 <div class="container">
-                    <h2 class="section-title-premium" data-lang-key="services_title">
-                        Core <span class="gold-accent">Expertise</span>
+                    <h2 class="section-title-premium">
+                        <span data-lang-key="services_title">Core </span><span class="gold-accent">Expertise</span>
                         <div class="shimmer"></div>
                     </h2>
                     <div class="services-grid-premium">
-                        
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-arch">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 21V11.8139C4 11.3934 4.22638 11.0093 4.59883 10.823L11.5988 7.32303C11.8513 7.20092 12.1487 7.20092 12.4012 7.32303L19.4012 10.823C19.7736 11.0093 20 11.3934 20 11.8139V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 21V17C14 15.8954 13.1046 15 12 15C10.8954 15 10 15.8954 10 17V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12L12 3L22 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-arch"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 21V11.8139C4 11.3934 4.22638 11.0093 4.59883 10.823L11.5988 7.32303C11.8513 7.20092 12.1487 7.20092 12.4012 7.32303L19.4012 10.823C19.7736 11.0093 20 11.3934 20 11.8139V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 21V17C14 15.8954 13.1046 15 12 15C10.8954 15 10 15.8954 10 17V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12L12 3L22 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_1_title">Architectural & Interior Design</h3>
                                 <p data-lang-key="service_1_desc">Creating functional and aesthetic spaces that reflect your unique identity.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-3d">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 5L12 10L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 14V19L12 24L3 19V14" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24V10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10L20.87 5.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.13 5.5L12 10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L21 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-3d"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 5L12 10L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 14V19L12 24L3 19V14" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24V10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10L20.87 5.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.13 5.5L12 10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L21 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_2_title">3D Visualization & Rendering</h3>
                                 <p data-lang-key="service_2_desc">Bringing concepts to life with hyper-realistic 3D models and interactive renderings.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-light">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke-width="1.5"/><path d="M12 4V2" stroke-width="1.5" stroke-linecap="round"/><path d="M12 22V20" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 5.63604L19.7782 4.22183" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 19.7782L5.63599 18.364" stroke-width="1.5" stroke-linecap="round"/><path d="M20 12H22" stroke-width="1.5" stroke-linecap="round"/><path d="M2 12H4" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 18.364L19.7782 19.7782" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 4.22183L5.63599 5.63602" stroke-width="1.5" stroke-linecap="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-light"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke-width="1.5"/><path d="M12 4V2" stroke-width="1.5" stroke-linecap="round"/><path d="M12 22V20" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 5.63604L19.7782 4.22183" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 19.7782L5.63599 18.364" stroke-width="1.5" stroke-linecap="round"/><path d="M20 12H22" stroke-width="1.5" stroke-linecap="round"/><path d="M2 12H4" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 18.364L19.7782 19.7782" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 4.22183L5.63599 5.63602" stroke-width="1.5" stroke-linecap="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_3_title">Smart Lighting & Electrical</h3>
                                 <p data-lang-key="service_3_desc">Designing intelligent and efficient lighting and electrical plans for modern living.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-plan">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3H8V9H2V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3H19V9H13V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 15H8V21H2V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 15H19V21H13V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-plan"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3H8V9H2V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3H19V9H13V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 15H8V21H2V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 15H19V21H13V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_4_title">Commercial & Residential Planning</h3>
                                 <p data-lang-key="service_4_desc">Expert planning for both commercial and residential spaces to maximize utility.</p>
                             </div>
                         </article>
-                        
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-manage">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-manage"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_5_title">Project Management & B2B</h3>
                                 <p data-lang-key="service_5_desc">Providing strategic B2B consulting and end-to-end project management.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-smart">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 12H5V21H19V12H22L12 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15C10.8954 15 10 15.8954 10 17C10 18.1046 10.8954 19 12 19C13.1046 19 14 18.1046 14 17C14 15.8954 13.1046 15 12 15Z" stroke-width="1.5"/><path d="M12 12V13" stroke-width="1.5" stroke-linecap="round"/><path d="M15.5355 13.4645L14.8284 14.1716" stroke-width="1.5" stroke-linecap="round"/><path d="M8.46448 13.4645L9.17158 14.1716" stroke-width="1.5" stroke-linecap="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-smart"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 12H5V21H19V12H22L12 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15C10.8954 15 10 15.8954 10 17C10 18.1046 10.8954 19 12 19C13.1046 19 14 18.1046 14 17C14 15.8954 13.1046 15 12 15Z" stroke-width="1.5"/><path d="M12 12V13" stroke-width="1.5" stroke-linecap="round"/><path d="M15.5355 13.4645L14.8284 14.1716" stroke-width="1.5" stroke-linecap="round"/><path d="M8.46448 13.4645L9.17158 14.1716" stroke-width="1.5" stroke-linecap="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_6_title">Smart Home Solutions</h3>
                                 <p data-lang-key="service_6_desc">Integrating cutting-edge technology to create intelligent and secure homes.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-business">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 11L19 13L23 9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-business"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 11L19 13L23 9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_7_title">Business Setup Consultant</h3>
                                 <p data-lang-key="service_7_desc">Expert advice for new ventures and business expansions.</p>
                             </div>
                         </article>
-
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-electric">
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            </div>
+                            <div class="card-icon" id="icon-electric"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_8_title">Lighting Electrical Planner</h3>
                                 <p data-lang-key="service_8_desc">Efficient and compliant electrical system and lighting planning.</p>
                             </div>
                         </article>
-
                     </div>
                 </div>
             </section>
             
             <section id="process" class="process-section full-page-section" aria-label="Process" data-scroll-section>
                 <div class="container">
-                <h2 class="section-title" data-lang-key="process_title">Our Methodology</h2>
-                <div class="process-timeline">
-                    <div class="process-step"><div class="process-icon"><i class="fas fa-comments" aria-hidden="true"></i></div><h3 data-lang-key="process_1_title">Consultation & Briefing</h3><p data-lang-key="process_1_desc">Understanding your vision, requirements, and goals.</p></div>
-                    <div class="process-step"><div class="process-icon"><i class="fas fa-pencil-ruler" aria-hidden="true"></i></div><h3 data-lang-key="process_2_title">Concept & Design</h3><p data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning.</p></div>
-                    <div class="process-step"><div class="process-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></div><h3 data-lang-key="process_3_title">3D Visualization</h3><p data-lang-key="process_3_desc">Creating realistic 3D models for review and refinement.</p></div>
-                    <div class="process-step"><div class="process-icon"><i class="fas fa-hard-hat" aria-hidden="true"></i></div><h3 data-lang-key="process_4_title">Execution & Delivery</h3><p data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion.</p></div>
-                </div>
+                    <h2 class="section-title" data-lang-key="process_title">Our Methodology</h2>
+                    <div class="process-timeline">
+                        <div class="process-step"><div class="process-icon"><i class="fas fa-comments" aria-hidden="true"></i></div><h3 data-lang-key="process_1_title">Consultation & Briefing</h3><p data-lang-key="process_1_desc">Understanding your vision, requirements, and goals.</p></div>
+                        <div class="process-step"><div class="process-icon"><i class="fas fa-pencil-ruler" aria-hidden="true"></i></div><h3 data-lang-key="process_2_title">Concept & Design</h3><p data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning.</p></div>
+                        <div class="process-step"><div class="process-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></div><h3 data-lang-key="process_3_title">3D Visualization</h3><p data-lang-key="process_3_desc">Creating realistic 3D models for review and refinement.</p></div>
+                        <div class="process-step"><div class="process-icon"><i class="fas fa-hard-hat" aria-hidden="true"></i></div><h3 data-lang-key="process_4_title">Execution & Delivery</h3><p data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion.</p></div>
+                    </div>
                 </div>
             </section>
 
             <section id="portfolio" class="portfolio-section full-page-section" aria-label="Portfolio" data-scroll-section>
                 <div class="container">
-                <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
-                <div class="portfolio-grid" role="list">
-                    <figure class="portfolio-item" role="listitem" data-category="residential"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury residential interior"/><figcaption class="portfolio-overlay"><h3>Modern Living Room</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="commercial"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern office space"/><figcaption class="portfolio-overlay"><h3>Corporate Office</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="render"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="3D architectural render"/><figcaption class="portfolio-overlay"><h3>Villa Exterior Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="residential"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Minimalist living room"/><figcaption class="portfolio-overlay"><h3>Minimalist Interior</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="commercial"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury modern hotel lobby"/><figcaption class="portfolio-overlay"><h3>Hotel Lobby Design</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="residential"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cozy modern bedroom"/><figcaption class="portfolio-overlay"><h3>Master Bedroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="render"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Detailed 3D render of a house"/><figcaption class="portfolio-overlay"><h3>Modern House Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="commercial"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Collaborative corporate meeting room"/><figcaption class="portfolio-overlay"><h3>Startup Meeting Room</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="residential"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Elegant home library"/><figcaption class="portfolio-overlay"><h3>Home Library</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="commercial"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Open plan office"/><figcaption class="portfolio-overlay"><h3>Creative Workspace</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="render"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2254030/pexels-photo-2254030.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kitchen 3D render"/><figcaption class="portfolio-overlay"><h3>Kitchen Visualization</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                    <figure class="portfolio-item" role="listitem" data-category="residential"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6284222/pexels-photo-6284222.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern bathroom interior"/><figcaption class="portfolio-overlay"><h3>Luxury Bathroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
-                </div>
-                <div class="portfolio-more-projects">
-                    <a href="https://drive.google.com/drive/folders/1cxbUPjSZVS2jOr6C4NEvYw6GREUCPeOo?usp=drive_link" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="hero_cta_drive">View More on Google Drive</a>
-                </div>
+                    <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
+                    <div class="portfolio-grid" role="list">
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury residential interior"/><figcaption class="portfolio-overlay"><h3>Modern Living Room</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern office space"/><figcaption class="portfolio-overlay"><h3>Corporate Office</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="3D architectural render"/><figcaption class="portfolio-overlay"><h3>Villa Exterior Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Minimalist living room"/><figcaption class="portfolio-overlay"><h3>Minimalist Interior</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury modern hotel lobby"/><figcaption class="portfolio-overlay"><h3>Hotel Lobby Design</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cozy modern bedroom"/><figcaption class="portfolio-overlay"><h3>Master Bedroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Detailed 3D render of a house"/><figcaption class="portfolio-overlay"><h3>Modern House Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Collaborative corporate meeting room"/><figcaption class="portfolio-overlay"><h3>Startup Meeting Room</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Elegant home library"/><figcaption class="portfolio-overlay"><h3>Home Library</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Open plan office"/><figcaption class="portfolio-overlay"><h3>Creative Workspace</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2254030/pexels-photo-2254030.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kitchen 3D render"/><figcaption class="portfolio-overlay"><h3>Kitchen Visualization</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6284222/pexels-photo-6284222.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern bathroom interior"/><figcaption class="portfolio-overlay"><h3>Luxury Bathroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                    </div>
+                    <div class="portfolio-more-projects">
+                        <a href="https://drive.google.com/drive/folders/1cxbUPjSZVS2jOr6C4NEvYw6GREUCPeOo?usp=drive_link" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="hero_cta_drive">View More on Google Drive</a>
+                    </div>
                 </div>
             </section>
 
             <section id="testimonials" class="testimonials-section full-page-section" aria-label="Testimonials" data-scroll-section>
                 <div class="parallax-bg" data-scroll data-scroll-speed="-3"></div>
                 <div class="container">
-                <h2 class="section-title" data-lang-key="testimonials_title">What Our Clients Say</h2>
-                <div class="testimonials-grid">
-                    <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_1_text">"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer."</p><footer class="testimonial-author" data-lang-key="testimonial_1_author">- CEO, Tech Innovators Inc.</footer></blockquote>
-                    <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_2_text">"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional."</p><footer class="testimonial-author" data-lang-key="testimonial_2_author">- J. Anderson, Private Residence</footer></blockquote>
-                </div>
+                    <h2 class="section-title" data-lang-key="testimonials_title">What Our Clients Say</h2>
+                    <div class="testimonials-grid">
+                        <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_1_text">"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer."</p><footer class="testimonial-author" data-lang-key="testimonial_1_author">- CEO, Tech Innovators Inc.</footer></blockquote>
+                        <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_2_text">"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional."</p><footer class="testimonial-author" data-lang-key="testimonial_2_author">- J. Anderson, Private Residence</footer></blockquote>
+                    </div>
                 </div>
             </section>
             
             <section id="contact" class="contact-section full-page-section" aria-label="Contact" data-scroll-section>
                 <div class="container">
-                <h2 class="section-title" data-lang-key="contact_title">Let's Build Together</h2>
-                <div class="contact-wrapper">
-                    <div class="contact-info"><h3 data-lang-key="contact_info_title">Get in Touch</h3><p data-lang-key="contact_info_desc">Have a project in mind or need a consultation? We are here to help you.</p><a class="info-item" href="tel:+905315865489" aria-label="Phone"><i class="fas fa-phone" aria-hidden="true"></i><span>+90 531 586 5489</span></a><a class="info-item" href="mailto:mr.ahmad.tr@gmail.com" aria-label="Email"><i class="fas fa-envelope" aria-hidden="true"></i><span>mr.ahmad.tr@gmail.com</span></a><div class="custom-apps-promo"><i class="fas fa-laptop-code" aria-hidden="true"></i><p data-lang-key="custom_apps_text">We can build a website for you and your business.</p></div></div>
-                    <form id="contact-form" class="contact-form" novalidate><input type="text" name="name" autocomplete="name" required data-lang-placeholder="contact_form_name" placeholder="Your Name" /><input type="email" name="email" autocomplete="email" required data-lang-placeholder="contact_form_email" placeholder="Your Email" /><textarea name="message" rows="5" required data-lang-placeholder="contact_form_message" placeholder="Your Message"></textarea><input type="text" name="website" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" /><button type="submit" class="cta-button" data-lang-key="contact_form_submit">Send Message</button><p class="form-status" aria-live="polite" role="status"></p></form>
-                </div>
+                    <h2 class="section-title" data-lang-key="contact_title">Let's Build Together</h2>
+                    <div class="contact-wrapper">
+                        <div class="contact-info"><h3 data-lang-key="contact_info_title">Get in Touch</h3><p data-lang-key="contact_info_desc">Have a project in mind or need a consultation? We are here to help you.</p><a class="info-item" href="tel:+905315865489" aria-label="Phone"><i class="fas fa-phone" aria-hidden="true"></i><span>+90 531 586 5489</span></a><a class="info-item" href="mailto:mr.ahmad.tr@gmail.com" aria-label="Email"><i class="fas fa-envelope" aria-hidden="true"></i><span>mr.ahmad.tr@gmail.com</span></a><div class="custom-apps-promo"><i class="fas fa-laptop-code" aria-hidden="true"></i><p data-lang-key="custom_apps_text">We can build a website for you and your business.</p></div></div>
+                        <form id="contact-form" class="contact-form" novalidate><input type="text" name="name" autocomplete="name" required data-lang-placeholder="contact_form_name" placeholder="Your Name" /><input type="email" name="email" autocomplete="email" required data-lang-placeholder="contact_form_email" placeholder="Your Email" /><textarea name="message" rows="5" required data-lang-placeholder="contact_form_message" placeholder="Your Message"></textarea><input type="text" name="website" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" /><button type="submit" class="cta-button" data-lang-key="contact_form_submit">Send Message</button><p class="form-status" aria-live="polite" role="status"></p></form>
+                    </div>
                 </div>
             </section>
 
             <footer class="footer" role="contentinfo" data-scroll-section>
                 <div class="container">
-                <div class="footer-content">
-                    <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
-                    <div class="social-icons">
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" aria-label="Behance"><i class="fab fa-behance-square"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <div class="footer-content">
+                        <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
+                        <div class="social-icons">
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Behance"><i class="fab fa-behance-square"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        </div>
                     </div>
-                </div>
                 </div>
             </footer>
         </main>
@@ -626,9 +641,9 @@
     
     <script>
         'use strict';
-
         document.addEventListener('DOMContentLoaded', () => {
 
+            // --- 1. تحديد العناصر الأساسية ---
             const loader = document.querySelector('.loader');
             const header = document.querySelector('.header');
             const themeToggle = document.querySelector('.theme-toggle');
@@ -646,6 +661,7 @@
             const splineViewer = document.getElementById('spline');
             const scrollContainer = document.querySelector('[data-scroll-container]');
 
+            // --- 2. تهيئة السكرول الناعم (Locomotive Scroll) وربطه بـ GSAP ---
             const scroll = new LocomotiveScroll({
                 el: scrollContainer,
                 smooth: true,
@@ -665,30 +681,32 @@
                 pinType: scrollContainer.style.transform ? "transform" : "fixed"
             });
 
+            // --- 3. آلية تحميل الصفحة والأنيميشن الأولي ---
             const initPage = () => {
                 loader.classList.add('hidden');
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
                 tl.to(header, { y: '0%', duration: 1, ease: 'power2.out' }, 0.5)
-                .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
-                .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.9')
-                .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
+                  .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
+                  .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.9')
+                  .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
                 initScrollAnimations();
+                initPremiumServicesAnimations();
                 scroll.update();
                 ScrollTrigger.refresh();
             };
 
             window.addEventListener('load', initPage);
-            setTimeout(() => { if (!loader.classList.contains('hidden')) { initPage(); } }, 7000);
+            setTimeout(() => { if (!loader.classList.contains('hidden')) initPage(); }, 7000);
 
             if (splineViewer) {
                 splineViewer.url = "https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode";
             }
 
+            // --- 4. الأنيميشن عند السكرول (للأقسام القديمة) ---
             const initScrollAnimations = () => {
                 document.querySelectorAll('.section-title').forEach(title => {
                     gsap.from(title, { scrollTrigger: { trigger: title, scroller: scrollContainer, start: 'top 85%', toggleActions: 'play none none none' }, opacity: 0, y: 50, duration: 0.8, ease: 'power2.out' });
                 });
-                
                 gsap.from('.process-step', { scrollTrigger: { trigger: '.process-timeline', scroller: scrollContainer, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 0, scale: 0.8, duration: 0.5, stagger: 0.15 });
                 document.querySelectorAll('.portfolio-item').forEach((item, index) => {
                     gsap.from(item, { scrollTrigger: { trigger: item, scroller: scrollContainer, start: 'top 90%', toggleActions: 'play none none none' }, opacity: 0, x: index % 2 === 0 ? -60 : 60, duration: 1, ease: 'power3.out' });
@@ -696,11 +714,13 @@
                 gsap.from('.testimonial-card', { scrollTrigger: { trigger: '.testimonials-grid', scroller: scrollContainer, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 0, y: 50, stagger: 0.2, duration: 0.7 });
                 gsap.from('.footer-content > *', { scrollTrigger: { trigger: '.footer', scroller: scrollContainer, start: 'top 95%', toggleActions: 'play none none none' }, opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
             };
-            
+
+            // --- 5. وظائف التحكم (القائمة، الثيم، اللغة، الفورم) ---
             if (footerYear) footerYear.textContent = new Date().getFullYear();
 
             scroll.on('scroll', (instance) => {
                 header.classList.toggle('scrolled', instance.scroll.y > 50);
+                backToTopBtn.classList.toggle('show', instance.scroll.y > window.innerHeight);
             });
 
             const toggleMobileMenu = () => { navbar.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', navbar.classList.contains('open')); };
@@ -716,97 +736,121 @@
             const toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
             const translations = {
-                en: {logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core Expertise", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,},
-                ar: {logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا الأساسية", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,},
-                tr: {logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel Uzmanlık Alanlarımız", service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", process_3_title: "3D Görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,}
+                 en: {logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,},
+                 ar: {logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,},
+                 tr: {logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel", service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", process_3_title: "3D Görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,}
             };
             const applyLanguage = (lang) => {
                 const langData = translations[lang];
-                document.documentElement.lang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.querySelectorAll('[data-lang-key]').forEach(el => { const key = el.getAttribute('data-lang-key'); if (langData[key]) el.textContent = langData[key]; });
-                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { const key = el.getAttribute('data-lang-placeholder'); if (langData[key]) el.placeholder = langData[key]; });
-                currentLangSpan.textContent = lang.toUpperCase(); localStorage.setItem('language', lang);
+                document.documentElement.lang = lang; 
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.body.classList.toggle('is-rtl', lang === 'ar'); // Add/remove class for RTL fix
+                document.querySelectorAll('[data-lang-key]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-key'); 
+                    if (langData[key]) el.textContent = langData[key]; 
+                });
+                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-placeholder'); 
+                    if (langData[key]) el.placeholder = langData[key]; 
+                });
+                currentLangSpan.textContent = lang.toUpperCase(); 
+                localStorage.setItem('language', lang);
                 scroll.update();
             };
             const currentLanguage = localStorage.getItem('language') || 'en';
 
             const handleFormSubmit = async (e) => {
-                e.preventDefault(); const formData = new FormData(contactForm); if (formData.get('website')) return;
-                const object = { access_key: "YOUR_ACCESS_KEY_HERE", name: formData.get("name"), email: formData.get("email"), message: formData.get("message"), };
-                const json = JSON.stringify(object); formStatus.textContent = "Sending..."; formStatus.style.color = 'var(--muted)';
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                if (formData.get('website')) return; // Honeypot
+                const object = { access_key: "YOUR_ACCESS_KEY_HERE", ...Object.fromEntries(formData) };
+                const json = JSON.stringify(object);
+                formStatus.textContent = "Sending...";
+                formStatus.style.color = 'var(--muted)';
                 try {
-                    const response = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: json });
-                    const result = await response.json();
-                    if (result.success) { formStatus.textContent = "Message sent successfully!"; formStatus.style.color = 'green'; contactForm.reset(); } else { throw new Error(result.message); }
-                } catch (error) { formStatus.textContent = "An error occurred. Please try again."; formStatus.style.color = 'red'; } finally { setTimeout(() => { formStatus.textContent = ""; }, 5000); }
+                    const res = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: json });
+                    const result = await res.json();
+                    if (result.success) {
+                        formStatus.textContent = "Message sent successfully!";
+                        formStatus.style.color = 'green';
+                        contactForm.reset();
+                    } else { throw new Error(result.message); }
+                } catch (error) {
+                    formStatus.textContent = "An error occurred. Please try again.";
+                    formStatus.style.color = 'red';
+                } finally {
+                    setTimeout(() => formStatus.textContent = "", 5000);
+                }
             };
 
-            scroll.on('scroll', (instance) => { backToTopBtn.classList.toggle('show', instance.scroll.y > window.innerHeight); });
-
+            // --- 6. وظائف وتأثيرات المؤشر (Cursor) ---
             const setupCursor = () => {
                 if (window.matchMedia('(pointer: coarse)').matches) return;
-
                 const cursor = document.querySelector('.cursor');
                 const follower = document.querySelector('.cursor-follower');
-                const magneticElements = document.querySelectorAll('a, button');
-
-                let isHovering = false;
-                
-                const moveCursor = (e) => {
-                    if (!isHovering) {
-                        gsap.to(cursor, { duration: 0.2, x: e.clientX, y: e.clientY });
-                        gsap.to(follower, { duration: 0.6, x: e.clientX, y: e.clientY, ease: 'power2.out' });
-                    }
-                };
-
-                window.addEventListener('mousemove', moveCursor);
-
-                magneticElements.forEach(el => {
-                    el.addEventListener('mouseenter', (e) => {
-                        isHovering = true;
-                        const rect = el.getBoundingClientRect();
-                        const centerX = rect.left + rect.width / 2;
-                        const centerY = rect.top + rect.height / 2;
-
-                        gsap.to(follower, {
-                            duration: 0.3,
-                            x: centerX,
-                            y: centerY,
-                            width: rect.width * 1.2,
-                            height: rect.height * 1.2,
-                            borderRadius: '8px',
-                            backgroundColor: 'rgba(205, 164, 94, 0.2)',
-                            ease: 'power2.out'
-                        });
-                        gsap.to(cursor, { duration: 0.3, x: centerX, y: centerY, scale: 0.5 });
+                document.querySelectorAll('a, button, .service-card-premium, .portfolio-item').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        gsap.to(follower, { duration: 0.3, scale: 1.5, backgroundColor: 'rgba(205, 164, 94, 0.2)' });
                     });
-
-                    el.addEventListener('mousemove', (e) => {
-                        const rect = el.getBoundingClientRect();
-                        const relX = e.clientX - rect.left;
-                        const relY = e.clientY - rect.top;
-                        const newX = rect.left + (relX - rect.width / 2) * 0.5 + rect.width / 2;
-                        const newY = rect.top + (relY - rect.height / 2) * 0.5 + rect.height / 2;
-
-                        gsap.to(follower, { duration: 0.3, x: newX, y: newY });
-                        gsap.to(cursor, { duration: 0.3, x: newX, y: newY });
-                    });
-
                     el.addEventListener('mouseleave', () => {
-                        isHovering = false;
-                        gsap.to(follower, {
-                            duration: 0.3,
-                            width: '30px',
-                            height: '30px',
-                            borderRadius: '50%',
-                            backgroundColor: 'transparent',
-                            ease: 'power2.out'
-                        });
-                        gsap.to(cursor, { duration: 0.3, scale: 1 });
+                        gsap.to(follower, { duration: 0.3, scale: 1, backgroundColor: 'transparent' });
                     });
                 });
+                window.addEventListener('mousemove', e => {
+                    gsap.to(cursor, { duration: 0.2, x: e.clientX, y: e.clientY });
+                    gsap.to(follower, { duration: 0.6, x: e.clientX, y: e.clientY, ease: 'power2.out' });
+                });
+            };
+            
+            // --- 7. الأنيميشن الخاص بقسم الخدمات المطور ---
+            const initPremiumServicesAnimations = () => {
+                const servicesSection = document.querySelector('.services-section-premium');
+                if (!servicesSection) return;
+
+                gsap.registerPlugin({
+                    name: "drawSVG",
+                    init(target, value) {
+                        let path = target.querySelector("path") || target;
+                        if (!path.getTotalLength) return;
+                        let length = path.getTotalLength();
+                        path.style.strokeDasharray = length;
+                        this.add(path.style, "strokeDashoffset", length, (value === true || value === "100%") ? 0 : (value === false || value === "0%") ? length : gsap.utils.clamp(0, length, parseFloat(value)));
+                    }
+                });
+
+                const tl = gsap.timeline({ scrollTrigger: { trigger: servicesSection, scroller: scrollContainer, start: 'top 70%', toggleActions: 'play none none none' } });
+                tl.from(".section-title-premium", { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' })
+                  .from(".section-title-premium .shimmer", { x: '-150%', duration: 1.2, ease: 'power2.inOut' }, "-=0.8");
+
+                gsap.from(".service-card-premium", { scrollTrigger: { trigger: ".services-grid-premium", scroller: scrollContainer, start: "top 80%" }, opacity: 0, y: 50, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out' });
+
+                if (window.matchMedia('(min-width: 769px)').matches) {
+                    gsap.to(".service-card-premium", { y: (i) => (i % 2 === 0 ? -4 : 4), duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: { amount: 0.5, from: "random" } });
+                }
+
+                const icons = {
+                    arch: document.querySelector('#icon-arch svg'), '3d': document.querySelector('#icon-3d svg'), light: document.querySelector('#icon-light svg'), plan: document.querySelector('#icon-plan svg'),
+                    manage: document.querySelector('#icon-manage svg'), smart: document.querySelector('#icon-smart svg'), business: document.querySelector('#icon-business svg'), electric: document.querySelector('#icon-electric svg'),
+                };
+                const addHoverAnimation = (icon, animation) => {
+                    if(icon) {
+                        const parentCard = icon.closest('.service-card-premium');
+                        parentCard.addEventListener('mouseenter', () => animation.play());
+                        parentCard.addEventListener('mouseleave', () => animation.reverse());
+                    }
+                };
+                
+                if (icons.arch) addHoverAnimation(icons.arch, gsap.to(icons.arch.querySelectorAll('path'), { drawSVG: true, duration: 1, ease: 'power2.inOut', paused: true, stagger: 0.2 }));
+                if (icons['3d']) addHoverAnimation(icons['3d'], gsap.to(icons['3d'], { attr: { "stroke-dashoffset": 0 }, rotateY: 360, duration: 1.5, ease: 'power2.inOut', paused: true, onStart: () => gsap.set(icons['3d'], {transformOrigin: "center center"}), onReverseComplete: () => gsap.set(icons['3d'], {clearProps: "transformOrigin, rotateY"}) }));
+                if(icons.light) { const anim = gsap.to(icons.light, { scale: 1.2, filter: 'drop-shadow(0 0 10px #d4af37)', duration: 0.5, yoyo: true, repeat: -1, ease: 'power1.inOut' }).pause(); icons.light.closest('.service-card-premium').addEventListener('mouseenter', () => anim.play()); icons.light.closest('.service-card-premium').addEventListener('mouseleave', () => { anim.pause(); gsap.to(icons.light, { scale: 1, filter: 'none', duration: 0.3 }); }); }
+                if(icons.plan) addHoverAnimation(icons.plan, gsap.to(icons.plan.querySelectorAll('path'), { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out', paused: true, onStart: () => gsap.set(icons.plan.querySelectorAll('path'), { y: 10, opacity: 0 }) }));
+                if(icons.manage) addHoverAnimation(icons.manage, gsap.to(icons.manage, { scale: 1.1, rotate: 5, duration: 0.3, ease: 'back.out(2)', paused: true }));
+                if(icons.smart) addHoverAnimation(icons.smart, gsap.to(icons.smart.querySelector('path:last-child'), { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true, onStart: () => gsap.set(icons.smart.querySelector('path:last-child'), { transformOrigin: 'center center', scale: 0.8, opacity: 0 }) }));
+                if(icons.business) addHoverAnimation(icons.business, gsap.to(icons.business, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true, onStart: () => gsap.set(icons.business, { scale: 0.8, opacity: 0 }) }));
+                if(icons.electric) { const anim = gsap.to(icons.electric, { filter: 'drop-shadow(0 0 8px #d4af37)', repeat: -1, yoyo: true, duration: 0.7, ease: 'power1.inOut' }).pause(); icons.electric.closest('.service-card-premium').addEventListener('mouseenter', () => anim.play()); icons.electric.closest('.service-card-premium').addEventListener('mouseleave', () => { anim.pause(); gsap.to(icons.electric, { filter: 'none', duration: 0.3 }); }); }
             };
 
+            // --- 8. ربط الأحداث وتشغيل الوظائف الأولية ---
             if (menuToggle) menuToggle.addEventListener('click', toggleMobileMenu);
             if (navbar) navbar.addEventListener('click', (e) => { if (e.target.matches('.nav-link')) closeMobileMenu(); });
             if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
@@ -825,9 +869,7 @@
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
                         scroll.scrollTo(targetElement);
-                        if (navbar.classList.contains('open')) {
-                            closeMobileMenu();
-                        }
+                        if (navbar.classList.contains('open')) closeMobileMenu();
                     }
                 });
             });
@@ -835,138 +877,6 @@
             applyTheme(currentTheme);
             applyLanguage(currentLanguage);
             setupCursor();
-
-            // --- NEW PREMIUM SERVICES SECTION SCRIPT ---
-            const servicesSection = document.querySelector('.services-section-premium');
-            if (servicesSection) {
-
-                // GSAP's DrawSVGPlugin is a club member perk. This is a basic polyfill.
-                gsap.registerPlugin({
-                    name: "drawSVG",
-                    init(target, value) {
-                        let path = target.tagName.toLowerCase() === "path" ? target : target.querySelector("path");
-                        if (!path) { return; }
-                        let length = path.getTotalLength();
-                        path.style.strokeDasharray = length;
-                        this.add(path.style, "strokeDashoffset", length, (value === "100%" || value === true) ? 0 : (value === "0%" || value === false) ? length : gsap.utils.clamp(0, length, parseFloat(value)));
-                    }
-                });
-
-                // --- ANIMATIONS ---
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: servicesSection,
-                        scroller: scrollContainer, // <-- Added for Locomotive Scroll
-                        start: 'top 70%',
-                        toggleActions: 'play none none none',
-                    }
-                });
-
-                tl.from(".section-title-premium", { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' })
-                  .from(".section-title-premium .shimmer", { x: '-150%', duration: 1.2, ease: 'power2.inOut' }, "-=0.8");
-
-                gsap.from(".service-card-premium", {
-                    scrollTrigger: {
-                        trigger: ".services-grid-premium",
-                        scroller: scrollContainer, // <-- Added for Locomotive Scroll
-                        start: "top 80%",
-                    },
-                    opacity: 0, y: 50, scale: 0.95,
-                    duration: 0.6, stagger: 0.15, ease: 'power3.out'
-                });
-
-                if (window.matchMedia('(min-width: 769px)').matches) {
-                    gsap.to(".service-card-premium", {
-                        y: (i) => (i % 2 === 0 ? -3 : 3),
-                        duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut",
-                        stagger: { amount: 0.5, from: "random" }
-                    });
-                }
-
-                // --- ICON-SPECIFIC HOVER ANIMATIONS ---
-                const icons = {
-                    arch: document.querySelector('#icon-arch svg'),
-                    '3d': document.querySelector('#icon-3d svg'),
-                    light: document.querySelector('#icon-light svg'),
-                    plan: document.querySelector('#icon-plan svg'),
-                    manage: document.querySelector('#icon-manage svg'),
-                    smart: document.querySelector('#icon-smart svg'),
-                    business: document.querySelector('#icon-business svg'),
-                    electric: document.querySelector('#icon-electric svg'),
-                };
-
-                const addHoverAnimation = (icon, animation) => {
-                    if(icon) {
-                        const parentCard = icon.closest('.service-card-premium');
-                        parentCard.addEventListener('mouseenter', () => animation.play());
-                        parentCard.addEventListener('mouseleave', () => animation.reverse());
-                    }
-                };
-                
-                if(icons.arch) {
-                    const archPaths = icons.arch.querySelectorAll('path');
-                    gsap.set(archPaths, { drawSVG: "0%" });
-                    const archAnim = gsap.to(archPaths, { drawSVG: "100%", duration: 1, ease: 'power2.inOut', paused: true, stagger: 0.2 });
-                    addHoverAnimation(icons.arch, archAnim);
-                }
-
-                if(icons['3d']) {
-                    gsap.set(icons['3d'], { transformOrigin: "center center", rotateY: 0 });
-                    const visAnim = gsap.to(icons['3d'], { rotateY: 360, duration: 1.5, ease: 'power2.inOut', paused: true });
-                    addHoverAnimation(icons['3d'], visAnim);
-                }
-                
-                if(icons.light) {
-                    const lightAnim = gsap.to(icons.light, { scale: 1.2, filter: 'drop-shadow(0 0 10px #d4af37)', duration: 0.5, yoyo: true, repeat: -1, ease: 'power1.inOut' });
-                    lightAnim.pause();
-                    const parent = icons.light.closest('.service-card-premium');
-                    parent.addEventListener('mouseenter', () => lightAnim.play());
-                    parent.addEventListener('mouseleave', () => {
-                        lightAnim.pause();
-                        gsap.to(icons.light, { scale: 1, filter: 'none', duration: 0.3 });
-                    });
-                }
-                
-                if(icons.plan) {
-                    const planPaths = icons.plan.querySelectorAll('path');
-                    gsap.set(planPaths, { y: 10, opacity: 0 });
-                    const planAnim = gsap.to(planPaths, { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out', paused: true });
-                    addHoverAnimation(icons.plan, planAnim);
-                }
-                
-                if(icons.manage) {
-                    gsap.set(icons.manage, { scale: 1 });
-                    const manageAnim = gsap.to(icons.manage, { scale: 1.1, rotate: 5, duration: 0.3, ease: 'back.out(2)', paused: true });
-                    addHoverAnimation(icons.manage, manageAnim);
-                }
-                
-                if(icons.smart) {
-                    const smartCircle = icons.smart.querySelector('path:last-child'); // Target the circle/wifi part
-                    gsap.set(smartCircle, { transformOrigin: 'center center', scale: 0.8, opacity: 0 });
-                    const smartAnim = gsap.to(smartCircle, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true });
-                    addHoverAnimation(icons.smart, smartAnim);
-                }
-
-                if(icons.business) {
-                    gsap.set(icons.business, { scale: 0.8, opacity: 0 });
-                    const businessAnim = gsap.to(icons.business, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true });
-                    addHoverAnimation(icons.business, businessAnim);
-                }
-                
-                if(icons.electric) {
-                    const electricAnim = gsap.to(icons.electric, { 
-                        filter: 'drop-shadow(0 0 8px #d4af37)',
-                        repeat: -1, yoyo: true, duration: 0.7, ease: 'power1.inOut'
-                    });
-                    electricAnim.pause();
-                    const parent = icons.electric.closest('.service-card-premium');
-                    parent.addEventListener('mouseenter', () => electricAnim.play());
-                    parent.addEventListener('mouseleave', () => {
-                        electricAnim.pause();
-                        gsap.to(icons.electric, { filter: 'none', duration: 0.3 });
-                    });
-                }
-            } // end of new script
         });
     </script>
     
