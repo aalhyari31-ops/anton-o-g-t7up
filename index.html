@@ -54,7 +54,7 @@
 
     <style>
         /* ========================
-         Theme & Variables
+          Theme & Variables
         ======================== */
         :root {
             --bg: #121212;
@@ -82,7 +82,7 @@
         }
 
         /* ========================
-         Base & Resets
+          Base & Resets
         ======================== */
         * { box-sizing: border-box; }
         html { scroll-behavior: auto; }
@@ -102,7 +102,7 @@
         :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 
         /* ========================
-         Layout & Helpers
+          Layout & Helpers
         ======================== */
         .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
         .full-page-section {
@@ -119,7 +119,7 @@
         .skip-link:focus { top: 8px; }
         
         /* ========================
-         Loader
+          Loader
         ======================== */
         .loader {
             position: fixed;
@@ -144,7 +144,7 @@
         }
 
         /* ========================
-         Custom Cursor
+          Custom Cursor
         ======================== */
         .cursor, .cursor-follower {
             position: fixed;
@@ -169,7 +169,7 @@
         }
 
         /* ========================
-         Header & Navigation
+          Header & Navigation
         ======================== */
         .header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -210,13 +210,37 @@
         .theme-toggle i { color: var(--primary); }
 
         /* ========================
-         Hero Section
+          Hero Section
         ======================== */
-        .hero-section { overflow: clip; }
+        .hero-section { overflow: clip; background-color: var(--surface-2); /* Background if Boids fail to load */ }
         .spline-container { position: absolute; inset: 0; z-index: 1; }
-        #spline { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .6s ease; }
-        #spline.loaded { opacity: 1; }
-        .spline-fallback { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65)), url('https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat; filter: saturate(.95); }
+        /* إخفاء Spline Viewer واستبداله بـ Boids */
+        #spline { display: none !important; }
+        .spline-fallback { display: none !important; }
+
+        /* Boids Simulation Design */
+        #boids-container {
+            position: absolute;
+            inset: 0;
+            z-index: 1; /* تحت الـ hero-content */
+            pointer-events: none; /* لا يجب أن تعيق تفاعلات الماوس */
+            background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65)); /* تدرج خلفي بسيط */
+            filter: brightness(0.9);
+        }
+
+        .boid {
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+            /* لون ذهبي يتماشى مع الثيم */
+            background-color: var(--primary); 
+            filter: drop-shadow(0 0 5px rgba(205, 164, 94, 0.5));
+            will-change: transform, left, top;
+            transition: none; /* الحركة بالـ JS */
+            opacity: 0.9;
+        }
+
         .hero-content { position: relative; z-index: 2; padding: 2rem; border-radius: var(--radius); background: rgba(0,0,0,.4); backdrop-filter: blur(6px); max-width: 900px; text-align: center; }
         html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
         .hero-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; margin: 0 0 1rem; }
@@ -229,7 +253,7 @@
         @keyframes bounce { 0%,20%,50%,80%,100% { transform: translate(-50%,0); } 40% { transform: translate(-50%,-12px); } 60% { transform: translate(-50%,-4px); } }
         
         /* ========================
-         General Section Styles
+          General Section Styles
         ======================== */
         .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
         .process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; position: relative; }
@@ -274,7 +298,7 @@
         .form-status { min-height: 1.2rem; margin: .3rem 0 0; color: var(--muted); }
         
         /* ========================
-         Footer
+          Footer
         ======================== */
         .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
@@ -283,14 +307,14 @@
         .social-icons a:hover { color: var(--primary); transform: translateY(-5px); }
 
         /* ========================
-         Floating Buttons
+          Floating Buttons
         ======================== */
         .back-to-top { position: fixed; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: #111; display: grid; place-items: center; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .2s ease; z-index: 5; }
         .back-to-top.show { opacity: 1; visibility: visible; transform: none; }
         .floating-whatsapp { position: fixed; left: 18px; bottom: 18px; width: 48px; height: 48px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: var(--shadow); z-index: 5; }
         
         /* ========================
-         New Premium Services Section
+          New Premium Services Section
         ======================== */
         .services-section-premium {
             background-color: #0f0f0f;
@@ -383,7 +407,7 @@
         }
 
         /* ========================
-         Responsive Media Queries
+          Responsive Media Queries
         ======================== */
         @media (max-width: 992px) {
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -406,7 +430,7 @@
         }
 
         /* ========================
-         RTL (Right-to-Left) Styles
+          RTL (Right-to-Left) Styles
         ======================== */
         html[dir="rtl"] body { direction: rtl; text-align: right; font-family: var(--font-secondary); }
         html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
@@ -420,7 +444,7 @@
         }
         
         /* ========================
-         Accessibility & Touch Devices
+          Accessibility & Touch Devices
         ======================== */
         @media (pointer: coarse) {
             body { cursor: auto !important; }
@@ -476,9 +500,7 @@
         <main id="main-container" tabindex="-1">
             <section id="hero" class="hero-section full-page-section" aria-label="Hero" data-scroll-section>
                 <div class="spline-container" aria-hidden="true">
-                    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
-                    <spline-viewer id="spline"></spline-viewer>
-                    <div class="spline-fallback"></div>
+                    <div id="boids-container"></div>
                 </div>
                 <div class="hero-content">
                     <h1 class="hero-title" data-lang-key="hero_title">Masterful Designs, Meticulously Crafted.</h1>
@@ -686,11 +708,12 @@
                 loader.classList.add('hidden');
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
                 tl.to(header, { y: '0%', duration: 1, ease: 'power2.out' }, 0.5)
-                  .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
-                  .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.9')
-                  .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
+                    .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
+                    .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.9')
+                    .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
                 initScrollAnimations();
                 initPremiumServicesAnimations();
+                initBoidsSimulation(); // ✅ تشغيل محاكاة Boids
                 scroll.update();
                 ScrollTrigger.refresh();
             };
@@ -698,9 +721,10 @@
             window.addEventListener('load', initPage);
             setTimeout(() => { if (!loader.classList.contains('hidden')) initPage(); }, 7000);
 
-            if (splineViewer) {
-                splineViewer.url = "https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode";
-            }
+            // تم تعطيل هذه الكتل لأننا استبدلنا Spline بالـ Boids
+            // if (splineViewer) {
+            //     splineViewer.url = "https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode";
+            // }
 
             // --- 4. الأنيميشن عند السكرول (للأقسام القديمة) ---
             const initScrollAnimations = () => {
@@ -736,15 +760,15 @@
             const toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
             const translations = {
-                 en: {logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,},
-                 ar: {logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,},
-                 tr: {logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel", service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", process_3_title: "3D Görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,}
+                en: {logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,},
+                ar: {logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,},
+                tr: {logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel", service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", process_3_title: "3D Gör görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,}
             };
             const applyLanguage = (lang) => {
                 const langData = translations[lang];
                 document.documentElement.lang = lang; 
                 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.body.classList.toggle('is-rtl', lang === 'ar'); // Add/remove class for RTL fix
+                document.body.classList.toggle('is-rtl', lang === 'ar'); 
                 document.querySelectorAll('[data-lang-key]').forEach(el => { 
                     const key = el.getAttribute('data-lang-key'); 
                     if (langData[key]) el.textContent = langData[key]; 
@@ -820,7 +844,7 @@
 
                 const tl = gsap.timeline({ scrollTrigger: { trigger: servicesSection, scroller: scrollContainer, start: 'top 70%', toggleActions: 'play none none none' } });
                 tl.from(".section-title-premium", { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' })
-                  .from(".section-title-premium .shimmer", { x: '-150%', duration: 1.2, ease: 'power2.inOut' }, "-=0.8");
+                    .from(".section-title-premium .shimmer", { x: '-150%', duration: 1.2, ease: 'power2.inOut' }, "-=0.8");
 
                 gsap.from(".service-card-premium", { scrollTrigger: { trigger: ".services-grid-premium", scroller: scrollContainer, start: "top 80%" }, opacity: 0, y: 50, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out' });
 
@@ -877,6 +901,183 @@
             applyTheme(currentTheme);
             applyLanguage(currentLanguage);
             setupCursor();
+            
+            // ==========================================
+            // --- 9. Boids Flocking Simulation (الطيور الذكية) ---
+            // ==========================================
+
+            function initBoidsSimulation() {
+                // ثوابت التحكم في السلوك
+                const NUM_BOIDS = 100; // عدد الطيور
+                const MAX_SPEED = 2; // أقصى سرعة
+                const MAX_FORCE = 0.05; // أقصى قوة دفع
+                const PERCEPTION_RADIUS = 75; // مدى رؤية الطائر للطيور الأخرى
+                const SEPARATION_WEIGHT = 1.5; // وزن التباعد
+                const ALIGNMENT_WEIGHT = 1.0; // وزن المحاذاة
+                const COHESION_WEIGHT = 1.0; // وزن التماسك
+
+                class Vector {
+                    constructor(x, y) {
+                        this.x = x || 0;
+                        this.y = y || 0;
+                    }
+
+                    add(v) { this.x += v.x; this.y += v.y; return this; }
+                    sub(v) { this.x -= v.x; this.y -= v.y; return this; }
+                    mult(n) { this.x *= n; this.y *= n; return this; }
+                    div(n) { this.x /= n; this.y /= n; return this; }
+                    mag() { return Math.sqrt(this.x * this.x + this.y * this.y); }
+                    setMag(n) { 
+                        const m = this.mag();
+                        if (m > 0) this.div(m).mult(n);
+                        return this;
+                    }
+                    normalize() {
+                        const m = this.mag();
+                        if (m > 0) this.div(m);
+                        return this;
+                    }
+                    limit(max) {
+                        if (this.mag() > max) this.setMag(max);
+                        return this;
+                    }
+                    heading() { return Math.atan2(this.y, this.x); }
+                    static sub(v1, v2) { return new Vector(v1.x - v2.x, v1.y - v2.y); }
+                    static random2D() { return new Vector(Math.random() * 2 - 1, Math.random() * 2 - 1).normalize(); }
+                }
+
+                class Boid {
+                    constructor(x, y, el) {
+                        this.position = new Vector(x, y);
+                        this.velocity = Vector.random2D().mult(Math.random() * MAX_SPEED);
+                        this.acceleration = new Vector();
+                        this.element = el;
+                    }
+
+                    seek(target) {
+                        let desired = Vector.sub(target, this.position);
+                        desired.setMag(MAX_SPEED);
+                        let steer = Vector.sub(desired, this.velocity);
+                        steer.limit(MAX_FORCE);
+                        return steer;
+                    }
+
+                    flock(boids) {
+                        let separation = this.separate(boids).mult(SEPARATION_WEIGHT);
+                        let alignment = this.align(boids).mult(ALIGNMENT_WEIGHT);
+                        let cohesion = this.cohesion(boids).mult(COHESION_WEIGHT);
+                        this.acceleration.add(separation).add(alignment).add(cohesion);
+                    }
+
+                    separate(boids) {
+                        let steering = new Vector();
+                        let count = 0;
+                        for (let other of boids) {
+                            let d = Vector.sub(this.position, other.position).mag();
+                            if (other !== this && d < PERCEPTION_RADIUS) {
+                                let diff = Vector.sub(this.position, other.position);
+                                diff.div(d);
+                                steering.add(diff);
+                                count++;
+                            }
+                        }
+                        if (count > 0) {
+                            steering.div(count);
+                            steering.setMag(MAX_SPEED);
+                            steering.sub(this.velocity);
+                            steering.limit(MAX_FORCE);
+                        }
+                        return steering;
+                    }
+
+                    align(boids) {
+                        let avgVelocity = new Vector();
+                        let count = 0;
+                        for (let other of boids) {
+                            let d = Vector.sub(this.position, other.position).mag();
+                            if (other !== this && d < PERCEPTION_RADIUS) {
+                                avgVelocity.add(other.velocity);
+                                count++;
+                            }
+                        }
+                        if (count > 0) {
+                            avgVelocity.div(count);
+                            avgVelocity.setMag(MAX_SPEED);
+                            let steer = Vector.sub(avgVelocity, this.velocity);
+                            steer.limit(MAX_FORCE);
+                            return steer;
+                        }
+                        return new Vector();
+                    }
+
+                    cohesion(boids) {
+                        let centerOfMass = new Vector();
+                        let count = 0;
+                        for (let other of boids) {
+                            let d = Vector.sub(this.position, other.position).mag();
+                            if (other !== this && d < PERCEPTION_RADIUS) {
+                                centerOfMass.add(other.position);
+                                count++;
+                            }
+                        }
+                        if (count > 0) {
+                            centerOfMass.div(count);
+                            return this.seek(centerOfMass);
+                        }
+                        return new Vector();
+                    }
+
+                    edges() {
+                        if (this.position.x > window.innerWidth) this.position.x = 0;
+                        else if (this.position.x < 0) this.position.x = window.innerWidth;
+                        if (this.position.y > window.innerHeight) this.position.y = 0;
+                        else if (this.position.y < 0) this.position.y = window.innerHeight;
+                    }
+
+                    update() {
+                        this.position.add(this.velocity);
+                        this.velocity.add(this.acceleration);
+                        this.velocity.limit(MAX_SPEED);
+                        this.acceleration.mult(0);
+                    }
+
+                    show() {
+                        this.element.style.left = `${this.position.x}px`;
+                        this.element.style.top = `${this.position.y}px`;
+                        let angle = this.velocity.heading();
+                        this.element.style.transform = `rotate(${angle}rad)`;
+                    }
+                }
+
+                const boids = [];
+                const container = document.getElementById('boids-container');
+
+                if (container) {
+                    // تهيئة الطيور
+                    for (let i = 0; i < NUM_BOIDS; i++) {
+                        const el = document.createElement('div');
+                        el.className = 'boid';
+                        container.appendChild(el);
+                        // تبدأ الطيور من موقع عشوائي على الشاشة
+                        let x = Math.random() * window.innerWidth;
+                        let y = Math.random() * window.innerHeight;
+                        boids.push(new Boid(x, y, el));
+                    }
+
+                    // حلقة التحريك الرئيسية
+                    function animate() {
+                        for (let boid of boids) {
+                            boid.flock(boids);
+                            boid.edges();
+                            boid.update();
+                            boid.show();
+                        }
+                        requestAnimationFrame(animate);
+                    }
+
+                    animate();
+                }
+            }
         });
     </script>
     
