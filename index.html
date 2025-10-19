@@ -12,6 +12,8 @@
     <link rel="alternate" hreflang="en" href="https://example.com/" />
     <link rel="alternate" hreflang="ar" href="https://example.com/ar/" />
     <link rel="alternate" hreflang="tr" href="https://example.com/tr/" />
+    <link rel="alternate" hreflang="fr" href="https://example.com/fr/" />
+    <link rel="alternate" hreflang="es" href="https://example.com/es/" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Eng.r Antonio GITHOP | Architectural & Interior Design" />
@@ -33,6 +35,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
     <script type="application/ld+json">
     {
@@ -47,7 +52,7 @@
         "telephone":"+90 531 586 5489",
         "contactType":"customer service",
         "areaServed":"Worldwide",
-        "availableLanguage":["en","ar","tr"]
+        "availableLanguage":["en","ar","tr","fr","es"]
         }]
     }
     </script>
@@ -210,36 +215,84 @@
         .theme-toggle i { color: var(--primary); }
 
         /* ========================
-          Hero Section
+          Hero Section (Three.js Container)
         ======================== */
-        .hero-section { overflow: clip; background-color: var(--surface-2); /* Background if Boids fail to load */ }
-        .spline-container { position: absolute; inset: 0; z-index: 1; }
-        /* إخفاء Spline Viewer واستبداله بـ Boids */
-        #spline { display: none !important; }
-        .spline-fallback { display: none !important; }
+        .hero-section { overflow: clip; background-color: #1a1a1a; } /* Dark background for 3D scene */
+        
+        /* Three.js Container */
+        #scene-container { 
+            position: absolute; 
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; 
+            display: block; 
+        }
+        #scene-container canvas { 
+            display: block; 
+        }
+        .spline-container { display: none; } /* Hide old spline container */
+        #boids-container-hero { display: none; } /* Hide old boids in hero */
 
-        /* Boids Simulation Design */
-        #boids-container {
+        /* Loading Overlay (Hidden after load) */
+        #loading-overlay {
             position: absolute;
             inset: 0;
-            z-index: 1; /* تحت الـ hero-content */
-            pointer-events: none; /* لا يجب أن تعيق تفاعلات الماوس */
-            background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.65)); /* تدرج خلفي بسيط */
-            filter: brightness(0.9);
+            background-color: rgba(17, 24, 39, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5; /* Above 3D scene, below content */
+            color: #ccc;
+            transition: opacity 0.5s;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #00ffff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Three.js Controls & Instructions */
+        #threejs-controls {
+            position: absolute;
+            top: 4rem; 
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+            z-index: 3;
+            display: flex;
+            gap: 1.5rem;
+        }
+        .instruction-box {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            z-index: 3;
         }
 
-        .boid {
-            width: 15px;
-            height: 15px;
-            position: absolute;
-            clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
-            /* لون ذهبي يتماشى مع الثيم */
-            background-color: var(--primary); 
-            filter: drop-shadow(0 0 5px rgba(205, 164, 94, 0.5));
-            will-change: transform, left, top;
-            transition: none; /* الحركة بالـ JS */
-            opacity: 0.9;
+        /* Toggle Switch Styles */
+        #threejs-controls input:checked ~ .dot {
+            transform: translateX(100%);
+            background-color: #00ffff;
         }
+        #threejs-controls input:checked ~ .block {
+            background-color: #008888;
+        }
+        .toggle-label { color: #fff; font-weight: 500; font-size: 0.875rem; text-align: right; }
 
         .hero-content { position: relative; z-index: 2; padding: 2rem; border-radius: var(--radius); background: rgba(0,0,0,.4); backdrop-filter: blur(6px); max-width: 900px; text-align: center; }
         html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
@@ -300,11 +353,33 @@
         /* ========================
           Footer
         ======================== */
-        .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); }
-        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); position: relative; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; position: relative; z-index: 10; }
         .social-icons { display: flex; gap: 1.5rem; }
         .social-icons a { font-size: 1.3rem; color: var(--muted); transition: color 0.3s ease, transform 0.3s ease; }
         .social-icons a:hover { color: var(--primary); transform: translateY(-5px); }
+
+        /* Boids Simulation in Footer Design */
+        #boids-container-footer {
+            position: absolute;
+            inset: 0;
+            z-index: 1; 
+            pointer-events: none; 
+            background: linear-gradient(0deg, rgba(0,0,0,.45), rgba(0,0,0,.65));
+            filter: brightness(0.9);
+        }
+
+        .boid {
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+            background-color: var(--primary); 
+            filter: drop-shadow(0 0 5px rgba(205, 164, 94, 0.5));
+            will-change: transform, left, top;
+            transition: none;
+            opacity: 0.7;
+        }
 
         /* ========================
           Floating Buttons
@@ -452,7 +527,8 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-900">
+
     <div class="loader">
         <div class="loader-logo">A. GITHOP</div>
     </div>
@@ -488,6 +564,8 @@
                             <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
                             <li role="option" data-lang="ar">العربية (AR)</li>
                             <li role="option" data-lang="tr">Türkçe (TR)</li>
+                            <li role="option" data-lang="fr">Français (FR)</li>
+                            <li role="option" data-lang="es">Español (ES)</li>
                         </ul>
                     </div>
                     <button class="theme-toggle" aria-label="Toggle theme">
@@ -499,8 +577,41 @@
 
         <main id="main-container" tabindex="-1">
             <section id="hero" class="hero-section full-page-section" aria-label="Hero" data-scroll-section>
-                <div class="spline-container" aria-hidden="true">
-                    <div id="boids-container"></div>
+                
+                <div id="scene-container"></div>
+
+                <div id="loading-overlay">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-xl font-medium">Loading 3D Architectural Scene...</p>
+                    <p class="text-sm mt-2 text-gray-400">(This is a complex scene and may take a moment)</p>
+                </div>
+
+                <div id="threejs-controls">
+                    <label for="neonToggle" class="flex items-center cursor-pointer">
+                        <div class="relative">
+                            <input type="checkbox" id="neonToggle" class="sr-only" checked onchange="toggleNeonGlow(this.checked)">
+                            <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
+                        </div>
+                        <div class="ml-3 toggle-label" data-lang-key="toggle_neon">
+                            تبديل توهج النيون (كهرباء)
+                        </div>
+                    </label>
+                    
+                    <label for="hvacToggle" class="flex items-center cursor-pointer">
+                        <div class="relative">
+                            <input type="checkbox" id="hvacToggle" class="sr-only" checked onchange="toggleHVACHiding(this.checked)">
+                            <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
+                        </div>
+                        <div class="ml-3 toggle-label" data-lang-key="toggle_hvac">
+                            تبديل أنظمة الأنابيب/التكييف
+                        </div>
+                    </label>
+                </div>
+
+                <div class="instruction-box hidden md:block" data-lang-key="hero_instructions">
+                    Use your mouse/touch to orbit and explore the scene.
                 </div>
                 <div class="hero-content">
                     <h1 class="hero-title" data-lang-key="hero_title">Masterful Designs, Meticulously Crafted.</h1>
@@ -640,6 +751,7 @@
             </section>
 
             <footer class="footer" role="contentinfo" data-scroll-section>
+                <div id="boids-container-footer"></div>
                 <div class="container">
                     <div class="footer-content">
                         <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
@@ -663,9 +775,313 @@
     
     <script>
         'use strict';
+        // ==========================================
+        // --- 1. Three.js 3D Scene Logic (Hero) ---
+        // ==========================================
+        let scene, camera, renderer, controls, clock, particleSystem, neonMeshes = [], hvacMeshes = [];
+        const threeJsContainer = document.getElementById('scene-container');
+        const threeJsLoadingOverlay = document.getElementById('loading-overlay');
+        const threeJsInstructionBox = document.querySelector('.instruction-box');
+        const materials = {};
+
+        function setupMaterials() {
+            materials.concrete = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.9, metalness: 0.1 });
+            materials.steel = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 0.4, metalness: 0.8 });
+            materials.wood = new THREE.MeshStandardMaterial({ color: 0xa08c6a, roughness: 0.6, metalness: 0.05 });
+            materials.glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0, opacity: 0.2, transparent: true, transmission: 0.95, reflectivity: 0.8 });
+            materials.neonBlue = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0x00ffff, emissiveIntensity: 1.5 });
+            materials.neonOrange = new THREE.MeshStandardMaterial({ color: 0xffa500, emissive: 0xffa500, emissiveIntensity: 0.5, roughness: 0.2 });
+            materials.warmLight = new THREE.MeshBasicMaterial({ color: 0xffd700, emissive: 0xffd700, emissiveIntensity: 1.0 });
+            materials.sofa = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8, metalness: 0.0 });
+            materials.particle = new THREE.PointsMaterial({ color: 0xeeeeee, size: 0.02, sizeAttenuation: true, transparent: true, opacity: 0.7 });
+        }
+
+        function createBuildingStructure(width, height, depth, floors) {
+            const group = new THREE.Group();
+            const floorHeight = height / floors;
+            const slabGeometry = new THREE.BoxGeometry(width, 0.2, depth);
+            for (let i = 0; i <= floors; i++) {
+                const slab = new THREE.Mesh(slabGeometry, materials.concrete);
+                slab.position.y = i * floorHeight;
+                slab.castShadow = true;
+                slab.receiveShadow = true;
+                group.add(slab);
+            }
+            const columnGeometry = new THREE.BoxGeometry(0.2, height, 0.2);
+            const positions = [[-width / 2 + 0.1, height / 2, -depth / 2 + 0.1], [width / 2 - 0.1, height / 2, -depth / 2 + 0.1], [-width / 2 + 0.1, height / 2, depth / 2 - 0.1], [width / 2 - 0.1, height / 2, depth / 2 - 0.1]];
+            positions.forEach(pos => { const column = new THREE.Mesh(columnGeometry, materials.steel); column.position.set(...pos); column.castShadow = true; group.add(column); });
+            return group;
+        }
+
+        function createTechnicalSystems(width, height, depth, floors) {
+            const group = new THREE.Group();
+            const floorHeight = height / floors;
+            const systemScale = 0.05;
+
+            for (let i = 0; i < floors; i++) {
+                const floorY = i * floorHeight + 0.1;
+                const offsetZ = depth / 2 - 0.1;
+                const numConduits = 5;
+
+                for (let j = 0; j < numConduits; j++) {
+                    const conduitLength = floorHeight * 0.8;
+                    const conduitGeometry = new THREE.CylinderGeometry(systemScale * 0.7, systemScale * 0.7, conduitLength, 8);
+                    
+                    const conduitV = new THREE.Mesh(conduitGeometry, materials.neonOrange);
+                    conduitV.position.set(-width / 2 + 0.5 + j * 0.5, floorY + conduitLength / 2, offsetZ);
+                    conduitV.castShadow = true;
+                    group.add(conduitV);
+                    hvacMeshes.push(conduitV);
+
+                    const wireLength = 1.0;
+                    const wireGeometry = new THREE.CylinderGeometry(systemScale * 0.4, systemScale * 0.4, wireLength, 6);
+                    const wireH = new THREE.Mesh(wireGeometry, materials.neonBlue);
+                    wireH.rotation.z = Math.PI / 2;
+                    wireH.position.set(conduitV.position.x + wireLength / 2, floorY + 0.5, offsetZ - 0.1);
+                    group.add(wireH);
+                    neonMeshes.push(wireH);
+
+                    const boxGeometry = new THREE.BoxGeometry(systemScale * 5, systemScale * 5, systemScale * 1);
+                    const junctionBox = new THREE.Mesh(boxGeometry, materials.steel);
+                    junctionBox.position.set(wireH.position.x + wireLength / 2, wireH.position.y, offsetZ - 0.1);
+                    junctionBox.castShadow = true;
+                    group.add(junctionBox);
+                    hvacMeshes.push(junctionBox);
+                }
+
+                const ductGeometry = new THREE.BoxGeometry(2.0, 0.4, 0.4);
+                const duct = new THREE.Mesh(ductGeometry, materials.steel);
+                duct.position.set(width / 2 - 2, floorY + floorHeight - 0.3, offsetZ);
+                duct.castShadow = true;
+                group.add(duct);
+                hvacMeshes.push(duct);
+            }
+            return group;
+        }
+
+        function createInteriorSpace(floorY, width, depth) {
+            const group = new THREE.Group();
+            const floorGeometry = new THREE.PlaneGeometry(width - 0.1, depth - 0.1);
+            const floorMesh = new THREE.Mesh(floorGeometry, materials.wood);
+            floorMesh.rotation.x = -Math.PI / 2;
+            floorMesh.position.y = floorY + 0.1;
+            floorMesh.receiveShadow = true;
+            group.add(floorMesh);
+
+            const sofaGeometry = new THREE.BoxGeometry(2.5, 0.4, 1.0);
+            const sofa = new THREE.Mesh(sofaGeometry, materials.sofa);
+            sofa.position.set(width * 0.2, floorY + 0.3, depth * 0.1);
+            sofa.castShadow = true;
+            group.add(sofa);
+
+            const tableGeometry = new THREE.BoxGeometry(1.2, 0.2, 0.8);
+            const tableMaterial = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, roughness: 0.1, metalness: 0.0 });
+            const table = new THREE.Mesh(tableGeometry, tableMaterial);
+            table.position.set(sofa.position.x - 1.0, floorY + 0.3, sofa.position.z + 0.5);
+            table.castShadow = true;
+            group.add(table);
+
+            const diningTable = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.2, 0.8), materials.wood);
+            diningTable.position.set(-width * 0.2, floorY + 0.5, depth * 0.1);
+            diningTable.castShadow = true;
+            group.add(diningTable);
+
+            const chairGeometry = new THREE.BoxGeometry(0.4, 0.8, 0.4);
+            const chair1 = new THREE.Mesh(chairGeometry, materials.wood);
+            chair1.position.set(-width * 0.2 - 0.5, floorY + 0.3, depth * 0.1);
+            chair1.castShadow = true;
+            group.add(chair1);
+
+            const lightFixtureGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.5, 6);
+            const fixture = new THREE.Mesh(lightFixtureGeometry, materials.warmLight);
+            fixture.position.set(diningTable.position.x, floorY + 2.5, diningTable.position.z);
+            fixture.rotation.x = Math.PI / 2;
+            group.add(fixture);
+
+            const interiorLight = new THREE.PointLight(0xffd700, 5, 5);
+            interiorLight.position.set(fixture.position.x, fixture.position.y, fixture.position.z);
+            interiorLight.castShadow = true;
+            group.add(interiorLight);
+
+            return group;
+        }
+
+        function createScaffolding(width, height, depth) {
+            const group = new THREE.Group();
+            const tubeRadius = 0.03;
+            const tubeGeometry = new THREE.CylinderGeometry(tubeRadius, tubeRadius, height, 8);
+            const horizontalBeam = new THREE.CylinderGeometry(tubeRadius, tubeRadius, width, 8);
+            const scaffoldingX = -width / 2;
+            const scaffoldingZ = -depth / 2;
+
+            for (let i = 0; i <= 5; i++) {
+                const column = new THREE.Mesh(tubeGeometry, materials.steel);
+                column.position.set(scaffoldingX, height / 2, scaffoldingZ + i * 0.5);
+                group.add(column);
+            }
+
+            const numLevels = 3;
+            for (let j = 1; j < numLevels; j++) {
+                const yPos = j * (height / numLevels);
+                const beam = new THREE.Mesh(horizontalBeam, materials.steel);
+                beam.rotation.z = Math.PI / 2;
+                beam.position.set(scaffoldingX, yPos, scaffoldingZ + 1.2);
+                group.add(beam);
+            }
+            group.position.x -= 0.1;
+            return group;
+        }
+
+        function createParticles() {
+            const particleCount = 200;
+            const geometry = new THREE.BufferGeometry();
+            const positions = [];
+            const boundsX = 5;
+            const boundsY = 8;
+            const boundsZ = 5;
+
+            for (let i = 0; i < particleCount; i++) {
+                const x = (Math.random() * boundsX) - boundsX / 2;
+                const y = Math.random() * boundsY;
+                const z = (Math.random() * boundsZ) - boundsZ / 2;
+                positions.push(x, y, z);
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            particleSystem = new THREE.Points(geometry, materials.particle);
+            scene.add(particleSystem);
+        }
+
+        function toggleNeonGlow(enable) {
+            const intensity = enable ? 1.5 : 0.05;  
+            const color = enable ? 0x00ffff : 0x008888;  
+
+            neonMeshes.forEach(mesh => {
+                if (mesh && mesh.material === materials.neonBlue) {
+                    mesh.material.emissive.setHex(color);
+                    mesh.material.emissiveIntensity = intensity;
+                    mesh.material.needsUpdate = true;
+                }
+            });
+        }
+        
+        function toggleHVACHiding(enable) {
+            hvacMeshes.forEach(mesh => { if (mesh) mesh.visible = enable; });
+        }
+
+        function initThreeJs() {
+            if (!threeJsContainer) return;
+            
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a1a);
+            clock = new THREE.Clock();
+
+            const aspectRatio = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
+            camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 100);
+            camera.position.set(10, 6, 12);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            threeJsContainer.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.target.set(0, 4, 0);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(15, 20, 10);
+            dirLight.castShadow = true;
+            dirLight.shadow.mapSize.width = 2048;
+            dirLight.shadow.mapSize.height = 2048;
+            dirLight.shadow.camera.near = 0.5;
+            dirLight.shadow.camera.far = 50;
+            dirLight.shadow.camera.left = -20;
+            dirLight.shadow.camera.right = 20;
+            dirLight.shadow.camera.top = 20;
+            dirLight.shadow.camera.bottom = -20;
+            scene.add(dirLight);
+
+            const ambientLight = new THREE.AmbientLight(0x404040, 1.0);
+            scene.add(ambientLight);
+
+            const backLight = new THREE.DirectionalLight(0xeeeeff, 0.5);
+            backLight.position.set(-10, 5, -15);
+            scene.add(backLight);
+
+            setupMaterials();
+
+            const buildingWidth = 8;
+            const buildingHeight = 10;
+            const buildingDepth = 6;
+            const numFloors = 4;
+            const floorHeight = buildingHeight / numFloors;
+
+            const structure = createBuildingStructure(buildingWidth, buildingHeight, buildingDepth, numFloors);
+            scene.add(structure);
+
+            const systems = createTechnicalSystems(buildingWidth, buildingHeight, buildingDepth, numFloors);
+            scene.add(systems);
+
+            const interiorSpace = createInteriorSpace(floorHeight * 2, buildingWidth / 2, buildingDepth);
+            interiorSpace.position.x = buildingWidth / 4;
+            scene.add(interiorSpace);
+
+            const glassWallGeometry = new THREE.BoxGeometry(0.1, floorHeight, buildingDepth);
+            const glassWall = new THREE.Mesh(glassWallGeometry, materials.glass);
+            glassWall.position.set(0.0, floorHeight * 2 + floorHeight / 2, 0.0);
+            glassWall.castShadow = true;
+            scene.add(glassWall);
+
+            const scaffolding = createScaffolding(1.0, buildingHeight, buildingDepth * 0.5);
+            scaffolding.position.z = -buildingDepth / 2 - 0.1;
+            scene.add(scaffolding);
+
+            createParticles();
+
+            window.addEventListener('resize', onWindowResize);
+
+            threeJsLoadingOverlay.style.opacity = '0';
+            setTimeout(() => {
+                threeJsLoadingOverlay.style.display = 'none';
+                threeJsInstructionBox.classList.remove('hidden');
+            }, 500);
+
+            animateThreeJs();
+        }
+
+        function onWindowResize() {
+            camera.aspect = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
+        }
+
+        function animateThreeJs() {
+            requestAnimationFrame(animateThreeJs);
+            const delta = clock.getDelta();
+
+            if (particleSystem) {
+                const positions = particleSystem.geometry.attributes.position.array;
+                for (let i = 1; i < positions.length; i += 3) {
+                    positions[i] += delta * 0.05;
+                    if (positions[i] > 10) { positions[i] = 0; }
+                }
+                particleSystem.geometry.attributes.position.needsUpdate = true;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        // --- END Three.js 3D Scene Logic (Hero) ---
+
+        // ==========================================
+        // --- 2. Portfolio Logic (Locomotive, GSAP) ---
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- 1. تحديد العناصر الأساسية ---
             const loader = document.querySelector('.loader');
             const header = document.querySelector('.header');
             const themeToggle = document.querySelector('.theme-toggle');
@@ -680,10 +1096,9 @@
             const formStatus = document.querySelector('.form-status');
             const backToTopBtn = document.querySelector('.back-to-top');
             const footerYear = document.getElementById('year');
-            const splineViewer = document.getElementById('spline');
             const scrollContainer = document.querySelector('[data-scroll-container]');
 
-            // --- 2. تهيئة السكرول الناعم (Locomotive Scroll) وربطه بـ GSAP ---
+            // --- Locomotive Scroll Init ---
             const scroll = new LocomotiveScroll({
                 el: scrollContainer,
                 smooth: true,
@@ -694,16 +1109,12 @@
             gsap.registerPlugin(ScrollTrigger);
             scroll.on('scroll', ScrollTrigger.update);
             ScrollTrigger.scrollerProxy(scrollContainer, {
-                scrollTop(value) {
-                    return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
-                },
-                getBoundingClientRect() {
-                    return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-                },
+                scrollTop(value) { return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y; },
+                getBoundingClientRect() { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; },
                 pinType: scrollContainer.style.transform ? "transform" : "fixed"
             });
 
-            // --- 3. آلية تحميل الصفحة والأنيميشن الأولي ---
+            // --- Page Load and Animations ---
             const initPage = () => {
                 loader.classList.add('hidden');
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
@@ -713,7 +1124,8 @@
                     .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
                 initScrollAnimations();
                 initPremiumServicesAnimations();
-                initBoidsSimulation(); // ✅ تشغيل محاكاة Boids
+                initBoidsSimulation(); // Boids for the Footer
+                initThreeJs(); // Three.js for the Hero
                 scroll.update();
                 ScrollTrigger.refresh();
             };
@@ -721,12 +1133,7 @@
             window.addEventListener('load', initPage);
             setTimeout(() => { if (!loader.classList.contains('hidden')) initPage(); }, 7000);
 
-            // تم تعطيل هذه الكتل لأننا استبدلنا Spline بالـ Boids
-            // if (splineViewer) {
-            //     splineViewer.url = "https://prod.spline.design/AV2e0-V3-p75A2iJ/scene.splinecode";
-            // }
-
-            // --- 4. الأنيميشن عند السكرول (للأقسام القديمة) ---
+            // --- Scroll Animations ---
             const initScrollAnimations = () => {
                 document.querySelectorAll('.section-title').forEach(title => {
                     gsap.from(title, { scrollTrigger: { trigger: title, scroller: scrollContainer, start: 'top 85%', toggleActions: 'play none none none' }, opacity: 0, y: 50, duration: 0.8, ease: 'power2.out' });
@@ -739,17 +1146,14 @@
                 gsap.from('.footer-content > *', { scrollTrigger: { trigger: '.footer', scroller: scrollContainer, start: 'top 95%', toggleActions: 'play none none none' }, opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
             };
 
-            // --- 5. وظائف التحكم (القائمة، الثيم، اللغة، الفورم) ---
+            // --- Utility Functions ---
             if (footerYear) footerYear.textContent = new Date().getFullYear();
-
             scroll.on('scroll', (instance) => {
                 header.classList.toggle('scrolled', instance.scroll.y > 50);
                 backToTopBtn.classList.toggle('show', instance.scroll.y > window.innerHeight);
             });
-
             const toggleMobileMenu = () => { navbar.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', navbar.classList.contains('open')); };
             const closeMobileMenu = () => { navbar.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); };
-
             let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             const applyTheme = (theme) => {
                 document.documentElement.setAttribute('data-theme', theme);
@@ -759,25 +1163,118 @@
             };
             const toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
+            // --- Translations (Expanded with FR/ES and Toggle labels) ---
             const translations = {
-                en: {logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,},
-                ar: {logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,},
-                tr: {logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel", service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", process_3_title: "3D Gör görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,}
+                en: {
+                    logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", 
+                    service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", 
+                    service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", 
+                    service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", 
+                    service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", 
+                    service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", 
+                    service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", 
+                    service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", 
+                    service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", 
+                    process_title: "Our Methodology", 
+                    process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", 
+                    process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", 
+                    process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", 
+                    process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", 
+                    portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`,
+                    toggle_neon: "Toggle Neon Glow (Electric)", toggle_hvac: "Toggle Piping/HVAC Systems", hero_instructions: "Use your mouse/touch to orbit and explore the scene.",
+                },
+                ar: {
+                    logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", 
+                    service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", 
+                    service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", 
+                    service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", 
+                    service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", 
+                    service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", 
+                    service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", 
+                    service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", 
+                    service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", 
+                    process_title: "منهجيتنا", 
+                    process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", 
+                    process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", 
+                    process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", 
+                    process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", 
+                    portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`,
+                    toggle_neon: "تبديل توهج النيون (كهرباء)", toggle_hvac: "تبديل أنظمة الأنابيب/التكييف", hero_instructions: "استخدم الماوس/اللمس للدوران واستكشاف المشهد.",
+                },
+                tr: {
+                    logo: "Müh. Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Yorumlar", nav_contact: "İletişim", hero_title: "Usta Tasarımlar, Titizlikle Hazırlanmış.", hero_subtitle: "Kişiye özel mimari ve iç mekan çözümlerinde uzmanız, vizyonunuzu hiper-gerçekçi 3D görselleştirme ve eşsiz detaylara gösterilen özenle zamansız bir gerçeğe dönüştürüyoruz.", hero_cta_drive: "Google Drive'da Daha Fazlasını Görüntüle", hero_cta_portfolio: "Portfolyomuzu Görün", services_title: "Temel", 
+                    service_1_title: "Mimari ve İç Tasarım", service_1_desc: "Benzersiz kimliğinizi yansıtan fonksiyonel ve estetik mekanlar yaratıyoruz.", 
+                    service_2_title: "3D Görselleştirme ve Render", service_2_desc: "Hiper-gerçekçi 3D modeller ve interaktif renderlarla konseptleri hayata geçiriyoruz.", 
+                    service_3_title: "Akıllı Aydınlatma ve Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlıyoruz.", 
+                    service_4_title: "Ticari ve Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", 
+                    service_5_title: "Proje Yönetimi ve B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlıyoruz.", 
+                    service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler yaratmak için en son teknolojiyi entegre ediyoruz.", 
+                    service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", 
+                    service_8_title: "Aydınlatma ve Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", 
+                    process_title: "Metodolojimiz", 
+                    process_1_title: "Danışmanlık ve Bilgilendirme", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama.", 
+                    process_2_title: "Konsept ve Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme.", 
+                    process_3_title: "3D Görselleştirme", process_3_desc: "İnceleme ve iyileştirme için gerçekçi 3D modeller oluşturma.", 
+                    process_4_title: "Uygulama ve Teslimat", process_4_desc: "Kaliteyi ve zamanında tamamlanmayı sağlamak için projeyi yönetme.", 
+                    portfolio_title: "Portfolyomuz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay gözüyle mekanımızı dönüştürdü. 3D görselleştirmeler oyunun kurallarını değiştirdi.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu sorunsuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var veya danışmanlığa mı ihtiyacınız var? Size yardımcı olmak için buradayız.", custom_apps_text: "Sizin ve işletmeniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Müh. Antonio GITHOP. Tüm Hakları Saklıdır.`,
+                    toggle_neon: "Neon Parıltısını Aç/Kapa (Elektrik)", toggle_hvac: "Tesisat/HVAC Sistemlerini Aç/Kapa", hero_instructions: "Sahneyi döndürmek ve keşfetmek için farenizi/dokunmatiği kullanın.",
+                },
+                fr: {
+                    logo: "Ing. Antonio GITHOP", nav_services: "Services", nav_process: "Processus", nav_portfolio: "Portfolio", nav_testimonials: "Témoignages", nav_contact: "Contact", hero_title: "Designs magistraux, méticuleusement conçus.", hero_subtitle: "Nous sommes spécialisés dans les solutions architecturales et intérieures sur mesure, transformant votre vision en une réalité intemporelle avec une visualisation 3D hyper-réaliste et une attention aux détails inégalée.", hero_cta_drive: "Voir plus sur Google Drive", hero_cta_portfolio: "Voir notre Portfolio", services_title: "Expertise", 
+                    service_1_title: "Conception Architecturale & Intérieure", service_1_desc: "Création d'espaces fonctionnels et esthétiques qui reflètent votre identité unique.", 
+                    service_2_title: "Visualisation & Rendu 3D", service_2_desc: "Donner vie aux concepts avec des modèles 3D hyper-réalistes et des rendus interactifs.", 
+                    service_3_title: "Éclairage Intelligent & Électricité", service_3_desc: "Conception de plans d'éclairage et électriques intelligents et efficaces pour la vie moderne.", 
+                    service_4_title: "Planification Commerciale & Résidentielle", service_4_desc: "Planification experte pour les espaces commerciaux et résidentiels afin de maximiser l'utilité.", 
+                    service_5_title: "Gestion de Projet & B2B", service_5_desc: "Fourniture de conseils stratégiques B2B et de gestion de projet de bout en bout.", 
+                    service_6_title: "Solutions de Maison Intelligente", service_6_desc: "Intégration de technologies de pointe pour créer des maisons intelligentes et sécurisées.", 
+                    service_7_title: "Consultant en Création d'Entreprise", service_7_desc: "Conseils d'experts pour les nouvelles entreprises et les expansions commerciales.", 
+                    service_8_title: "Planificateur Électrique et d'Éclairage", service_8_desc: "Planification efficace et conforme du système électrique et de l'éclairage.", 
+                    process_title: "Notre Méthodologie", 
+                    process_1_title: "Consultation & Briefing", process_1_desc: "Comprendre votre vision, vos exigences et vos objectifs.", 
+                    process_2_title: "Concept & Design", process_2_desc: "Développement des concepts initiaux, des croquis et de la planification spatiale.", 
+                    process_3_title: "Visualisation 3D", process_3_desc: "Création de modèles 3D réalistes pour révision et affinement.", 
+                    process_4_title: "Exécution & Livraison", process_4_desc: "Gestion du projet pour assurer la qualité et l'achèvement dans les délais.", 
+                    portfolio_title: "Notre Portfolio", testimonials_title: "Ce que disent nos clients", testimonial_1_text: "\"L'équipe d'Antonio a transformé notre espace avec un œil incroyable pour le détail. Les visualisations 3D ont changé la donne.\"", testimonial_1_author: "- PDG, Tech Innovators Inc.", testimonial_2_text: "\"L'intégration de la maison intelligente a été transparente et a fondamentalement changé notre façon de vivre notre maison. Vraiment professionnel.\"", testimonial_2_author: "- J. Anderson, Résidence Privée", contact_title: "Construisons Ensemble", contact_info_title: "Prenez Contact", contact_info_desc: "Vous avez un projet en tête ou besoin d'une consultation? Nous sommes là pour vous aider.", custom_apps_text: "Nous pouvons créer un site web pour vous et votre entreprise.", contact_form_name: "Votre Nom", contact_form_email: "Votre E-mail", contact_form_message: "Votre Message", contact_form_submit: "Envoyer le Message", footer_text: `© ${new Date().getFullYear()} Ing. Antonio GITHOP. Tous droits réservés.`,
+                    toggle_neon: "Activer/Désactiver l'effet Néon (Électrique)", toggle_hvac: "Activer/Désactiver les Systèmes de Tuyauterie/CVAC", hero_instructions: "Utilisez votre souris/tactile pour orbiter et explorer la scène.",
+                },
+                es: {
+                    logo: "Ing. Antonio GITHOP", nav_services: "Servicios", nav_process: "Proceso", nav_portfolio: "Portafolio", nav_testimonials: "Testimonios", nav_contact: "Contacto", hero_title: "Diseños magistrales, elaborados meticulosamente.", hero_subtitle: "Nos especializamos en soluciones arquitectónicas y de interiores a medida, transformando su visión en una realidad atemporal con visualización 3D hiperrealista y una atención al detalle inigualable.", hero_cta_drive: "Ver más en Google Drive", hero_cta_portfolio: "Ver Nuestro Portafolio", services_title: "Experiencia", 
+                    service_1_title: "Diseño Arquitectónico y de Interiores", service_1_desc: "Creando espacios funcionales y estéticos que reflejan su identidad única.", 
+                    service_2_title: "Visualización y Renderizado 3D", service_2_desc: "Dando vida a los conceptos con modelos 3D hiperrealistas y renderizados interactivos.", 
+                    service_3_title: "Iluminación Inteligente y Eléctrica", service_3_desc: "Diseñando planos de iluminación y eléctricos inteligentes y eficientes para la vida moderna.", 
+                    service_4_title: "Planificación Comercial y Residencial", service_4_desc: "Planificación experta para espacios tanto comerciales como residenciales para maximizar la utilidad.", 
+                    service_5_title: "Gestión de Proyectos y B2B", service_5_desc: "Ofreciendo consultoría estratégica B2B y gestión de proyectos de principio a fin.", 
+                    service_6_title: "Soluciones de Hogar Inteligente", service_6_desc: "Integrando tecnología de vanguardia para crear hogares inteligentes y seguros.", 
+                    service_7_title: "Consultor de Creación de Empresas", service_7_desc: "Asesoramiento experto para nuevas empresas y expansiones de negocios.", 
+                    service_8_title: "Planificador Eléctrico y de Iluminación", service_8_desc: "Planificación eficiente y conforme del sistema eléctrico y de iluminación.", 
+                    process_title: "Nuestra Metodología", 
+                    process_1_title: "Consulta y Briefing", process_1_desc: "Comprender su visión, requisitos y objetivos.", 
+                    process_2_title: "Concepto y Diseño", process_2_desc: "Desarrollo de conceptos iniciales, bocetos y planificación de espacios.", 
+                    process_3_title: "Visualización 3D", process_3_desc: "Creación de modelos 3D realistas para revisión y refinamiento.", 
+                    process_4_title: "Ejecución y Entrega", process_4_desc: "Gestión del proyecto para garantizar la calidad y la finalización a tiempo.", 
+                    portfolio_title: "Nuestro Portafolio", testimonials_title: "Lo que dicen nuestros clientes", testimonial_1_text: "\"El equipo de Antonio transformó nuestro espacio con una increíble atención al detalle. Las visualizaciones 3D cambiaron las reglas del juego.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"La integración del hogar inteligente fue perfecta y ha cambiado fundamentalmente la forma en que experimentamos nuestro hogar. Verdaderamente profesional.\"", testimonial_2_author: "- J. Anderson, Residencia Privada", contact_title: "Construyamos Juntos", contact_info_title: "Póngase en Contacto", contact_info_desc: "¿Tiene un proyecto en mente o necesita una consulta? Estamos aquí para ayudarle.", custom_apps_text: "Podemos crear un sitio web para usted y su negocio.", contact_form_name: "Su Nombre", contact_form_email: "Su Correo Electrónico", contact_form_message: "Su Mensaje", contact_form_submit: "Enviar Mensaje", footer_text: `© ${new Date().getFullYear()} Ing. Antonio GITHOP. Todos los derechos reservados.`,
+                    toggle_neon: "Activar/Desactivar Resplandor de Neón (Eléctrico)", toggle_hvac: "Activar/Desactivar Sistemas de Tuberías/HVAC", hero_instructions: "Utilice su ratón/táctil para orbitar y explorar la escena.",
+                },
             };
             const applyLanguage = (lang) => {
                 const langData = translations[lang];
-                document.documentElement.lang = lang; 
+                document.documentElement.lang = lang;  
                 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.body.classList.toggle('is-rtl', lang === 'ar'); 
-                document.querySelectorAll('[data-lang-key]').forEach(el => { 
-                    const key = el.getAttribute('data-lang-key'); 
-                    if (langData[key]) el.textContent = langData[key]; 
+                document.body.classList.toggle('is-rtl', lang === 'ar');  
+                
+                // Update text content
+                document.querySelectorAll('[data-lang-key]').forEach(el => {  
+                    const key = el.getAttribute('data-lang-key');  
+                    if (langData[key]) el.textContent = langData[key];  
                 });
-                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { 
-                    const key = el.getAttribute('data-lang-placeholder'); 
-                    if (langData[key]) el.placeholder = langData[key]; 
+                
+                // Update placeholders
+                document.querySelectorAll('[data-lang-placeholder]').forEach(el => {  
+                    const key = el.getAttribute('data-lang-placeholder');  
+                    if (langData[key]) el.placeholder = langData[key];  
                 });
-                currentLangSpan.textContent = lang.toUpperCase(); 
+                
+                currentLangSpan.textContent = lang.toUpperCase();  
                 localStorage.setItem('language', lang);
                 scroll.update();
             };
@@ -786,7 +1283,7 @@
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
-                if (formData.get('website')) return; // Honeypot
+                if (formData.get('website')) return;
                 const object = { access_key: "YOUR_ACCESS_KEY_HERE", ...Object.fromEntries(formData) };
                 const json = JSON.stringify(object);
                 formStatus.textContent = "Sending...";
@@ -807,18 +1304,14 @@
                 }
             };
 
-            // --- 6. وظائف وتأثيرات المؤشر (Cursor) ---
+            // --- Cursor and Hover Effects ---
             const setupCursor = () => {
                 if (window.matchMedia('(pointer: coarse)').matches) return;
                 const cursor = document.querySelector('.cursor');
                 const follower = document.querySelector('.cursor-follower');
                 document.querySelectorAll('a, button, .service-card-premium, .portfolio-item').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        gsap.to(follower, { duration: 0.3, scale: 1.5, backgroundColor: 'rgba(205, 164, 94, 0.2)' });
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        gsap.to(follower, { duration: 0.3, scale: 1, backgroundColor: 'transparent' });
-                    });
+                    el.addEventListener('mouseenter', () => { gsap.to(follower, { duration: 0.3, scale: 1.5, backgroundColor: 'rgba(205, 164, 94, 0.2)' }); });
+                    el.addEventListener('mouseleave', () => { gsap.to(follower, { duration: 0.3, scale: 1, backgroundColor: 'transparent' }); });
                 });
                 window.addEventListener('mousemove', e => {
                     gsap.to(cursor, { duration: 0.2, x: e.clientX, y: e.clientY });
@@ -826,7 +1319,7 @@
                 });
             };
             
-            // --- 7. الأنيميشن الخاص بقسم الخدمات المطور ---
+            // --- Service Card Animations ---
             const initPremiumServicesAnimations = () => {
                 const servicesSection = document.querySelector('.services-section-premium');
                 if (!servicesSection) return;
@@ -851,7 +1344,7 @@
                 if (window.matchMedia('(min-width: 769px)').matches) {
                     gsap.to(".service-card-premium", { y: (i) => (i % 2 === 0 ? -4 : 4), duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: { amount: 0.5, from: "random" } });
                 }
-
+                // Icon animations for premium services
                 const icons = {
                     arch: document.querySelector('#icon-arch svg'), '3d': document.querySelector('#icon-3d svg'), light: document.querySelector('#icon-light svg'), plan: document.querySelector('#icon-plan svg'),
                     manage: document.querySelector('#icon-manage svg'), smart: document.querySelector('#icon-smart svg'), business: document.querySelector('#icon-business svg'), electric: document.querySelector('#icon-electric svg'),
@@ -874,7 +1367,7 @@
                 if(icons.electric) { const anim = gsap.to(icons.electric, { filter: 'drop-shadow(0 0 8px #d4af37)', repeat: -1, yoyo: true, duration: 0.7, ease: 'power1.inOut' }).pause(); icons.electric.closest('.service-card-premium').addEventListener('mouseenter', () => anim.play()); icons.electric.closest('.service-card-premium').addEventListener('mouseleave', () => { anim.pause(); gsap.to(icons.electric, { filter: 'none', duration: 0.3 }); }); }
             };
 
-            // --- 8. ربط الأحداث وتشغيل الوظائف الأولية ---
+            // --- Event Listeners and Initial Setup ---
             if (menuToggle) menuToggle.addEventListener('click', toggleMobileMenu);
             if (navbar) navbar.addEventListener('click', (e) => { if (e.target.matches('.nav-link')) closeMobileMenu(); });
             if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
@@ -903,44 +1396,28 @@
             setupCursor();
             
             // ==========================================
-            // --- 9. Boids Flocking Simulation (الطيور الذكية) ---
+            // --- 3. Boids Flocking Simulation (Footer) ---
             // ==========================================
 
             function initBoidsSimulation() {
-                // ثوابت التحكم في السلوك
-                const NUM_BOIDS = 100; // عدد الطيور
-                const MAX_SPEED = 2; // أقصى سرعة
-                const MAX_FORCE = 0.05; // أقصى قوة دفع
-                const PERCEPTION_RADIUS = 75; // مدى رؤية الطائر للطيور الأخرى
-                const SEPARATION_WEIGHT = 1.5; // وزن التباعد
-                const ALIGNMENT_WEIGHT = 1.0; // وزن المحاذاة
-                const COHESION_WEIGHT = 1.0; // وزن التماسك
+                const NUM_BOIDS = 40; // Reduced for performance
+                const MAX_SPEED = 1.5;
+                const MAX_FORCE = 0.04;
+                const PERCEPTION_RADIUS = 60;
+                const SEPARATION_WEIGHT = 1.8;
+                const ALIGNMENT_WEIGHT = 1.0;
+                const COHESION_WEIGHT = 0.8;
 
                 class Vector {
-                    constructor(x, y) {
-                        this.x = x || 0;
-                        this.y = y || 0;
-                    }
-
+                    constructor(x, y) { this.x = x || 0; this.y = y || 0; }
                     add(v) { this.x += v.x; this.y += v.y; return this; }
                     sub(v) { this.x -= v.x; this.y -= v.y; return this; }
                     mult(n) { this.x *= n; this.y *= n; return this; }
                     div(n) { this.x /= n; this.y /= n; return this; }
                     mag() { return Math.sqrt(this.x * this.x + this.y * this.y); }
-                    setMag(n) { 
-                        const m = this.mag();
-                        if (m > 0) this.div(m).mult(n);
-                        return this;
-                    }
-                    normalize() {
-                        const m = this.mag();
-                        if (m > 0) this.div(m);
-                        return this;
-                    }
-                    limit(max) {
-                        if (this.mag() > max) this.setMag(max);
-                        return this;
-                    }
+                    setMag(n) { const m = this.mag(); if (m > 0) this.div(m).mult(n); return this; }
+                    normalize() { const m = this.mag(); if (m > 0) this.div(m); return this; }
+                    limit(max) { if (this.mag() > max) this.setMag(max); return this; }
                     heading() { return Math.atan2(this.y, this.x); }
                     static sub(v1, v2) { return new Vector(v1.x - v2.x, v1.y - v2.y); }
                     static random2D() { return new Vector(Math.random() * 2 - 1, Math.random() * 2 - 1).normalize(); }
@@ -970,68 +1447,53 @@
                     }
 
                     separate(boids) {
-                        let steering = new Vector();
-                        let count = 0;
+                        let steering = new Vector(); let count = 0;
                         for (let other of boids) {
                             let d = Vector.sub(this.position, other.position).mag();
                             if (other !== this && d < PERCEPTION_RADIUS) {
                                 let diff = Vector.sub(this.position, other.position);
-                                diff.div(d);
-                                steering.add(diff);
-                                count++;
+                                diff.div(d); steering.add(diff); count++;
                             }
                         }
                         if (count > 0) {
-                            steering.div(count);
-                            steering.setMag(MAX_SPEED);
-                            steering.sub(this.velocity);
-                            steering.limit(MAX_FORCE);
+                            steering.div(count); steering.setMag(MAX_SPEED); steering.sub(this.velocity); steering.limit(MAX_FORCE);
                         }
                         return steering;
                     }
 
                     align(boids) {
-                        let avgVelocity = new Vector();
-                        let count = 0;
+                        let avgVelocity = new Vector(); let count = 0;
                         for (let other of boids) {
                             let d = Vector.sub(this.position, other.position).mag();
                             if (other !== this && d < PERCEPTION_RADIUS) {
-                                avgVelocity.add(other.velocity);
-                                count++;
+                                avgVelocity.add(other.velocity); count++;
                             }
                         }
                         if (count > 0) {
-                            avgVelocity.div(count);
-                            avgVelocity.setMag(MAX_SPEED);
-                            let steer = Vector.sub(avgVelocity, this.velocity);
-                            steer.limit(MAX_FORCE);
+                            avgVelocity.div(count); avgVelocity.setMag(MAX_SPEED);
+                            let steer = Vector.sub(avgVelocity, this.velocity); steer.limit(MAX_FORCE);
                             return steer;
                         }
                         return new Vector();
                     }
 
                     cohesion(boids) {
-                        let centerOfMass = new Vector();
-                        let count = 0;
+                        let centerOfMass = new Vector(); let count = 0;
                         for (let other of boids) {
                             let d = Vector.sub(this.position, other.position).mag();
-                            if (other !== this && d < PERCEPTION_RADIUS) {
-                                centerOfMass.add(other.position);
-                                count++;
-                            }
+                            if (other !== this && d < PERCEPTION_RADIUS) { centerOfMass.add(other.position); count++; }
                         }
-                        if (count > 0) {
-                            centerOfMass.div(count);
-                            return this.seek(centerOfMass);
-                        }
+                        if (count > 0) { centerOfMass.div(count); return this.seek(centerOfMass); }
                         return new Vector();
                     }
 
                     edges() {
-                        if (this.position.x > window.innerWidth) this.position.x = 0;
-                        else if (this.position.x < 0) this.position.x = window.innerWidth;
-                        if (this.position.y > window.innerHeight) this.position.y = 0;
-                        else if (this.position.y < 0) this.position.y = window.innerHeight;
+                        const w = this.element.parentElement.clientWidth;
+                        const h = this.element.parentElement.clientHeight;
+                        if (this.position.x > w) this.position.x = 0;
+                        else if (this.position.x < 0) this.position.x = w;
+                        if (this.position.y > h) this.position.y = 0;
+                        else if (this.position.y < 0) this.position.y = h;
                     }
 
                     update() {
@@ -1050,37 +1512,31 @@
                 }
 
                 const boids = [];
-                const container = document.getElementById('boids-container');
-
+                const container = document.getElementById('boids-container-footer');
                 if (container) {
-                    // تهيئة الطيور
                     for (let i = 0; i < NUM_BOIDS; i++) {
                         const el = document.createElement('div');
                         el.className = 'boid';
                         container.appendChild(el);
-                        // تبدأ الطيور من موقع عشوائي على الشاشة
-                        let x = Math.random() * window.innerWidth;
-                        let y = Math.random() * window.innerHeight;
+                        let x = Math.random() * container.clientWidth;
+                        let y = Math.random() * container.clientHeight;
                         boids.push(new Boid(x, y, el));
                     }
 
-                    // حلقة التحريك الرئيسية
-                    function animate() {
+                    function animateBoids() {
                         for (let boid of boids) {
                             boid.flock(boids);
-                            boid.edges();
+                            boid.edges()
                             boid.update();
                             boid.show();
                         }
-                        requestAnimationFrame(animate);
+                        requestAnimationFrame(animateBoids);
                     }
-
-                    animate();
+                    animateBoids();
                 }
             }
         });
     </script>
-    
     <script>
     (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="cEKyhomDE8jOET-s6DEK2";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
     </script>
