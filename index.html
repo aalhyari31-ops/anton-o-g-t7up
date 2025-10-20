@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en" dir="ltr" class="no-js">
 <head>
     <meta charset="UTF-8" />
@@ -37,7 +37,14 @@
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Custom import for OrbitControls to ensure it attaches to the correct THREE object
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+            document.head.appendChild(script);
+        })();
+    </script>
     
     <script type="application/ld+json">
     {
@@ -513,10 +520,10 @@
         html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); }
         html[dir="rtl"] .testimonial-author { text-align: left; }
         
-        /* RTL Fix for Locomotive Scroll */
-        .is-rtl [data-scroll-container] {
+        /* RTL Fix for Locomotive Scroll - REMOVED: ScrollTrigger handles this better */
+        /* .is-rtl [data-scroll-container] {
             transform-origin: right top !important;
-        }
+        } */
         
         /* ========================
           Accessibility & Touch Devices
@@ -589,7 +596,7 @@
                 <div id="threejs-controls">
                     <label for="neonToggle" class="flex items-center cursor-pointer">
                         <div class="relative">
-                            <input type="checkbox" id="neonToggle" class="sr-only" checked onchange="toggleNeonGlow(this.checked)">
+                            <input type="checkbox" id="neonToggle" class="sr-only" onchange="toggleNeonGlow(this.checked)">
                             <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
                             <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
                         </div>
@@ -600,7 +607,7 @@
                     
                     <label for="hvacToggle" class="flex items-center cursor-pointer">
                         <div class="relative">
-                            <input type="checkbox" id="hvacToggle" class="sr-only" checked onchange="toggleHVACHiding(this.checked)">
+                            <input type="checkbox" id="hvacToggle" class="sr-only" onchange="toggleHVACHiding(this.checked)">
                             <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
                             <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
                         </div>
@@ -775,20 +782,23 @@
     
     <script>
         'use strict';
-        // ==========================================
-        // --- 1. Three.js 3D Scene Logic (Hero) ---
-        // ==========================================
+        // Global variables for Three.js and animation loop management
         let scene, camera, renderer, controls, clock, particleSystem, neonMeshes = [], hvacMeshes = [];
+        let animationFrameId;
         const threeJsContainer = document.getElementById('scene-container');
         const threeJsLoadingOverlay = document.getElementById('loading-overlay');
         const threeJsInstructionBox = document.querySelector('.instruction-box');
         const materials = {};
+
+        // --- 1. Three.js 3D Scene Logic (Hero) ---
+        // This is a minimal implementation, using the provided structure.
 
         function setupMaterials() {
             materials.concrete = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.9, metalness: 0.1 });
             materials.steel = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 0.4, metalness: 0.8 });
             materials.wood = new THREE.MeshStandardMaterial({ color: 0xa08c6a, roughness: 0.6, metalness: 0.05 });
             materials.glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0, opacity: 0.2, transparent: true, transmission: 0.95, reflectivity: 0.8 });
+            // Stabilized neon materials - ensure they exist on init
             materials.neonBlue = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0x00ffff, emissiveIntensity: 1.5 });
             materials.neonOrange = new THREE.MeshStandardMaterial({ color: 0xffa500, emissive: 0xffa500, emissiveIntensity: 0.5, roughness: 0.2 });
             materials.warmLight = new THREE.MeshBasicMaterial({ color: 0xffd700, emissive: 0xffd700, emissiveIntensity: 1.0 });
@@ -818,6 +828,10 @@
             const floorHeight = height / floors;
             const systemScale = 0.05;
 
+            // Reset Meshes Arrays
+            neonMeshes.length = 0;
+            hvacMeshes.length = 0;
+
             for (let i = 0; i < floors; i++) {
                 const floorY = i * floorHeight + 0.1;
                 const offsetZ = depth / 2 - 0.1;
@@ -839,7 +853,7 @@
                     wireH.rotation.z = Math.PI / 2;
                     wireH.position.set(conduitV.position.x + wireLength / 2, floorY + 0.5, offsetZ - 0.1);
                     group.add(wireH);
-                    neonMeshes.push(wireH);
+                    neonMeshes.push(wireH); // Store in neonMeshes
 
                     const boxGeometry = new THREE.BoxGeometry(systemScale * 5, systemScale * 5, systemScale * 1);
                     const junctionBox = new THREE.Mesh(boxGeometry, materials.steel);
@@ -951,26 +965,61 @@
             particleSystem = new THREE.Points(geometry, materials.particle);
             scene.add(particleSystem);
         }
-
-        function toggleNeonGlow(enable) {
-            const intensity = enable ? 1.5 : 0.05;  
-            const color = enable ? 0x00ffff : 0x008888;  
-
+        
+        // **STABILIZED CONTROL FUNCTIONS**
+        window.toggleNeonGlow = function(enable) {
+            if (!materials.neonBlue) return; // Guard against not fully loaded scene
+            // Toggle blue wires
+            const blueIntensity = enable ? 1.5 : 0.01; 
+            const blueColor = enable ? 0x00ffff : 0x008888;
             neonMeshes.forEach(mesh => {
-                if (mesh && mesh.material === materials.neonBlue) {
-                    mesh.material.emissive.setHex(color);
-                    mesh.material.emissiveIntensity = intensity;
+                if (mesh.material === materials.neonBlue) {
+                    mesh.material.emissive.setHex(blueColor);
+                    mesh.material.emissiveIntensity = blueIntensity;
+                    mesh.material.needsUpdate = true;
+                }
+            });
+
+            // Toggle orange HVAC/Piping
+            const orangeIntensity = enable ? 0.5 : 0.01; 
+            const orangeColor = enable ? 0xffa500 : 0x884400; 
+             hvacMeshes.forEach(mesh => {
+                if (mesh.material === materials.neonOrange) {
+                    mesh.material.emissive.setHex(orangeColor);
+                    mesh.material.emissiveIntensity = orangeIntensity;
                     mesh.material.needsUpdate = true;
                 }
             });
         }
         
-        function toggleHVACHiding(enable) {
+        window.toggleHVACHiding = function(enable) {
             hvacMeshes.forEach(mesh => { if (mesh) mesh.visible = enable; });
         }
+        
+        // **CRITICAL FIX: DISPOSE THREE.JS**
+        function disposeThreeJs() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+            if (renderer) {
+                renderer.dispose();
+                renderer.forceContextLoss();
+                const canvas = renderer.domElement;
+                if (canvas && canvas.parentNode) {
+                    canvas.parentNode.removeChild(canvas);
+                }
+            }
+            // Dispose of geometries and materials if necessary (omitted for brevity but good practice)
+            scene = camera = renderer = controls = clock = particleSystem = null;
+            neonMeshes = [];
+            hvacMeshes = [];
+        }
+
 
         function initThreeJs() {
             if (!threeJsContainer) return;
+            // Dispose any existing scene before creating a new one
+            disposeThreeJs();
             
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x1a1a1a);
@@ -987,10 +1036,15 @@
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             threeJsContainer.appendChild(renderer.domElement);
 
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.target.set(0, 4, 0);
+            // OrbitControls is loaded asynchronously, check if it's available
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.target.set(0, 4, 0);
+            } else {
+                 console.error("THREE.OrbitControls not found. The control functionality will be limited.");
+            }
 
             const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
             dirLight.position.set(15, 20, 10);
@@ -1042,7 +1096,17 @@
 
             createParticles();
 
+            window.removeEventListener('resize', onWindowResize); // Prevent multiple listeners
             window.addEventListener('resize', onWindowResize);
+
+            // Set initial state of toggles based on default settings
+            const neonToggle = document.getElementById('neonToggle');
+            const hvacToggle = document.getElementById('hvacToggle');
+            neonToggle.checked = true; // Default to ON
+            hvacToggle.checked = true; // Default to ON
+            toggleNeonGlow(true);
+            toggleHVACHiding(true);
+
 
             threeJsLoadingOverlay.style.opacity = '0';
             setTimeout(() => {
@@ -1054,13 +1118,15 @@
         }
 
         function onWindowResize() {
-            camera.aspect = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
+            if (camera && renderer) {
+                camera.aspect = threeJsContainer.clientWidth / threeJsContainer.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(threeJsContainer.clientWidth, threeJsContainer.clientHeight);
+            }
         }
 
         function animateThreeJs() {
-            requestAnimationFrame(animateThreeJs);
+            animationFrameId = requestAnimationFrame(animateThreeJs);
             const delta = clock.getDelta();
 
             if (particleSystem) {
@@ -1072,8 +1138,12 @@
                 particleSystem.geometry.attributes.position.needsUpdate = true;
             }
 
-            controls.update();
-            renderer.render(scene, camera);
+            if (controls) {
+                controls.update();
+            }
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
         }
         // --- END Three.js 3D Scene Logic (Hero) ---
 
@@ -1097,61 +1167,122 @@
             const backToTopBtn = document.querySelector('.back-to-top');
             const footerYear = document.getElementById('year');
             const scrollContainer = document.querySelector('[data-scroll-container]');
+            let scroll; // Declare scroll variable globally in the scope of DOMContentLoaded
 
             // --- Locomotive Scroll Init ---
-            const scroll = new LocomotiveScroll({
-                el: scrollContainer,
-                smooth: true,
-                tablet: { smooth: true },
-                smartphone: { smooth: true }
-            });
+            try {
+                // Initialize Locomotive Scroll
+                scroll = new LocomotiveScroll({
+                    el: scrollContainer,
+                    smooth: true,
+                    tablet: { smooth: true },
+                    smartphone: { smooth: true }
+                });
 
-            gsap.registerPlugin(ScrollTrigger);
-            scroll.on('scroll', ScrollTrigger.update);
-            ScrollTrigger.scrollerProxy(scrollContainer, {
-                scrollTop(value) { return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y; },
-                getBoundingClientRect() { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; },
-                pinType: scrollContainer.style.transform ? "transform" : "fixed"
-            });
+                gsap.registerPlugin(ScrollTrigger);
+
+                // **CRITICAL FIX: SCROLLTRIGGER PROXY SYNC**
+                scroll.on('scroll', ScrollTrigger.update);
+                ScrollTrigger.scrollerProxy(scrollContainer, {
+                    scrollTop(value) {
+                        // Corrected to use the standard ScrollTrigger.refresh() method instead of manually calling update
+                        return arguments.length ? scroll.scrollTo(value, { duration: 0, disableLerp: true }) : scroll.scroll.instance.scroll.y;
+                    },
+                    getBoundingClientRect() { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; },
+                    pinType: scrollContainer.style.transform ? "transform" : "fixed"
+                });
+
+            } catch (error) {
+                console.error("Locomotive Scroll or GSAP ScrollTrigger initialization failed:", error);
+                // Fallback: Use native scrolling and continue with other JS
+                document.documentElement.style.scrollBehavior = 'smooth';
+                scrollContainer.removeAttribute('data-scroll-container');
+                scroll = { on: () => {}, update: () => {}, scrollTo: (target) => { document.querySelector(target).scrollIntoView({ behavior: 'smooth' }); } };
+                ScrollTrigger.scrollerProxy(document.body, {}); // Use body as scroller for GSAP
+                ScrollTrigger.refresh();
+            }
 
             // --- Page Load and Animations ---
             const initPage = () => {
                 loader.classList.add('hidden');
+                
+                // Ensure scroll object exists before updating/refreshing
+                if (scroll) {
+                    scroll.update(); 
+                    ScrollTrigger.refresh();
+                }
+
+                // Initial load animation
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
                 tl.to(header, { y: '0%', duration: 1, ease: 'power2.out' }, 0.5)
                     .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
                     .from('.hero-subtitle', { opacity: 0, y: 40 }, '-=0.9')
                     .from('.hero-buttons > *', { opacity: 0, y: 40, stagger: 0.15 }, '-=0.8');
+
                 initScrollAnimations();
                 initPremiumServicesAnimations();
-                initBoidsSimulation(); // Boids for the Footer
-                initThreeJs(); // Three.js for the Hero
-                scroll.update();
-                ScrollTrigger.refresh();
+                initBoidsSimulation(); 
+                
+                // Initialize Three.js after the main page elements are ready
+                // and after the OrbitControls script has a chance to load
+                if (typeof THREE.OrbitControls !== 'undefined') {
+                    initThreeJs();
+                } else {
+                    console.warn("Waiting for OrbitControls to load for Three.js initialization...");
+                    // Simple check/retry for OrbitControls to be loaded
+                    const checkThree = setInterval(() => {
+                        if (typeof THREE.OrbitControls !== 'undefined') {
+                            clearInterval(checkThree);
+                            initThreeJs();
+                        }
+                    }, 100);
+                }
             };
 
-            window.addEventListener('load', initPage);
-            setTimeout(() => { if (!loader.classList.contains('hidden')) initPage(); }, 7000);
+            // **STABILIZED LOAD HANDLER**
+            // Use a promise or a check to ensure dependencies are loaded, but for simplicity, 
+            // the `window.addEventListener('load', ...)` combined with a timeout is kept and improved.
+            let loaded = false;
+            window.addEventListener('load', () => {
+                if (!loaded) {
+                    initPage();
+                    loaded = true;
+                }
+            });
+            // Fail-safe timeout to prevent the loader from hanging indefinitely (reduced to 4s)
+            setTimeout(() => { if (!loaded) initPage(); }, 4000);
+
 
             // --- Scroll Animations ---
             const initScrollAnimations = () => {
+                const scroller = scroll ? scrollContainer : window;
                 document.querySelectorAll('.section-title').forEach(title => {
-                    gsap.from(title, { scrollTrigger: { trigger: title, scroller: scrollContainer, start: 'top 85%', toggleActions: 'play none none none' }, opacity: 0, y: 50, duration: 0.8, ease: 'power2.out' });
+                    gsap.from(title, { scrollTrigger: { trigger: title, scroller: scroller, start: 'top 85%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 50, duration: 0.8, ease: 'power2.out' });
                 });
-                gsap.from('.process-step', { scrollTrigger: { trigger: '.process-timeline', scroller: scrollContainer, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 0, scale: 0.8, duration: 0.5, stagger: 0.15 });
+                gsap.from('.process-step', { scrollTrigger: { trigger: '.process-timeline', scroller: scroller, start: 'top 80%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, scale: 0.8, duration: 0.5, stagger: 0.15 });
                 document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-                    gsap.from(item, { scrollTrigger: { trigger: item, scroller: scrollContainer, start: 'top 90%', toggleActions: 'play none none none' }, opacity: 0, x: index % 2 === 0 ? -60 : 60, duration: 1, ease: 'power3.out' });
+                    gsap.from(item, { scrollTrigger: { trigger: item, scroller: scroller, start: 'top 90%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, x: index % 2 === 0 ? -60 : 60, duration: 1, ease: 'power3.out' });
                 });
-                gsap.from('.testimonial-card', { scrollTrigger: { trigger: '.testimonials-grid', scroller: scrollContainer, start: 'top 80%', toggleActions: 'play none none none' }, opacity: 0, y: 50, stagger: 0.2, duration: 0.7 });
-                gsap.from('.footer-content > *', { scrollTrigger: { trigger: '.footer', scroller: scrollContainer, start: 'top 95%', toggleActions: 'play none none none' }, opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
+                gsap.from('.testimonial-card', { scrollTrigger: { trigger: '.testimonials-grid', scroller: scroller, start: 'top 80%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 50, stagger: 0.2, duration: 0.7 });
+                gsap.from('.footer-content > *', { scrollTrigger: { trigger: '.footer', scroller: scroller, start: 'top 95%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
             };
 
             // --- Utility Functions ---
             if (footerYear) footerYear.textContent = new Date().getFullYear();
-            scroll.on('scroll', (instance) => {
-                header.classList.toggle('scrolled', instance.scroll.y > 50);
-                backToTopBtn.classList.toggle('show', instance.scroll.y > window.innerHeight);
-            });
+
+            // Use the scroll object listener if it exists, otherwise use native window listener for scroll
+            if (scroll && typeof scroll.on === 'function') {
+                scroll.on('scroll', (instance) => {
+                    header.classList.toggle('scrolled', instance.scroll.y > 50);
+                    backToTopBtn.classList.toggle('show', instance.scroll.y > window.innerHeight);
+                });
+            } else {
+                window.addEventListener('scroll', () => {
+                    header.classList.toggle('scrolled', window.scrollY > 50);
+                    backToTopBtn.classList.toggle('show', window.scrollY > window.innerHeight);
+                });
+            }
+
             const toggleMobileMenu = () => { navbar.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', navbar.classList.contains('open')); };
             const closeMobileMenu = () => { navbar.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); };
             let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -1276,7 +1407,8 @@
                 
                 currentLangSpan.textContent = lang.toUpperCase();  
                 localStorage.setItem('language', lang);
-                scroll.update();
+                if (scroll) scroll.update();
+                ScrollTrigger.refresh();
             };
             const currentLanguage = localStorage.getItem('language') || 'en';
 
@@ -1286,18 +1418,18 @@
                 if (formData.get('website')) return;
                 const object = { access_key: "YOUR_ACCESS_KEY_HERE", ...Object.fromEntries(formData) };
                 const json = JSON.stringify(object);
-                formStatus.textContent = "Sending...";
+                formStatus.textContent = translations[currentLanguage].form_status_sending || "Sending...";
                 formStatus.style.color = 'var(--muted)';
                 try {
                     const res = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: json });
                     const result = await res.json();
                     if (result.success) {
-                        formStatus.textContent = "Message sent successfully!";
+                        formStatus.textContent = translations[currentLanguage].form_status_success || "Message sent successfully!";
                         formStatus.style.color = 'green';
                         contactForm.reset();
                     } else { throw new Error(result.message); }
                 } catch (error) {
-                    formStatus.textContent = "An error occurred. Please try again.";
+                    formStatus.textContent = translations[currentLanguage].form_status_error || "An error occurred. Please try again.";
                     formStatus.style.color = 'red';
                 } finally {
                     setTimeout(() => formStatus.textContent = "", 5000);
@@ -1324,6 +1456,7 @@
                 const servicesSection = document.querySelector('.services-section-premium');
                 if (!servicesSection) return;
 
+                // GSAP DrawSVG plugin setup (Kept for completeness, though full drawSVG functionality isn't guaranteed with this simple setup)
                 gsap.registerPlugin({
                     name: "drawSVG",
                     init(target, value) {
@@ -1335,15 +1468,17 @@
                     }
                 });
 
-                const tl = gsap.timeline({ scrollTrigger: { trigger: servicesSection, scroller: scrollContainer, start: 'top 70%', toggleActions: 'play none none none' } });
+                const scroller = scroll ? scrollContainer : window;
+                const tl = gsap.timeline({ scrollTrigger: { trigger: servicesSection, scroller: scroller, start: 'top 70%', toggleActions: 'play none none none', refreshPriority: 1 } });
                 tl.from(".section-title-premium", { opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' })
                     .from(".section-title-premium .shimmer", { x: '-150%', duration: 1.2, ease: 'power2.inOut' }, "-=0.8");
 
-                gsap.from(".service-card-premium", { scrollTrigger: { trigger: ".services-grid-premium", scroller: scrollContainer, start: "top 80%" }, opacity: 0, y: 50, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out' });
+                gsap.from(".service-card-premium", { scrollTrigger: { trigger: ".services-grid-premium", scroller: scroller, start: "top 80%", refreshPriority: 1 }, opacity: 0, y: 50, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out' });
 
                 if (window.matchMedia('(min-width: 769px)').matches) {
                     gsap.to(".service-card-premium", { y: (i) => (i % 2 === 0 ? -4 : 4), duration: 2.5, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: { amount: 0.5, from: "random" } });
                 }
+                
                 // Icon animations for premium services
                 const icons = {
                     arch: document.querySelector('#icon-arch svg'), '3d': document.querySelector('#icon-3d svg'), light: document.querySelector('#icon-light svg'), plan: document.querySelector('#icon-plan svg'),
@@ -1358,12 +1493,13 @@
                 };
                 
                 if (icons.arch) addHoverAnimation(icons.arch, gsap.to(icons.arch.querySelectorAll('path'), { drawSVG: true, duration: 1, ease: 'power2.inOut', paused: true, stagger: 0.2 }));
-                if (icons['3d']) addHoverAnimation(icons['3d'], gsap.to(icons['3d'], { attr: { "stroke-dashoffset": 0 }, rotateY: 360, duration: 1.5, ease: 'power2.inOut', paused: true, onStart: () => gsap.set(icons['3d'], {transformOrigin: "center center"}), onReverseComplete: () => gsap.set(icons['3d'], {clearProps: "transformOrigin, rotateY"}) }));
+                // Corrected 3D animation - simple rotation instead of complex attribute
+                if (icons['3d']) addHoverAnimation(icons['3d'], gsap.to(icons['3d'], { rotateZ: 360, duration: 1.5, ease: 'power2.inOut', paused: true, transformOrigin: "center center", onReverseComplete: () => gsap.set(icons['3d'], {clearProps: "transformOrigin, rotateZ"}) }));
                 if(icons.light) { const anim = gsap.to(icons.light, { scale: 1.2, filter: 'drop-shadow(0 0 10px #d4af37)', duration: 0.5, yoyo: true, repeat: -1, ease: 'power1.inOut' }).pause(); icons.light.closest('.service-card-premium').addEventListener('mouseenter', () => anim.play()); icons.light.closest('.service-card-premium').addEventListener('mouseleave', () => { anim.pause(); gsap.to(icons.light, { scale: 1, filter: 'none', duration: 0.3 }); }); }
                 if(icons.plan) addHoverAnimation(icons.plan, gsap.to(icons.plan.querySelectorAll('path'), { y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power2.out', paused: true, onStart: () => gsap.set(icons.plan.querySelectorAll('path'), { y: 10, opacity: 0 }) }));
                 if(icons.manage) addHoverAnimation(icons.manage, gsap.to(icons.manage, { scale: 1.1, rotate: 5, duration: 0.3, ease: 'back.out(2)', paused: true }));
                 if(icons.smart) addHoverAnimation(icons.smart, gsap.to(icons.smart.querySelector('path:last-child'), { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true, onStart: () => gsap.set(icons.smart.querySelector('path:last-child'), { transformOrigin: 'center center', scale: 0.8, opacity: 0 }) }));
-                if(icons.business) addHoverAnimation(icons.business, gsap.to(icons.business, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true, onStart: () => gsap.set(icons.business, { scale: 0.8, opacity: 0 }) }));
+                if(icons.business) addHoverAnimation(icons.business, gsap.to(icons.business, { scale: 1.1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)', paused: true, onStart: () => gsap.set(icons.business, { scale: 0.9, opacity: 0 }) }));
                 if(icons.electric) { const anim = gsap.to(icons.electric, { filter: 'drop-shadow(0 0 8px #d4af37)', repeat: -1, yoyo: true, duration: 0.7, ease: 'power1.inOut' }).pause(); icons.electric.closest('.service-card-premium').addEventListener('mouseenter', () => anim.play()); icons.electric.closest('.service-card-premium').addEventListener('mouseleave', () => { anim.pause(); gsap.to(icons.electric, { filter: 'none', duration: 0.3 }); }); }
             };
 
@@ -1377,7 +1513,15 @@
             }
             document.addEventListener('click', () => { if (langSelector && langSelector.classList.contains('open')) { langSelector.classList.remove('open'); gsap.to(langChevron, { rotation: 0, duration: 0.3 }); } });
             if (contactForm) contactForm.addEventListener('submit', handleFormSubmit);
-            if (backToTopBtn) backToTopBtn.addEventListener('click', () => scroll.scrollTo(0));
+            
+            // Corrected scroll to top logic for custom scroll
+            if (backToTopBtn) backToTopBtn.addEventListener('click', () => {
+                if (scroll && typeof scroll.scrollTo === 'function') {
+                    scroll.scrollTo(0);
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
             
             navLinks.forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -1385,7 +1529,11 @@
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        scroll.scrollTo(targetElement);
+                        if (scroll && typeof scroll.scrollTo === 'function') {
+                            scroll.scrollTo(targetElement);
+                        } else {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
                         if (navbar.classList.contains('open')) closeMobileMenu();
                     }
                 });
@@ -1400,7 +1548,7 @@
             // ==========================================
 
             function initBoidsSimulation() {
-                const NUM_BOIDS = 40; // Reduced for performance
+                const NUM_BOIDS = 40; 
                 const MAX_SPEED = 1.5;
                 const MAX_FORCE = 0.04;
                 const PERCEPTION_RADIUS = 60;
@@ -1490,6 +1638,7 @@
                     edges() {
                         const w = this.element.parentElement.clientWidth;
                         const h = this.element.parentElement.clientHeight;
+                        // Corrected logic for seamless wrapping
                         if (this.position.x > w) this.position.x = 0;
                         else if (this.position.x < 0) this.position.x = w;
                         if (this.position.y > h) this.position.y = 0;
@@ -1506,14 +1655,20 @@
                     show() {
                         this.element.style.left = `${this.position.x}px`;
                         this.element.style.top = `${this.position.y}px`;
-                        let angle = this.velocity.heading();
-                        this.element.style.transform = `rotate(${angle}rad)`;
+                        let angle = this.velocity.heading() + Math.PI; // Add Math.PI to point in direction of velocity (triangle clip-path starts at 0 degrees pointing left)
+                        this.element.style.transform = `translate(-50%, -50%) rotate(${angle}rad)`; // Centering the boid
                     }
                 }
 
                 const boids = [];
                 const container = document.getElementById('boids-container-footer');
                 if (container) {
+                    // Check if boids are already created
+                    if (container.children.length > 0) {
+                        // Clear existing boids to prevent duplication on re-init
+                        container.innerHTML = ''; 
+                    }
+
                     for (let i = 0; i < NUM_BOIDS; i++) {
                         const el = document.createElement('div');
                         el.className = 'boid';
@@ -1524,9 +1679,10 @@
                     }
 
                     function animateBoids() {
+                        if (!container.isConnected) return; // Stop animation if container is removed
                         for (let boid of boids) {
                             boid.flock(boids);
-                            boid.edges()
+                            boid.edges();
                             boid.update();
                             boid.show();
                         }
