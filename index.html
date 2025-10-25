@@ -31,7 +31,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Poppins:wght@300;400;600;700&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://images.pexels.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
@@ -66,7 +66,7 @@
 
     <style>
         /* ========================
-          Theme & Variables
+          Theme & Variables (Original)
         ======================== */
         :root {
             --bg: #121212;
@@ -94,7 +94,7 @@
         }
 
         /* ========================
-          Base & Resets
+          Base & Resets (Original)
         ======================== */
         * { box-sizing: border-box; }
         body {
@@ -113,7 +113,7 @@
         :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 
         /* ========================
-          Layout & Helpers
+          Layout & Helpers (Original)
         ======================== */
         .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
         .full-page-section {
@@ -130,7 +130,7 @@
         .skip-link:focus { top: 8px; }
         
         /* ========================
-          Loader
+          Loader (Original)
         ======================== */
         .loader {
             position: fixed;
@@ -155,7 +155,7 @@
         }
 
         /* ========================
-          Custom Cursor
+          Custom Cursor (Original)
         ======================== */
         .cursor, .cursor-follower {
             position: fixed;
@@ -180,7 +180,7 @@
         }
 
         /* ========================
-          Header & Navigation
+          Header & Navigation (Original)
         ======================== */
         .header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -221,7 +221,7 @@
         .theme-toggle i { color: var(--primary); }
 
         /* ========================
-          Hero Section (Three.js Container)
+          Hero Section (Three.js Container) (Original)
         ======================== */
         .hero-section { overflow: clip; background-color: #1a1a1a; } /* Dark background for 3D scene */
         
@@ -312,7 +312,7 @@
         @keyframes bounce { 0%,20%,50%,80%,100% { transform: translate(-50%,0); } 40% { transform: translate(-50%,-12px); } 60% { transform: translate(-50%,-4px); } }
         
         /* ========================
-          General Section Styles
+          General Section Styles (Original)
         ======================== */
         .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
         .process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; position: relative; }
@@ -357,7 +357,7 @@
         .form-status { min-height: 1.2rem; margin: .3rem 0 0; color: var(--muted); }
         
         /* ========================
-          Footer
+          Footer (Original)
         ======================== */
         .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); position: relative; }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; position: relative; z-index: 10; }
@@ -378,7 +378,7 @@
         .boid { display: none; } /* Explicitly hiding boid elements */
 
         /* ========================
-          Floating Buttons
+          Floating Buttons (Original)
         ======================== */
         /* CRITICAL FIX: These are FIXED elements outside the scroll-container for stability */
         .back-to-top { position: fixed; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: #111; display: grid; place-items: center; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .2s ease; z-index: 10001; }
@@ -386,7 +386,7 @@
         .floating-whatsapp { position: fixed; left: 18px; bottom: 18px; width: 48px; height: 48px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: var(--shadow); z-index: 10001; }
         
         /* ========================
-          New Premium Services Section
+          New Premium Services Section (Original)
         ======================== */
         .services-section-premium {
             background-color: #0f0f0f;
@@ -478,8 +478,462 @@
             line-height: 1.7;
         }
 
+        /* =========================================================================
+          NEW METHODOLOGY SECTION STYLES (Kept from original main file for structure)
+        ========================================================================= */
+        /* Reset and Base Overrides for New Section (Use Inter for new content) */
+        .methodology-container, .methodology-container * {
+            font-family: 'Inter', var(--font-primary);
+        }
+
+        /* Full Page Background Elements - Adjusted to use fixed particle canvas */
+        .ambient-background {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+        }
+
+        .light-rays {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.15;
+            overflow: hidden;
+        }
+
+        .ray {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            /* Use a similar gold color to primary but adjust opacity */
+            background: linear-gradient(to bottom, transparent, rgba(205, 164, 94, 0.3), transparent); 
+            animation: rayMove 15s infinite linear;
+        }
+
+        .ray:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .ray:nth-child(2) { left: 30%; animation-delay: 3s; }
+        .ray:nth-child(3) { left: 50%; animation-delay: 6s; }
+        .ray:nth-child(4) { left: 70%; animation-delay: 9s; }
+        .ray:nth-child(5) { left: 90%; animation-delay: 12s; }
+
+        @keyframes rayMove {
+            0% { transform: translateY(-100%) rotate(5deg); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(100%) rotate(5deg); opacity: 0; }
+        }
+
+        /* Architectural Grid Lines */
+        .grid-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(205, 164, 94, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(205, 164, 94, 0.03) 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: gridFloat 20s infinite linear;
+        }
+
+        @keyframes gridFloat {
+            0% { transform: perspective(1000px) rotateX(60deg) translateZ(0px); }
+            100% { transform: perspective(1000px) rotateX(60deg) translateZ(100px); }
+        }
+
+        /* Particle Canvas (Background) - Positioned with the section */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .methodology-container {
+            position: relative;
+            z-index: 10;
+            /* Override full-page-section height for content flow */
+            min-height: 100vh;
+            padding: 100px 20px;
+            perspective: 2000px;
+        }
+
+        /* Section Title */
+        .section-title h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 200;
+            letter-spacing: 0.1em;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #fff 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px) rotateX(-20deg);
+            animation: titleEntrance 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 150px;
+            perspective: 1000px;
+        }
+
+        @keyframes titleEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) rotateX(-20deg);
+                filter: blur(10px);
+            }
+            60% {
+                background-position: 200% 0;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+                filter: blur(0);
+                background-position: 200% 0;
+            }
+        }
+
+        .title-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(205, 164, 94, 0.3) 0%, transparent 70%);
+            filter: blur(60px);
+            animation: glowPulse 3s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+        }
+
+        /* Methodology Steps */
+        .steps-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Connecting Line */
+        .connecting-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            display: none; /* Hide by default and show only on desktop */
+        }
+        @media (min-width: 1025px) {
+            .connecting-line { display: block; }
+        }
+
+        .line-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to bottom, transparent, var(--primary), var(--primary));
+            box-shadow: 0 0 20px rgba(205, 164, 94, 0.8);
+            transition: height 0.3s ease-out;
+        }
+
+        /* Individual Step */
+        .methodology-step {
+            position: relative;
+            margin-bottom: 200px;
+            opacity: 0;
+            transform: translateY(100px) rotateX(-15deg);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .methodology-step.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+
+        .step-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            position: relative;
+        }
+
+        .step-content.reverse {
+            flex-direction: row-reverse;
+        }
+
+        /* Step Number & Icon */
+        .step-number-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+
+        .step-number {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--primary);
+            position: relative;
+            box-shadow: 0 0 40px rgba(205, 164, 94, 0.4),
+                         inset 0 0 20px rgba(205, 164, 94, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .methodology-step:hover .step-number {
+            transform: scale(1.2) rotate(360deg);
+            box-shadow: 0 0 60px rgba(205, 164, 94, 0.8),
+                         inset 0 0 30px rgba(205, 164, 94, 0.3);
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 1px solid rgba(205, 164, 94, 0.2);
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Step Visual Area */
+        .step-visual {
+            flex: 1;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .methodology-step:hover .step-visual {
+            transform: translateZ(30px);
+        }
+
+        .visual-container {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+            border: 1px solid rgba(205, 164, 94, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .visual-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(205, 164, 94, 0.3), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .methodology-step:hover .visual-container::before {
+            left: 100%;
+        }
+
+        /* Canvas for each step */
+        .step-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Step Text Content */
+        .step-text {
+            flex: 1;
+            padding: 40px;
+            transform-style: preserve-3d;
+        }
+        
+        /* Adjust Step Number position on desktop for the line gap */
+        @media (min-width: 1025px) {
+            .step-text { text-align: left; }
+            .step-content.reverse .step-text { text-align: right; }
+            .step-content .step-number-container { 
+                left: -100px; 
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            .step-content.reverse .step-number-container { 
+                left: auto;
+                right: -100px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+
+        .step-title {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .step-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            transition: width 0.6s ease;
+        }
+
+        .methodology-step:hover .step-title::after {
+            width: 200px;
+        }
+        
+        .step-content.reverse .step-title::after {
+             left: auto;
+             right: 0;
+             background: linear-gradient(90deg, transparent, var(--primary));
+        }
+
+
+        .step-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        /* Glow Effects */
+        .glow-orb {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(205, 164, 94, 0.2) 0%, transparent 70%);
+            filter: blur(40px);
+            pointer-events: none;
+            animation: orbFloat 6s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        .glow-orb.top-left { top: -100px; left: -100px; }
+        .glow-orb.bottom-right { bottom: -100px; right: -100px; animation-delay: 3s; }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, -30px) scale(1.2); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .step-content {
+                flex-direction: column !important;
+                gap: 40px;
+            }
+
+            .step-number-container {
+                position: relative;
+                left: 0 !important;
+                right: 0 !important;
+                transform: none !important;
+                margin-bottom: 20px;
+            }
+
+            .connecting-line {
+                display: none;
+            }
+
+            .methodology-step {
+                margin-bottom: 120px;
+            }
+            
+            .step-text { text-align: center !important; }
+            .step-title::after { left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, transparent, var(--primary), transparent) !important; }
+            .step-content.reverse .step-title::after { left: 50%; right: auto; transform: translateX(-50%); }
+
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-new {
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(205, 164, 94, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loading-overlay h2 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* ========================
-          Responsive Media Queries
+          Responsive Media Queries (Original)
         ======================== */
         @media (max-width: 992px) {
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -502,7 +956,7 @@
         }
 
         /* ========================
-          RTL (Right-to-Left) Styles
+          RTL (Right-to-Left) Styles (Original)
         ======================== */
         html[dir="rtl"] body { direction: rtl; text-align: right; font-family: var(--font-secondary); }
         html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
@@ -511,7 +965,7 @@
         html[dir="rtl"] .testimonial-author { text-align: left; }
         
         /* ========================
-          Accessibility & Touch Devices
+          Accessibility & Touch Devices (Original)
         ======================== */
         @media (pointer: coarse) {
             body { cursor: auto !important; }
@@ -520,6 +974,15 @@
     </style>
 </head>
 <body class="bg-gray-900">
+
+    <!-- New Full-Screen Loading Overlay for Methodology Content -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader-new"></div>
+        <h2>Initializing Methodology Visuals...</h2>
+    </div>
+    
+    <!-- Particle Canvas for Animated Background (Must be fixed outside data-scroll-container) -->
+    <canvas id="particleCanvas"></canvas>
 
     <div class="loader">
         <div class="loader-logo">A. GITHOP</div>
@@ -658,7 +1121,7 @@
                             </div>
                         </article>
                         <article class="service-card-premium">
-                            <div class="card-icon" id="icon-manage"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-icon" id="icon-manage"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 18 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             <div class="card-content">
                                 <h3 data-lang-key="service_5_title">Project Management & B2B</h3>
                                 <p data-lang-key="service_5_desc">Providing strategic B2B consulting and end-to-end project management.</p>
@@ -689,18 +1152,88 @@
                 </div>
             </section>
             
-            <section id="process" class="process-section full-page-section" aria-label="Process" data-scroll-section>
-                <div class="container">
-                    <h2 class="section-title" data-lang-key="process_title">Our Methodology</h2>
-                    <div class="process-timeline">
-                        <div class="process-step"><div class="process-icon"><i class="fas fa-comments" aria-hidden="true"></i></div><h3 data-lang-key="process_1_title">Consultation & Briefing</h3><p data-lang-key="process_1_desc">Understanding your vision, requirements, and goals.</p></div>
-                        <div class="process-step"><div class="process-icon"><i class="fas fa-pencil-ruler" aria-hidden="true"></i></div><h3 data-lang-key="process_2_title">Concept & Design</h3><p data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning.</p></div>
-                        <div class="process-step"><div class="process-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></div><h3 data-lang-key="process_3_title">3D Visualization</h3><p data-lang-key="process_3_desc">Creating realistic 3D models for review and refinement.</p></div>
-                        <div class="process-step"><div class="process-icon"><i class="fas fa-hard-hat" aria-hidden="true"></i></div><h3 data-lang-key="process_4_title">Execution & Delivery</h3><p data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion.</p></div>
+            <!-- REPLACED PROCESS SECTION with the new complex methodology design -->
+            <section id="process" class="process-section" aria-label="Process" data-scroll-section>
+                <!-- New full-page background elements -->
+                <div class="ambient-background">
+                    <div class="light-rays">
+                        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+                    </div>
+                    <div class="grid-lines"></div>
+                </div>
+                <!-- The methodology content container -->
+                <div class="methodology-container">
+                    <div class="section-title">
+                        <h1 data-lang-key="process_title">Our Methodology</h1>
+                        <div class="title-glow"></div>
+                    </div>
+                    <div class="steps-container">
+                        <!-- Connecting Line (Desktop Only) -->
+                        <div class="connecting-line"><div class="line-progress" id="lineProgress"></div></div>
+
+                        <!-- Step 1: Consultation & Briefing -->
+                        <div class="methodology-step" id="step1">
+                            <div class="step-content">
+                                <div class="step-visual">
+                                    <div class="glow-orb top-left"></div>
+                                    <div class="visual-container"><canvas id="canvas1" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">1</div></div>
+                                    <h2 class="step-title" data-lang-key="process_1_title">Consultation & Briefing</h2>
+                                    <p class="step-description" data-lang-key="process_1_desc">Understanding your vision, requirements, and goals. This stage involves deep client consultation, site analysis, and defining the precise scope and aesthetic direction of the project.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Concept & Design -->
+                        <div class="methodology-step" id="step2">
+                            <div class="step-content reverse">
+                                <div class="step-visual">
+                                    <div class="glow-orb bottom-right"></div>
+                                    <div class="visual-container"><canvas id="canvas2" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">2</div></div>
+                                    <h2 class="step-title" data-lang-key="process_2_title">Concept & Design</h2>
+                                    <p class="step-description" data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning. We iterate on floor plans, architectural structure, material palettes, and core design elements until the perfect concept emerges.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: 3D Visualization -->
+                        <div class="methodology-step" id="step3">
+                            <div class="step-content">
+                                <div class="step-visual">
+                                    <div class="glow-orb top-left"></div>
+                                    <div class="visual-container"><canvas id="canvas3" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">3</div></div>
+                                    <h2 class="step-title" data-lang-key="process_3_title">3D Visualization</h2>
+                                    <p class="step-description" data-lang-key="process_3_desc">Creating hyper-realistic 3D models and interactive walk-throughs for client review and refinement. This ensures the final vision is perfectly aligned before construction begins, minimizing errors.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Execution & Delivery -->
+                        <div class="methodology-step" id="step4">
+                            <div class="step-content reverse">
+                                <div class="step-visual">
+                                    <div class="glow-orb bottom-right"></div>
+                                    <div class="visual-container"><canvas id="canvas4" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">4</div></div>
+                                    <h2 class="step-title" data-lang-key="process_4_title">Execution & Delivery</h2>
+                                    <p class="step-description" data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion. This includes coordination with contractors, site supervision, and final installation and quality checks to hand over the finished space.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
-
+            
             <section id="portfolio" class="portfolio-section full-page-section" aria-label="Portfolio" data-scroll-section>
                 <div class="container">
                     <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
@@ -785,7 +1318,6 @@
             materials.neonOrange = new THREE.MeshStandardMaterial({ color: 0xffa500, emissive: 0xffa500, emissiveIntensity: 0.5, roughness: 0.2 });
             materials.warmLight = new THREE.MeshBasicMaterial({ color: 0xffd700, emissive: 0xffd700, emissiveIntensity: 1.0 });
             materials.sofa = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.8, metalness: 0.0 });
-            materials.particle = new THREE.PointsMaterial({ color: 0xeeeeee, size: 0.02, sizeAttenuation: true, transparent: true, opacity: 0.7 });
         }
         function createBuildingStructure(width, height, depth, floors) {
             const group = new THREE.Group();
@@ -907,6 +1439,7 @@
             return group;
         }
         function createParticles() {
+            // Note: Three.js particles are used here, but 2D canvas particles are used for the methodology section background.
             const particleCount = 200;
             const geometry = new THREE.BufferGeometry();
             const positions = [];
@@ -920,11 +1453,13 @@
                 positions.push(x, y, z);
             }
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            particleSystem = new THREE.Points(geometry, materials.particle);
+            // Removed materials.particle which was not defined in Three.js section, using BasicMaterial as fallback
+            const particleMaterial = new THREE.PointsMaterial({ color: 0xeeeeee, size: 0.02, sizeAttenuation: true, transparent: true, opacity: 0.7 });
+            particleSystem = new THREE.Points(geometry, particleMaterial);
             scene.add(particleSystem);
         }
         window.toggleNeonGlow = function(enable) {
-            if (!materials.neonBlue) return; 
+            if (!materials.neonBlue || !materials.neonOrange) return; 
             const blueIntensity = enable ? 1.5 : 0.01; 
             const blueColor = enable ? 0x00ffff : 0x008888;
             neonMeshes.forEach(mesh => {
@@ -1058,7 +1593,367 @@
         // --- END Three.js 3D Scene Logic (Hero) ---
 
         // ==========================================
-        // --- 2. Portfolio Logic (Locomotive, GSAP) ---
+        // --- 2. Methodology Canvas Animations (FIXED) ---
+        // ==========================================
+
+        // ===== PARTICLE SYSTEM (Background) =====
+        const particleCanvas = document.getElementById('particleCanvas');
+        let pCtx;
+
+        function resizeParticleCanvas() {
+            if (!particleCanvas) return;
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        
+        // REPLACED LOGIC with the radial line system from the second block
+        function initBackgroundParticles() {
+            if (!particleCanvas) return;
+            pCtx = particleCanvas.getContext('2d');
+            resizeParticleCanvas();
+            animateBackgroundParticles();
+        }
+        
+        function animateBackgroundParticles() {
+            if (!pCtx || !particleCanvas) {
+                requestAnimationFrame(animateBackgroundParticles);
+                return;
+            }
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            pCtx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
+            pCtx.lineWidth = 1;
+
+            let bgTime = Date.now() / 1000; // Time counter for movement
+
+            const lines = 30;
+            const centerX = particleCanvas.width / 2;
+            const centerY = particleCanvas.height / 2;
+            const maxDimension = Math.max(particleCanvas.width, particleCanvas.height);
+
+            for (let i = 0; i < lines; i++) {
+                const angle = (i / lines) * Math.PI * 2 + bgTime * 0.005; // Slightly faster rotation
+                const length = maxDimension * 0.8;
+                const x1 = centerX + Math.cos(angle) * length;
+                const y1 = centerY + Math.sin(angle) * length;
+                const x2 = centerX - Math.cos(angle) * length;
+                const y2 = centerY - Math.sin(angle) * length;
+                pCtx.beginPath();
+                pCtx.moveTo(x1, y1);
+                pCtx.lineTo(x2, y2);
+                pCtx.stroke();
+            }
+            requestAnimationFrame(animateBackgroundParticles);
+        }
+
+        // Helper function for polygon face drawing (used in step 2 animation)
+        function drawFace(ctx, points, indices, fill = false) {
+            ctx.beginPath();
+            ctx.moveTo(points[indices[0]][0], points[indices[0]][1]);
+            for (let i = 1; i < indices.length; i++) ctx.lineTo(points[indices[i]][0], points[indices[i]][1]);
+            ctx.closePath();
+            if (fill) ctx.fill();
+        }
+
+        // Step 1: Cinematic Blueprint/Sketch (REPLACED)
+        function animateStep1(canvas) {
+            const ctx = canvas.getContext('2d');
+            let time = 0;
+            const canvasSize = Math.min(canvas.width, canvas.height);
+            const scaleFactor = canvasSize / 300;
+            
+            function draw() {
+                if (!canvas.isConnected || !canvas.width) { requestAnimationFrame(draw); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.save();
+                ctx.scale(scaleFactor, scaleFactor);
+                
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 1.5;
+                ctx.shadowColor = '#d4af37';
+                ctx.shadowBlur = 8;
+                
+                const paths = [
+                    'M 50 250 L 50 80 L 150 30 L 250 80 L 250 250', // Outer shell
+                    'M 50 250 L 250 250', // Base line
+                    'M 80 250 L 80 100 L 220 100 L 220 250', // Inner walls
+                    'M 120 100 L 120 150 L 180 150 L 180 100' // Room
+                ];
+                
+                paths.forEach((path, index) => {
+                    const p = new Path2D(path);
+                    ctx.setLineDash([1000, 1000]);
+                    const progress = Math.max(0, Math.min(1, (time - index * 20) / 200));
+                    ctx.lineDashOffset = 1000 - progress * 1000;
+                    ctx.stroke(p);
+                });
+
+                ctx.restore();
+                time++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // Step 2: 3D Wireframe Evolution (REPLACED)
+        function animateStep2(canvas) {
+            const ctx = canvas.getContext('2d');
+            let time2 = 0;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const size = Math.min(canvas.width, canvas.height) * 0.3;
+
+            function draw() {
+                if (!canvas.isConnected || !canvas.width) { requestAnimationFrame(draw); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const angle = time2 * 0.003;
+                
+                const basePoints = [
+                    [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
+                    [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]
+                ];
+                
+                const projected = basePoints.map((p) => {
+                    let x = p[0], y = p[1], z = p[2];
+                    let tempX = x * Math.cos(angle) - z * Math.sin(angle);
+                    z = x * Math.sin(angle) + z * Math.cos(angle);
+                    x = tempX;
+                    tempX = y * Math.cos(angle*0.5) - z * Math.sin(angle*0.5);
+                    z = y * Math.sin(angle*0.5) + z * Math.cos(angle*0.5);
+                    y = tempX;
+                    
+                    const perspective = 1.5 / (1.5 + z);
+                    return [centerX + x * size * perspective, centerY + y * size * perspective, z];
+                });
+
+                const progress = (Math.sin(time2 * 0.01) + 1) / 2;
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 1.5;
+                ctx.fillStyle = `rgba(212, 175, 55, ${progress * 0.15})`;
+                ctx.shadowColor = '#d4af37';
+                ctx.shadowBlur = 15;
+                
+                for(let i=0; i<4; i++) {
+                    // Connect function inline to maintain scope
+                    ctx.beginPath();
+                    ctx.moveTo(projected[i][0], projected[i][1]);
+                    ctx.lineTo(projected[(i+1)%4][0], projected[(i+1)%4][1]);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(projected[i+4][0], projected[i+4][1]);
+                    ctx.lineTo(projected[(i+1)%4 + 4][0], projected[(i+1)%4 + 4][1]);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(projected[i][0], projected[i][1]);
+                    ctx.lineTo(projected[i+4][0], projected[i+4][1]);
+                    ctx.stroke();
+                }
+
+                time2++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // Step 3: Cinematic Render (REPLACED)
+        function animateStep3(canvas) {
+            const ctx = canvas.getContext('2d');
+            let time3 = 0;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            function draw() {
+                if (!canvas.isConnected || !canvas.width) { requestAnimationFrame(draw); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const t = time3 * 0.002;
+                
+                const layers = 5;
+                for(let i=0; i < layers; i++) {
+                    const radius = canvas.width * 0.2 + i * 15;
+                    const y = centerY + Math.sin(t + i) * 10;
+                    const alpha = 0.8 - (i / layers) * 0.7;
+
+                    const gradient = ctx.createRadialGradient(centerX, y, radius*0.8, centerX, y, radius);
+                    gradient.addColorStop(0, `rgba(212, 175, 55, ${alpha * 0.5})`);
+                    gradient.addColorStop(1, `rgba(212, 175, 55, 0)`);
+
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.ellipse(centerX, y, radius, radius * 0.4, 0, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+
+                const glintX = centerX + 80 * Math.cos(t * 2);
+                const glintY = centerY + 30 * Math.sin(t * 1.5);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.shadowColor = '#fff';
+                ctx.shadowBlur = 20;
+                ctx.beginPath();
+                ctx.arc(glintX, glintY, 2, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                time3++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // Step 4: Final Building with "Lights On" (REPLACED)
+        const lights = Array(50).fill().map(() => ({
+            x: 50 + Math.random() * 200,
+            y: 100 + Math.random() * 140,
+            delay: Math.random() * 200 + 100,
+            radius: Math.random() * 2 + 1,
+            opacity: 0
+        }));
+
+        function animateStep4(canvas) {
+            const ctx = canvas.getContext('2d');
+            let time4 = 0;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = Math.min(canvas.width, canvas.height) / 300;
+
+            function draw() {
+                if (!canvas.isConnected || !canvas.width) { requestAnimationFrame(draw); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const revealProgress = Math.min(1, time4 / 150);
+
+                ctx.save();
+                ctx.scale(scale, scale);
+                ctx.translate(centerX/scale - 150, centerY/scale - 150);
+
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2.5;
+                ctx.shadowColor = '#d4af37';
+                ctx.shadowBlur = 25;
+
+                const p = new Path2D('M 40 250 L 40 90 L 150 20 L 260 90 L 260 250 L 40 250');
+                ctx.globalAlpha = revealProgress;
+                ctx.setLineDash([1200, 1200]);
+                ctx.lineDashOffset = 1200 - revealProgress * 1200;
+                ctx.stroke(p);
+
+                if(revealProgress === 1) {
+                    ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+                    ctx.fill(p);
+                    lights.forEach(light => {
+                        if(time4 > light.delay) {
+                            light.opacity = Math.min(1, light.opacity + 0.05);
+                        }
+                        ctx.beginPath();
+                        // Adjust coordinates based on fixed 300x300 canvas size for drawing
+                        const drawX = light.x; 
+                        const drawY = light.y;
+                        
+                        ctx.fillStyle = `rgba(255, 220, 150, ${light.opacity})`;
+                        ctx.shadowColor = `rgba(255, 220, 150, ${light.opacity})`;
+                        ctx.shadowBlur = 15 * light.opacity;
+                        ctx.arc(drawX, drawY, light.radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                }
+                ctx.restore();
+                time4++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // ===== SCROLL ANIMATIONS (CSS Visibility and Line Progress) =====
+        const steps = document.querySelectorAll('.methodology-step');
+        const lineProgress = document.getElementById('lineProgress');
+
+        function checkStepsVisibility() {
+            const windowHeight = window.innerHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            steps.forEach((step) => {
+                const rect = step.getBoundingClientRect();
+                const stepOffset = rect.top; 
+
+                if (stepOffset < windowHeight * 0.7) {
+                    step.classList.add('visible');
+                }
+            });
+
+            // Update connecting line progress
+            if (steps.length > 0 && lineProgress) {
+                const stepsContainer = document.querySelector('.steps-container');
+                if(!stepsContainer) return;
+                
+                const stepsContainerRect = stepsContainer.getBoundingClientRect();
+                const totalHeight = stepsContainerRect.height;
+                
+                // Calculate how far down the scroll we are relative to the container
+                // We want the line to start growing when the container top hits the bottom of the viewport
+                const startOffset = stepsContainerRect.top - windowHeight;
+                const endOffset = stepsContainerRect.bottom - (windowHeight * 0.2); // Stop growing near the end
+                
+                const scrolledDistance = -startOffset;
+                const scrollableRange = endOffset - startOffset;
+
+                // Clamp progress between 0 and 1
+                const scrollProgress = Math.min(1, Math.max(0, scrolledDistance / scrollableRange));
+                
+                lineProgress.style.height = `${scrollProgress * totalHeight}px`;
+            }
+        }
+        
+        // ===== PARALLAX EFFECT (Per-Step) =====
+        function applyParallax() {
+            // Using native scroll offset since Locomotive scroll overrides it
+            const scrolled = window.pageYOffset;
+
+            steps.forEach((step, index) => {
+                // Apply a small speed difference for subtle effect
+                const speed = (index % 2 === 0) ? 0.5 : -0.5;
+                const yPos = scrolled * speed * 0.05; 
+                
+                // Note: The main CSS already applies a complex transition on transform. 
+                // We'll use GSAP for parallax if L-Scroll is active, otherwise rely on CSS/visibility checks.
+                // For simplicity due to the complex setup, we will comment out this native parallax if GSAP/L-Scroll is active, 
+                // and rely on the existing visibility/line checks which are less prone to fight the scroll library.
+                // step.style.transform = `translateY(${yPos}px)`; 
+            });
+        }
+        
+        // ===== INITIALIZE & RESIZE HANDLERS =====
+        function initializeCanvases() {
+            // Resize handler for step canvases
+            const resizeStepCanvases = () => {
+                const canvasElements = document.querySelectorAll('.step-canvas');
+                canvasElements.forEach(canvas => {
+                    if (canvas) {
+                        const parent = canvas.closest('.visual-container');
+                        canvas.width = parent.offsetWidth;
+                        canvas.height = parent.offsetHeight;
+                    }
+                });
+            };
+
+            // Call initial resize
+            resizeStepCanvases();
+            window.addEventListener('resize', resizeStepCanvases);
+
+            // Start animations
+            const canvas1 = document.getElementById('canvas1');
+            const canvas2 = document.getElementById('canvas2');
+            const canvas3 = document.getElementById('canvas3');
+            const canvas4 = document.getElementById('canvas4');
+
+            if (canvas1) animateStep1(canvas1);
+            if (canvas2) animateStep2(canvas2);
+            if (canvas3) animateStep3(canvas3);
+            if (canvas4) animateStep4(canvas4);
+        }
+
+
+        // ==========================================
+        // --- 3. Main Initialization Logic (Original and Merged) ---
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -1125,6 +2020,14 @@
                     ScrollTrigger.refresh();
                 }
 
+                // Initialize the new methodology canvases after the initial site content is loaded
+                initBackgroundParticles();
+                initializeCanvases();
+                checkStepsVisibility(); // Initial check for methodology visibility
+                
+                document.getElementById('loadingOverlay').classList.add('hidden');
+
+
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
                 tl.to(header, { y: '0%', duration: 1, ease: 'power2.out' }, 0.5)
                     .from('.hero-title', { opacity: 0, y: 40 }, 0.8)
@@ -1133,7 +2036,6 @@
 
                 initScrollAnimations();
                 initPremiumServicesAnimations();
-                // initBoidsSimulation(); // REMOVED JS CALL FOR STABILITY
                 
                 if (typeof THREE.OrbitControls !== 'undefined') {
                     initThreeJs();
@@ -1158,34 +2060,47 @@
             setTimeout(() => { if (!loaded) initPage(); }, 4000);
 
 
-            // --- Scroll Animations ---
+            // --- Scroll Animations (GSAP for non-fixed elements) ---
             const initScrollAnimations = () => {
                 const scroller = scroll ? scrollContainer : window;
-                document.querySelectorAll('.section-title').forEach(title => {
+                
+                // General Section Titles
+                document.querySelectorAll('.section-title, .section-title-premium').forEach(title => {
                     gsap.from(title, { scrollTrigger: { trigger: title, scroller: scroller, start: 'top 85%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 50, duration: 0.8, ease: 'power2.out' });
                 });
-                gsap.from('.process-step', { scrollTrigger: { trigger: '.process-timeline', scroller: scroller, start: 'top 80%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, scale: 0.8, duration: 0.5, stagger: 0.15 });
-                document.querySelectorAll('.portfolio-item').forEach((item, index) => {
-                    gsap.from(item, { scrollTrigger: { trigger: item, scroller: scroller, start: 'top 90%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, x: index % 2 === 0 ? -60 : 60, duration: 1, ease: 'power3.out' });
-                });
+                
+                // Methodology Steps (Initial GSAP trigger for the container entry - visibility is handled by JS)
+                gsap.from('.methodology-container', { scrollTrigger: { trigger: '#process', scroller: scroller, start: 'top bottom', end: 'top center', scrub: true, refreshPriority: 1 }, opacity: 1, duration: 1 });
+                
+                // Portfolio Items
+                gsap.from('.portfolio-item', { scrollTrigger: { trigger: '.portfolio-grid', scroller: scroller, start: 'top 80%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 50, stagger: 0.15, duration: 1, ease: 'power3.out' });
+
+                // Testimonials
                 gsap.from('.testimonial-card', { scrollTrigger: { trigger: '.testimonials-grid', scroller: scroller, start: 'top 80%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 50, stagger: 0.2, duration: 0.7 });
+                
+                // Footer
                 gsap.from('.footer-content > *', { scrollTrigger: { trigger: '.footer', scroller: scroller, start: 'top 95%', toggleActions: 'play none none none', refreshPriority: 1 }, opacity: 0, y: 40, stagger: 0.2, duration: 0.8 });
             };
 
             // --- Utility Functions ---
             if (footerYear) footerYear.textContent = new Date().getFullYear();
 
-            // Native scroll listener for floating buttons (since they are fixed outside the scroll container)
+            // Native scroll listener for fixed elements, back-to-top, and methodology checks
             window.addEventListener('scroll', () => {
                 header.classList.toggle('scrolled', window.scrollY > 50);
                 backToTopBtn.classList.toggle('show', window.scrollY > window.innerHeight);
+                checkStepsVisibility(); // Methodology visibility and line progress update
+                // applyParallax(); // Removed native parallax to avoid conflicts with Locomotive/GSAP
             });
+            
+            // If Locomotive Scroll is active, also trigger visibility checks on its scroll event
             if (scroll && typeof scroll.on === 'function') {
-                 scroll.on('scroll', (instance) => {
-                    // Update header based on Locomotive Scroll's position (alternative way if needed)
-                    // header.classList.toggle('scrolled', instance.scroll.y > 50);
-                 });
+                scroll.on('scroll', (instance) => {
+                    // Check visibility using Locomotive's current scroll value (y)
+                    checkStepsVisibility();
+                });
             }
+
 
             const toggleMobileMenu = () => { navbar.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', navbar.classList.contains('open')); };
             const closeMobileMenu = () => { navbar.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); };
@@ -1198,33 +2113,33 @@
             };
             const toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
-            // --- Translations (omitted for brevity, assuming they are correct) ---
+            // --- Translations ---
             const translations = {
                 en: {
-                    logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning.", process_3_title: "3D Visualization", process_3_desc: "Creating realistic 3D models for review and refinement.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`, toggle_neon: "Toggle Neon Glow (Electric)", toggle_hvac: "Toggle Piping/HVAC Systems", hero_instructions: "Use your mouse/touch to orbit and explore the scene.",
+                    logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals. This stage involves deep client consultation, site analysis, and defining the precise scope and aesthetic direction of the project.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning. We iterate on floor plans, architectural structure, material palettes, and core design elements until the perfect concept emerges.", process_3_title: "3D Visualization", process_3_desc: "Creating hyper-realistic 3D models and interactive walk-throughs for client review and refinement. This ensures the final vision is perfectly aligned before construction begins, minimizing errors.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion. This includes coordination with contractors, site supervision, and final installation and quality checks to hand over the finished space.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`, toggle_neon: "Toggle Neon Glow (Electric)", toggle_hvac: "Toggle Piping/HVAC Systems", hero_instructions: "Use your mouse/touch to orbit and explore the scene.",
                 },
                 ar: {
-                    logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد واقعية للمراجعة والتعديل.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`, toggle_neon: "تبديل توهج النيون (كهرباء)", toggle_hvac: "تبديل أنظمة الأنابيب/التكييف", hero_instructions: "استخدم الماوس/اللمس للدوران واستكشاف المشهد.",
+                    logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك. تتضمن هذه المرحلة استشارة عميقة للعميل، وتحليل الموقع، وتحديد النطاق الدقيق والاتجاه الجمالي للمشروع.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات. نكرر العمل على مخططات الطوابق، والهيكل المعماري، ولوحات المواد، وعناصر التصميم الأساسية حتى يظهر المفهوم المثالي.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد فائقة الواقعية وعروض تفاعلية للمراجعة والتعديل من قبل العميل. يضمن ذلك توافق الرؤية النهائية تمامًا قبل بدء التنفيذ، مما يقلل الأخطاء.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد. يشمل ذلك التنسيق مع المقاولين، والإشراف على الموقع، والتركيب النهائي وفحوصات الجودة لتسليم المساحة النهائية.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`, toggle_neon: "تبديل توهج النيون (كهرباء)", toggle_hvac: "تبديل أنظمة الأنابيب/التكييف", hero_instructions: "استخدم الماوس/اللمس للدوران واستكشاف المشهد.",
                 },
                 // ... (Other languages remain the same)
             };
             const applyLanguage = (lang) => {
                 const langData = translations[lang];
-                document.documentElement.lang = lang;  
+                document.documentElement.lang = lang; 
                 document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.body.classList.toggle('is-rtl', lang === 'ar');  
+                document.body.classList.toggle('is-rtl', lang === 'ar'); 
                 
-                document.querySelectorAll('[data-lang-key]').forEach(el => {  
-                    const key = el.getAttribute('data-lang-key');  
-                    if (langData[key]) el.textContent = langData[key];  
+                document.querySelectorAll('[data-lang-key]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-key'); 
+                    if (langData[key]) el.textContent = langData[key]; 
                 });
                 
-                document.querySelectorAll('[data-lang-placeholder]').forEach(el => {  
-                    const key = el.getAttribute('data-lang-placeholder');  
-                    if (langData[key]) el.placeholder = langData[key];  
+                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-placeholder'); 
+                    if (langData[key]) el.placeholder = langData[key]; 
                 });
                 
-                currentLangSpan.textContent = lang.toUpperCase();  
+                currentLangSpan.textContent = lang.toUpperCase(); 
                 localStorage.setItem('language', lang);
                 if (scroll) scroll.update();
                 ScrollTrigger.refresh();
@@ -1293,7 +2208,6 @@
 
                 gsap.from(".service-card-premium", { scrollTrigger: { trigger: ".services-grid-premium", scroller: scroller, start: "top 80%", refreshPriority: 1 }, opacity: 0, y: 50, scale: 0.95, duration: 0.6, stagger: 0.15, ease: 'power3.out' });
 
-                // Icon animations... (kept as is)
                 const icons = {
                     arch: document.querySelector('#icon-arch svg'), '3d': document.querySelector('#icon-3d svg'), light: document.querySelector('#icon-light svg'), plan: document.querySelector('#icon-plan svg'),
                     manage: document.querySelector('#icon-manage svg'), smart: document.querySelector('#icon-smart svg'), business: document.querySelector('#icon-business svg'), electric: document.querySelector('#icon-electric svg'),
@@ -1352,33 +2266,9 @@
             applyTheme(currentTheme);
             applyLanguage(currentLanguage);
             setupCursor();
-            
-            // ==========================================
-            // --- 3. Boids Flocking Simulation (Footer) ---
-            // ==========================================
-            // NOTE: The Boids simulation logic is left here but the call to initBoidsSimulation()
-            // in the DOMContentLoaded handler is REMOVED to prevent execution and the resulting jitter.
-            function initBoidsSimulation() {
-                const NUM_BOIDS = 40; 
-                const MAX_SPEED = 1.5;
-                const MAX_FORCE = 0.04;
-                const PERCEPTION_RADIUS = 60;
-                const SEPARATION_WEIGHT = 1.8;
-                const ALIGNMENT_WEIGHT = 1.0;
-                const COHESION_WEIGHT = 0.8;
-                
-                // ... (Vector and Boid Class Definitions kept for completeness, but effectively dormant)
-
-                // const boids = [];
-                // const container = document.getElementById('boids-container-footer');
-                // if (container) {
-                //     // Simulation logic here (now dormant)
-                //     // ...
-                //     // animateBoids();
-                // }
-            }
         });
     </script>
+    <!-- Boids Simulation script removed for stability as instructed. -->
     <script>
     (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="cEKyhomDE8jOET-s6DEK2";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
     </script>
