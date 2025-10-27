@@ -31,7 +31,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Poppins:wght@300;400;600;700&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://images.pexels.com" crossorigin />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
     
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
@@ -97,6 +97,7 @@
           Base & Resets (Original)
         ======================== */
         * { box-sizing: border-box; }
+        html { scroll-behavior: auto; } /* Disabled for Locomotive Scroll */
         body {
             margin: 0;
             background: var(--bg);
@@ -215,7 +216,7 @@
         .lang-selected .fa-chevron-down { transition: transform 0.3s ease; }
         .lang-dropdown { position: absolute; top: calc(100% + 6px); right: 0; width: 180px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: none; box-shadow: var(--shadow); z-index: 10; }
         .language-selector.open .lang-dropdown { display: block; }
-        .lang-dropdown li { padding: 10px 12px; }
+        .lang-dropdown li { padding: 10px 12px; cursor: pointer; }
         .lang-dropdown li:hover { background: var(--primary); color: #111; }
         .theme-toggle { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
         .theme-toggle i { color: var(--primary); }
@@ -377,14 +378,6 @@
 
         .boid { display: none; } /* Explicitly hiding boid elements */
 
-        /* ========================
-          Floating Buttons (Original)
-        ======================== */
-        /* CRITICAL FIX: These are FIXED elements outside the scroll-container for stability */
-        .back-to-top { position: fixed; right: 18px; bottom: 18px; width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: #111; display: grid; place-items: center; box-shadow: var(--shadow); opacity: 0; visibility: hidden; transform: translateY(12px); transition: all .2s ease; z-index: 10001; }
-        .back-to-top.show { opacity: 1; visibility: visible; transform: none; }
-        .floating-whatsapp { position: fixed; left: 18px; bottom: 18px; width: 48px; height: 48px; border-radius: 50%; background: #25d366; color: #fff; display: grid; place-items: center; box-shadow: var(--shadow); z-index: 10001; }
-        
         /* ========================
           New Premium Services Section (Original)
         ======================== */
@@ -614,6 +607,7 @@
             filter: blur(60px);
             animation: glowPulse 3s infinite ease-in-out;
             pointer-events: none;
+            z-index: -1;
         }
 
         @keyframes glowPulse {
@@ -796,6 +790,15 @@
                 top: 50%;
                 transform: translateY(-50%);
             }
+            /* RTL adjustments for desktop */
+            html[dir="rtl"] .step-content .step-number-container { 
+                left: auto;
+                right: -100px;
+            }
+            html[dir="rtl"] .step-content.reverse .step-number-container { 
+                left: -100px;
+                right: auto;
+            }
         }
 
 
@@ -830,6 +833,18 @@
              left: auto;
              right: 0;
              background: linear-gradient(90deg, transparent, var(--primary));
+        }
+
+        /* RTL line adjustments */
+        html[dir="rtl"] .step-title::after {
+            left: auto;
+            right: 0;
+            background: linear-gradient(90deg, transparent, var(--primary));
+        }
+        html[dir="rtl"] .step-content.reverse .step-title::after {
+            left: 0;
+            right: auto;
+            background: linear-gradient(90deg, var(--primary), transparent);
         }
 
 
@@ -956,14 +971,31 @@
         }
 
         /* ========================
-          RTL (Right-to-Left) Styles (Original)
+          RTL (Right-to-Left) Styles (Original + Fixes)
         ======================== */
-        html[dir="rtl"] body { direction: rtl; text-align: right; font-family: var(--font-secondary); }
+        html[dir="rtl"] body { 
+            direction: rtl; 
+            text-align: right; 
+            font-family: var(--font-secondary); 
+        }
         html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
-        html[dir="rtl"] .lang-dropdown { right: auto; left: 0; }
-        html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); }
+        /* FIX: Ensure dropdown respects RTL */
+        html[dir="rtl"] .lang-dropdown { right: auto; left: 0; } 
+        html[dir="rtl"] .testimonial-card { 
+            border-left: 0; 
+            border-right: 4px solid var(--primary); 
+        }
         html[dir="rtl"] .testimonial-author { text-align: left; }
-        
+        /* FIX: Contact items spacing */
+        html[dir="rtl"] .info-item { margin: 0 0 1rem 1rem; } 
+        /* FIX: Three.js controls label alignment */
+        html[dir="rtl"] .toggle-label { text-align: left; } 
+        /* FIX: Process steps horizontal alignment (overridden by responsive styles on mobile) */
+        @media (min-width: 1025px) {
+            html[dir="rtl"] .step-text { text-align: right; }
+            html[dir="rtl"] .step-content.reverse .step-text { text-align: left; }
+        }
+
         /* ========================
           Accessibility & Touch Devices (Original)
         ======================== */
@@ -975,13 +1007,11 @@
 </head>
 <body class="bg-gray-900">
 
-    <!-- New Full-Screen Loading Overlay for Methodology Content -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loader-new"></div>
-        <h2>Initializing Methodology Visuals...</h2>
+        <h2 data-lang-key="loading_methodology_text">Initializing Methodology Visuals...</h2>
     </div>
     
-    <!-- Particle Canvas for Animated Background (Must be fixed outside data-scroll-container) -->
     <canvas id="particleCanvas"></canvas>
 
     <div class="loader">
@@ -1040,8 +1070,8 @@
 
                 <div id="loading-overlay">
                     <div class="spinner mb-4"></div>
-                    <p class="text-xl font-medium">Loading 3D Architectural Scene...</p>
-                    <p class="text-sm mt-2 text-gray-400">(This is a complex scene and may take a moment)</p>
+                    <p class="text-xl font-medium" data-lang-key="loading_3d_text">Loading 3D Architectural Scene...</p>
+                    <p class="text-sm mt-2 text-gray-400" data-lang-key="loading_3d_note">(This is a complex scene and may take a moment)</p>
                 </div>
 
                 <div id="threejs-controls">
@@ -1051,8 +1081,8 @@
                             <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
                             <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
                         </div>
-                        <div class="ml-3 toggle-label" data-lang-key="toggle_neon">
-                            تبديل توهج النيون (كهرباء)
+                        <div class="ml-3 toggle-label">
+                            <span data-lang-key="toggle_neon">Toggle Neon Glow (Electric)</span>
                         </div>
                     </label>
                     
@@ -1062,8 +1092,8 @@
                             <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
                             <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
                         </div>
-                        <div class="ml-3 toggle-label" data-lang-key="toggle_hvac">
-                            تبديل أنظمة الأنابيب/التكييف
+                        <div class="ml-3 toggle-label">
+                            <span data-lang-key="toggle_hvac">Toggle Piping/HVAC Systems</span>
                         </div>
                     </label>
                 </div>
@@ -1152,26 +1182,21 @@
                 </div>
             </section>
             
-            <!-- REPLACED PROCESS SECTION with the new complex methodology design -->
             <section id="process" class="process-section" aria-label="Process" data-scroll-section>
-                <!-- New full-page background elements -->
                 <div class="ambient-background">
                     <div class="light-rays">
                         <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
                     </div>
                     <div class="grid-lines"></div>
                 </div>
-                <!-- The methodology content container -->
                 <div class="methodology-container">
                     <div class="section-title">
                         <h1 data-lang-key="process_title">Our Methodology</h1>
                         <div class="title-glow"></div>
                     </div>
                     <div class="steps-container">
-                        <!-- Connecting Line (Desktop Only) -->
                         <div class="connecting-line"><div class="line-progress" id="lineProgress"></div></div>
 
-                        <!-- Step 1: Consultation & Briefing -->
                         <div class="methodology-step" id="step1">
                             <div class="step-content">
                                 <div class="step-visual">
@@ -1186,7 +1211,6 @@
                             </div>
                         </div>
 
-                        <!-- Step 2: Concept & Design -->
                         <div class="methodology-step" id="step2">
                             <div class="step-content reverse">
                                 <div class="step-visual">
@@ -1201,7 +1225,6 @@
                             </div>
                         </div>
                         
-                        <!-- Step 3: 3D Visualization -->
                         <div class="methodology-step" id="step3">
                             <div class="step-content">
                                 <div class="step-visual">
@@ -1216,7 +1239,6 @@
                             </div>
                         </div>
                         
-                        <!-- Step 4: Execution & Delivery -->
                         <div class="methodology-step" id="step4">
                             <div class="step-content reverse">
                                 <div class="step-visual">
@@ -1300,7 +1322,9 @@
     
     <script>
         'use strict';
-        // Global variables for Three.js and animation loop management
+        // ==================================================================================================
+        // --- 1. Three.js 3D Scene Logic (Hero) ---
+        // ==================================================================================================
         let scene, camera, renderer, controls, clock, particleSystem, neonMeshes = [], hvacMeshes = [];
         let animationFrameId;
         const threeJsContainer = document.getElementById('scene-container');
@@ -1308,7 +1332,6 @@
         const threeJsInstructionBox = document.querySelector('.instruction-box');
         const materials = {};
 
-        // --- 1. Three.js 3D Scene Logic (Hero) ---
         function setupMaterials() {
             materials.concrete = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.9, metalness: 0.1 });
             materials.steel = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 0.4, metalness: 0.8 });
@@ -1439,7 +1462,6 @@
             return group;
         }
         function createParticles() {
-            // Note: Three.js particles are used here, but 2D canvas particles are used for the methodology section background.
             const particleCount = 200;
             const geometry = new THREE.BufferGeometry();
             const positions = [];
@@ -1453,7 +1475,6 @@
                 positions.push(x, y, z);
             }
             geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            // Removed materials.particle which was not defined in Three.js section, using BasicMaterial as fallback
             const particleMaterial = new THREE.PointsMaterial({ color: 0xeeeeee, size: 0.02, sizeAttenuation: true, transparent: true, opacity: 0.7 });
             particleSystem = new THREE.Points(geometry, particleMaterial);
             scene.add(particleSystem);
@@ -1592,9 +1613,9 @@
         }
         // --- END Three.js 3D Scene Logic (Hero) ---
 
-        // ==========================================
+        // ==================================================================================================
         // --- 2. Methodology Canvas Animations (FIXED) ---
-        // ==========================================
+        // ==================================================================================================
 
         // ===== PARTICLE SYSTEM (Background) =====
         const particleCanvas = document.getElementById('particleCanvas');
@@ -1606,7 +1627,6 @@
             particleCanvas.height = window.innerHeight;
         }
         
-        // REPLACED LOGIC with the radial line system from the second block
         function initBackgroundParticles() {
             if (!particleCanvas) return;
             pCtx = particleCanvas.getContext('2d');
@@ -1623,7 +1643,7 @@
             pCtx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
             pCtx.lineWidth = 1;
 
-            let bgTime = Date.now() / 1000; // Time counter for movement
+            let bgTime = Date.now() / 1000; 
 
             const lines = 30;
             const centerX = particleCanvas.width / 2;
@@ -1631,7 +1651,7 @@
             const maxDimension = Math.max(particleCanvas.width, particleCanvas.height);
 
             for (let i = 0; i < lines; i++) {
-                const angle = (i / lines) * Math.PI * 2 + bgTime * 0.005; // Slightly faster rotation
+                const angle = (i / lines) * Math.PI * 2 + bgTime * 0.005; 
                 const length = maxDimension * 0.8;
                 const x1 = centerX + Math.cos(angle) * length;
                 const y1 = centerY + Math.sin(angle) * length;
@@ -1645,16 +1665,7 @@
             requestAnimationFrame(animateBackgroundParticles);
         }
 
-        // Helper function for polygon face drawing (used in step 2 animation)
-        function drawFace(ctx, points, indices, fill = false) {
-            ctx.beginPath();
-            ctx.moveTo(points[indices[0]][0], points[indices[0]][1]);
-            for (let i = 1; i < indices.length; i++) ctx.lineTo(points[indices[i]][0], points[indices[i]][1]);
-            ctx.closePath();
-            if (fill) ctx.fill();
-        }
-
-        // Step 1: Cinematic Blueprint/Sketch (REPLACED)
+        // Step 1: Cinematic Blueprint/Sketch
         function animateStep1(canvas) {
             const ctx = canvas.getContext('2d');
             let time = 0;
@@ -1695,7 +1706,7 @@
             draw();
         }
 
-        // Step 2: 3D Wireframe Evolution (REPLACED)
+        // Step 2: 3D Wireframe Evolution
         function animateStep2(canvas) {
             const ctx = canvas.getContext('2d');
             let time2 = 0;
@@ -1757,7 +1768,7 @@
             draw();
         }
 
-        // Step 3: Cinematic Render (REPLACED)
+        // Step 3: Cinematic Render
         function animateStep3(canvas) {
             const ctx = canvas.getContext('2d');
             let time3 = 0;
@@ -1801,7 +1812,7 @@
             draw();
         }
 
-        // Step 4: Final Building with "Lights On" (REPLACED)
+        // Step 4: Final Building with "Lights On"
         const lights = Array(50).fill().map(() => ({
             x: 50 + Math.random() * 200,
             y: 100 + Math.random() * 140,
@@ -1845,7 +1856,7 @@
                             light.opacity = Math.min(1, light.opacity + 0.05);
                         }
                         ctx.beginPath();
-                        // Adjust coordinates based on fixed 300x300 canvas size for drawing
+                        
                         const drawX = light.x; 
                         const drawY = light.y;
                         
@@ -1869,7 +1880,6 @@
 
         function checkStepsVisibility() {
             const windowHeight = window.innerHeight;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
             steps.forEach((step) => {
                 const rect = step.getBoundingClientRect();
@@ -1888,40 +1898,18 @@
                 const stepsContainerRect = stepsContainer.getBoundingClientRect();
                 const totalHeight = stepsContainerRect.height;
                 
-                // Calculate how far down the scroll we are relative to the container
-                // We want the line to start growing when the container top hits the bottom of the viewport
                 const startOffset = stepsContainerRect.top - windowHeight;
-                const endOffset = stepsContainerRect.bottom - (windowHeight * 0.2); // Stop growing near the end
+                const endOffset = stepsContainerRect.bottom - (windowHeight * 0.2); 
                 
                 const scrolledDistance = -startOffset;
                 const scrollableRange = endOffset - startOffset;
 
-                // Clamp progress between 0 and 1
                 const scrollProgress = Math.min(1, Math.max(0, scrolledDistance / scrollableRange));
                 
                 lineProgress.style.height = `${scrollProgress * totalHeight}px`;
             }
         }
         
-        // ===== PARALLAX EFFECT (Per-Step) =====
-        function applyParallax() {
-            // Using native scroll offset since Locomotive scroll overrides it
-            const scrolled = window.pageYOffset;
-
-            steps.forEach((step, index) => {
-                // Apply a small speed difference for subtle effect
-                const speed = (index % 2 === 0) ? 0.5 : -0.5;
-                const yPos = scrolled * speed * 0.05; 
-                
-                // Note: The main CSS already applies a complex transition on transform. 
-                // We'll use GSAP for parallax if L-Scroll is active, otherwise rely on CSS/visibility checks.
-                // For simplicity due to the complex setup, we will comment out this native parallax if GSAP/L-Scroll is active, 
-                // and rely on the existing visibility/line checks which are less prone to fight the scroll library.
-                // step.style.transform = `translateY(${yPos}px)`; 
-            });
-        }
-        
-        // ===== INITIALIZE & RESIZE HANDLERS =====
         function initializeCanvases() {
             // Resize handler for step canvases
             const resizeStepCanvases = () => {
@@ -1935,7 +1923,6 @@
                 });
             };
 
-            // Call initial resize
             resizeStepCanvases();
             window.addEventListener('resize', resizeStepCanvases);
 
@@ -1952,9 +1939,12 @@
         }
 
 
-        // ==========================================
-        // --- 3. Main Initialization Logic (Original and Merged) ---
-        // ==========================================
+        // ==================================================================================================
+        // --- 3. Main Initialization Logic (Revised) ---
+        // ==================================================================================================
+        
+        let scroll; // Global scope for locomotive scroll instance
+        
         document.addEventListener('DOMContentLoaded', () => {
 
             const loader = document.querySelector('.loader');
@@ -1972,15 +1962,81 @@
             const backToTopBtn = document.querySelector('.back-to-top');
             const footerYear = document.getElementById('year');
             const scrollContainer = document.querySelector('[data-scroll-container]');
-            let scroll; 
+            
+            // --- Translations Data (Updated with form status messages) ---
+            const translations = {
+                en: {
+                    logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals. This stage involves deep client consultation, site analysis, and defining the precise scope and aesthetic direction of the project.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning. We iterate on floor plans, architectural structure, material palettes, and core design elements until the perfect concept emerges.", process_3_title: "3D Visualization", process_3_desc: "Creating hyper-realistic 3D models and interactive walk-throughs for client review and refinement. This ensures the final vision is perfectly aligned before construction begins, minimizing errors.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion. This includes coordination with contractors, site supervision, and final installation and quality checks to hand over the finished space.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`, toggle_neon: "Toggle Neon Glow (Electric)", toggle_hvac: "Toggle Piping/HVAC Systems", hero_instructions: "Use your mouse/touch to orbit and explore the scene.", loading_methodology_text: "Initializing Methodology Visuals...", loading_3d_text: "Loading 3D Architectural Scene...", loading_3d_note: "(This is a complex scene and may take a moment)", form_status_sending: "Sending...", form_status_success: "Message sent successfully!", form_status_error: "An error occurred. Please try again.",
+                },
+                ar: {
+                    logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك. تتضمن هذه المرحلة استشارة عميقة للعميل، وتحليل الموقع، وتحديد النطاق الدقيق والاتجاه الجمالي للمشروع.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات. نكرر العمل على مخططات الطوابق، والهيكل المعماري، ولوحات المواد، وعناصر التصميم الأساسية حتى يظهر المفهوم المثالي.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد فائقة الواقعية وعروض تفاعلية للمراجعة والتعديل من قبل العميل. يضمن ذلك توافق الرؤية النهائية تمامًا قبل بدء التنفيذ، مما يقلل الأخطاء.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد. يشمل ذلك التنسيق مع المقاولين، والإشراف على الموقع، والتركيب النهائي وفحوصات الجودة لتسليم المساحة النهائية.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`, toggle_neon: "تبديل توهج النيون (كهرباء)", toggle_hvac: "تبديل أنظمة الأنابيب/التكييف", hero_instructions: "استخدم الماوس/اللمس للدوران واستكشاف المشهد.", loading_methodology_text: "تهيئة العروض البصرية للمنهجية...", loading_3d_text: "تحميل المشهد المعماري ثلاثي الأبعاد...", loading_3d_note: "(هذا مشهد معقد وقد يستغرق لحظات)", form_status_sending: "جاري الإرسال...", form_status_success: "تم إرسال الرسالة بنجاح!", form_status_error: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+                },
+                tr: { /* Placeholder values */ logo: "Antonio GITHOP", nav_services: "Hizmetler", nav_process: "Süreç", nav_portfolio: "Portföy", nav_testimonials: "Referanslar", nav_contact: "İletişim", hero_title: "Ustalıkla Hazırlanmış Tasarımlar.", hero_subtitle: "Hyper-realistic 3D görselleştirme ve detaylara benzersiz dikkat ile vizyonunuzu zamansız bir gerçeğe dönüştüren ısmarlama mimari ve iç mekan çözümlerinde uzmanız.", hero_cta_drive: "Google Drive'da Daha Fazlasını Gör", hero_cta_portfolio: "Portföyümüzü Gör", services_title: "Temel", service_1_title: "Mimari & İç Tasarım", service_1_desc: "Eşsiz kimliğinizi yansıtan işlevsel ve estetik alanlar yaratma.", service_2_title: "3D Görselleştirme & Modelleme", service_2_desc: "Konseptleri hiper-gerçekçi 3D modeller ve etkileşimli render'lar ile hayata geçirme.", service_3_title: "Akıllı Aydınlatma & Elektrik", service_3_desc: "Modern yaşam için akıllı ve verimli aydınlatma ve elektrik planları tasarlama.", service_4_title: "Ticari & Konut Planlaması", service_4_desc: "Kullanımı en üst düzeye çıkarmak için hem ticari hem de konut alanları için uzman planlama.", service_5_title: "Proje Yönetimi & B2B", service_5_desc: "Stratejik B2B danışmanlığı ve uçtan uca proje yönetimi sağlama.", service_6_title: "Akıllı Ev Çözümleri", service_6_desc: "Akıllı ve güvenli evler oluşturmak için en son teknolojiyi entegre etme.", service_7_title: "İş Kurulum Danışmanı", service_7_desc: "Yeni girişimler ve iş genişletmeleri için uzman tavsiyesi.", service_8_title: "Aydınlatma Elektrik Planlayıcısı", service_8_desc: "Verimli ve uyumlu elektrik sistemi ve aydınlatma planlaması.", process_title: "Metodolojimiz", process_1_title: "Danışma & Brifing", process_1_desc: "Vizyonunuzu, gereksinimlerinizi ve hedeflerinizi anlama. Bu aşama derin müşteri danışmanlığı, saha analizi ve projenin kesin kapsamı ile estetik yönünün belirlenmesini içerir.", process_2_title: "Konsept & Tasarım", process_2_desc: "İlk konseptleri, eskizleri ve alan planlamasını geliştirme. Mükemmel konsept ortaya çıkana kadar kat planları, mimari yapı, malzeme paletleri ve temel tasarım unsurları üzerinde yineleme yaparız.", process_3_title: "3D Görselleştirme", process_3_desc: "Müşteri incelemesi ve düzeltmesi için hiper-gerçekçi 3D modeller ve etkileşimli gezintiler oluşturma. Bu, inşaat başlamadan önce nihai vizyonun mükemmel şekilde hizalanmasını sağlayarak hataları en aza indirir.", process_4_title: "Uygulama & Teslimat", process_4_desc: "Kalite ve zamanında tamamlanmasını sağlamak için projeyi yönetme. Bu, yüklenicilerle koordinasyon, saha denetimi ve bitmiş alanın teslim edilmesi için son kurulum ve kalite kontrollerini içerir.", portfolio_title: "Portföyümüz", testimonials_title: "Müşterilerimiz Ne Diyor", testimonial_1_text: "\"Antonio'nun ekibi, inanılmaz bir detay hassasiyetiyle mekanımızı dönüştürdü. 3D görselleştirmeler ezber bozucuydu.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"Akıllı ev entegrasyonu kusursuzdu ve evimizi deneyimleme şeklimizi temelden değiştirdi. Gerçekten profesyonel.\"", testimonial_2_author: "- J. Anderson, Özel Konut", contact_title: "Birlikte İnşa Edelim", contact_info_title: "İletişime Geçin", contact_info_desc: "Aklınızda bir proje mi var yoksa bir danışmanlığa mı ihtiyacınız var? Size yardım etmek için buradayız.", custom_apps_text: "Sizin ve işiniz için bir web sitesi oluşturabiliriz.", contact_form_name: "Adınız", contact_form_email: "E-postanız", contact_form_message: "Mesajınız", contact_form_submit: "Mesaj Gönder", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. Tüm Hakları Saklıdır.`, toggle_neon: "Neon Parıltısını Aç/Kapa (Elektrik)", toggle_hvac: "Boru/HVAC Sistemlerini Aç/Kapa", hero_instructions: "Sahneyi yörüngede döndürmek ve keşfetmek için farenizi/dokunuşunuzu kullanın.", loading_methodology_text: "Metodoloji Görselleri Başlatılıyor...", loading_3d_text: "3D Mimari Sahne Yükleniyor...", loading_3d_note: "(Bu karmaşık bir sahne olup biraz zaman alabilir)", form_status_sending: "Gönderiliyor...", form_status_success: "Mesaj başarıyla gönderildi!", form_status_error: "Bir hata oluştu. Lütfen tekrar deneyin.",
+                },
+                fr: { /* Placeholder values */ logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Processus", nav_portfolio: "Portfolio", nav_testimonials: "Témoignages", nav_contact: "Contact", hero_title: "Designs Magistraux, Méticuleusement Conçus.", hero_subtitle: "Nous sommes spécialisés dans les solutions architecturales et intérieures sur mesure, transformant votre vision en une réalité intemporelle grâce à une visualisation 3D hyper-réaliste et une attention inégalée aux détails.", hero_cta_drive: "Voir Plus sur Google Drive", hero_cta_portfolio: "Voir Notre Portfolio", services_title: "Expertise", service_1_title: "Conception Architecturale & Intérieure", service_1_desc: "Créer des espaces fonctionnels et esthétiques qui reflètent votre identité unique.", service_2_title: "Visualisation & Rendu 3D", service_2_desc: "Donner vie aux concepts avec des modèles 3D hyper-réalistes et des rendus interactifs.", service_3_title: "Éclairage & Électricité Intelligents", service_3_desc: "Concevoir des plans d'éclairage et électriques intelligents et efficaces pour la vie moderne.", service_4_title: "Planification Commerciale & Résidentielle", service_4_desc: "Planification experte pour les espaces commerciaux et résidentiels afin de maximiser l'utilité.", service_5_title: "Gestion de Projet & B2B", service_5_desc: "Fournir des conseils stratégiques B2B et une gestion de projet de bout en bout.", service_6_title: "Solutions de Maison Intelligente", service_6_desc: "Intégrer une technologie de pointe pour créer des maisons intelligentes et sécurisées.", service_7_title: "Consultant en Création d'Entreprise", service_7_desc: "Conseils d'experts pour les nouvelles entreprises et les extensions d'activité.", service_8_title: "Planificateur Électrique et d'Éclairage", service_8_desc: "Planification efficace et conforme des systèmes électriques et d'éclairage.", process_title: "Notre Méthodologie", process_1_title: "Consultation & Briefing", process_1_desc: "Comprendre votre vision, vos exigences et vos objectifs. Cette étape implique une consultation approfondie du client, une analyse du site et la définition du champ d'application précis et de la direction esthétique du projet.", process_2_title: "Concept & Design", process_2_desc: "Développement des concepts initiaux, des esquisses et de la planification spatiale. Nous itérons sur les plans d'étage, la structure architecturale, les palettes de matériaux et les éléments de conception de base jusqu'à ce que le concept parfait émerge.", process_3_title: "Visualisation 3D", process_3_desc: "Création de modèles 3D hyper-réalistes et de visites virtuelles interactives pour examen et affinement par le client. Cela garantit que la vision finale est parfaitement alignée avant le début de la construction, minimisant les erreurs.", process_4_title: "Exécution & Livraison", process_4_desc: "Gérer le projet pour assurer la qualité et l'achèvement dans les délais. Cela comprend la coordination avec les entrepreneurs, la supervision du site et l'installation finale ainsi que les contrôles de qualité pour livrer l'espace fini.", portfolio_title: "Notre Portfolio", testimonials_title: "Ce que disent nos Clients", testimonial_1_text: "\"L'équipe d'Antonio a transformé notre espace avec un sens incroyable du détail. Les visualisations 3D ont changé la donne.\"", testimonial_1_author: "- PDG, Tech Innovators Inc.", testimonial_2_text: "\"L'intégration de la maison intelligente a été transparente et a fondamentalement changé la façon dont nous vivons notre maison. Vraiment professionnel.\"", testimonial_2_author: "- J. Anderson, Résidence Privée", contact_title: "Construisons Ensemble", contact_info_title: "Prenez Contact", contact_info_desc: "Vous avez un projet en tête ou besoin d'une consultation ? Nous sommes là pour vous aider.", custom_apps_text: "Nous pouvons créer un site web pour vous et votre entreprise.", contact_form_name: "Votre Nom", contact_form_email: "Votre E-mail", contact_form_message: "Votre Message", contact_form_submit: "Envoyer le Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. Tous Droits Réservés.`, toggle_neon: "Basculer l'Éclairage Néon (Électrique)", toggle_hvac: "Basculer les Systèmes de Tuyauterie/CVC", hero_instructions: "Utilisez votre souris/tactile pour faire pivoter et explorer la scène.", loading_methodology_text: "Initialisation des Visuels de la Méthodologie...", loading_3d_text: "Chargement de la Scène Architecturale 3D...", loading_3d_note: "(Ceci est une scène complexe et peut prendre un moment)", form_status_sending: "Envoi...", form_status_success: "Message envoyé avec succès !", form_status_error: "Une erreur s'est produite. Veuillez réessayer.",
+                },
+                es: { /* Placeholder values */ logo: "Eng.r Antonio GITHOP", nav_services: "Servicios", nav_process: "Proceso", nav_portfolio: "Portafolio", nav_testimonials: "Testimonios", nav_contact: "Contacto", hero_title: "Diseños Magistrales, Meticulosamente Elaborados.", hero_subtitle: "Nos especializamos en soluciones arquitectónicas y de interiores a medida, transformando su visión en una realidad atemporal con visualización 3D hiperrealista y una atención al detalle inigualable.", hero_cta_drive: "Ver Más en Google Drive", hero_cta_portfolio: "Ver Nuestro Portafolio", services_title: "Experiencia", service_1_title: "Diseño Arquitectónico y de Interiores", service_1_desc: "Creando espacios funcionales y estéticos que reflejan su identidad única.", service_2_title: "Visualización y Renderizado 3D", service_2_desc: "Dando vida a los conceptos con modelos 3D hiperrealistas y renders interactivos.", service_3_title: "Iluminación y Electricidad Inteligente", service_3_desc: "Diseño de planes de iluminación y eléctricos inteligentes y eficientes para la vida moderna.", service_4_title: "Planificación Comercial y Residencial", service_4_desc: "Planificación experta para espacios comerciales y residenciales para maximizar la utilidad.", service_5_title: "Gestión de Proyectos y B2B", service_5_desc: "Ofreciendo consultoría estratégica B2B y gestión de proyectos de principio a fin.", service_6_title: "Soluciones de Hogar Inteligente", service_6_desc: "Integrando tecnología de vanguardia para crear hogares inteligentes y seguros.", service_7_title: "Consultor de Creación de Empresas", service_7_desc: "Asesoramiento experto para nuevas empresas y expansiones de negocios.", service_8_title: "Planificador Eléctrico de Iluminación", service_8_desc: "Planificación eficiente y conforme de sistemas eléctricos y de iluminación.", process_title: "Nuestra Metodología", process_1_title: "Consulta e Información", process_1_desc: "Comprender su visión, requisitos y objetivos. Esta etapa implica una consulta profunda con el cliente, análisis del sitio y definición del alcance preciso y la dirección estética del proyecto.", process_2_title: "Concepto y Diseño", process_2_desc: "Desarrollo de conceptos iniciales, bocetos y planificación del espacio. Iteramos en planos de planta, estructura arquitectónica, paletas de materiales y elementos de diseño centrales hasta que emerge el concepto perfecto.", process_3_title: "Visualización 3D", process_3_desc: "Creación de modelos 3D hiperrealistas y recorridos interactivos para la revisión y el perfeccionamiento del cliente. Esto asegura que la visión final esté perfectamente alineada antes de que comience la construcción, minimizando errores.", process_4_title: "Ejecución y Entrega", process_4_desc: "Gestión del proyecto para garantizar la calidad y la finalización a tiempo. Esto incluye la coordinación con contratistas, la supervisión del sitio y la instalación final y los controles de calidad para entregar el espacio terminado.", portfolio_title: "Nuestro Portafolio", testimonials_title: "Lo que Dicen Nuestros Clientes", testimonial_1_text: "\"El equipo de Antonio transformó nuestro espacio con una increíble atención al detalle. Las visualizaciones 3D fueron un cambio de juego.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"La integración del hogar inteligente fue perfecta y ha cambiado fundamentalmente la forma en que experimentamos nuestro hogar. Verdaderamente profesional.\"", testimonial_2_author: "- J. Anderson, Residencia Privada", contact_title: "Construyamos Juntos", contact_info_title: "Póngase en Contacto", contact_info_desc: "¿Tiene un proyecto en mente o necesita una consulta? Estamos aquí para ayudarle.", custom_apps_text: "Podemos crear un sitio web para usted y su negocio.", contact_form_name: "Su Nombre", contact_form_email: "Su Correo Electrónico", contact_form_message: "Su Mensaje", contact_form_submit: "Enviar Mensaje", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. Todos los Derechos Reservados.`, toggle_neon: "Activar/Desactivar Resplandor Neón (Eléctrico)", toggle_hvac: "Activar/Desactivar Sistemas de Tuberías/HVAC", hero_instructions: "Use su ratón/táctil para orbitar y explorar la escena.", loading_methodology_text: "Inicializando Visuales de Metodología...", loading_3d_text: "Cargando Escena Arquitectónica 3D...", loading_3d_note: "(Esta es una escena compleja y puede tardar un momento)", form_status_sending: "Enviando...", form_status_success: "¡Mensaje enviado con éxito!", form_status_error: "Ocurrió un error. Por favor, inténtelo de nuevo.",
+                }
+            };
+
+            const applyLanguage = (lang) => {
+                const langData = translations[lang];
+                document.documentElement.lang = lang; 
+                const isRTL = lang === 'ar';
+                document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+                
+                // 1. Update text content
+                document.querySelectorAll('[data-lang-key]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-key'); 
+                    if (langData[key]) {
+                        // Special handling for the shimmer title: only update the non-accented text
+                        if (el.closest('.section-title-premium')) {
+                            const accentSpan = el.querySelector('.gold-accent');
+                            const parent = el.closest('.section-title-premium');
+                            if (parent) {
+                                // Find the text node or inner element that needs updating
+                                let textNode = [...parent.childNodes].find(node => node.nodeType === 3 && node.textContent.trim().length > 0) || parent.querySelector('span:not(.gold-accent)');
+                                if (textNode && textNode.nodeType === 3) {
+                                    textNode.textContent = langData[key];
+                                } else if (textNode) {
+                                    textNode.textContent = langData[key];
+                                }
+                            }
+                        } else {
+                            el.textContent = langData[key]; 
+                        }
+                    }
+                });
+                
+                // 2. Update placeholders
+                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { 
+                    const key = el.getAttribute('data-lang-placeholder'); 
+                    if (langData[key]) el.placeholder = langData[key]; 
+                });
+                
+                // 3. Update Three.js Control Labels (which are inside a generic div/span)
+                document.querySelector('[data-lang-key="toggle_neon"]').textContent = langData['toggle_neon'];
+                document.querySelector('[data-lang-key="toggle_hvac"]').textContent = langData['toggle_hvac'];
+                
+                // 4. Update span element content, like the logo text and year.
+                document.getElementById('current-lang').textContent = lang.toUpperCase(); 
+                document.getElementById('year').textContent = new Date().getFullYear(); // Year update is outside the language data map, re-run for safety.
+
+                localStorage.setItem('language', lang);
+                
+                // 5. CRITICAL: Refresh scroll layout after changing direction/font
+                if (scroll) scroll.update();
+                ScrollTrigger.refresh();
+            };
+            
+            const currentLanguage = localStorage.getItem('language') || 'en';
 
             // --- Locomotive Scroll Init ---
             try {
                 scroll = new LocomotiveScroll({
                     el: scrollContainer,
                     smooth: true,
-                    // Reduced lerp for less "floatiness" which can sometimes be perceived as jerk
-                    lerp: 0.1, 
+                    lerp: 0.1,  
                     tablet: { smooth: true },
                     smartphone: { smooth: true }
                 });
@@ -1997,13 +2053,10 @@
                     pinType: scrollContainer.style.transform ? "transform" : "fixed"
                 });
                 
-                // IMPORTANT: When Locomotive scroll is ready, update ScrollTrigger
                 scroll.on('ready', () => ScrollTrigger.refresh());
-
 
             } catch (error) {
                 console.error("Locomotive Scroll or GSAP ScrollTrigger initialization failed:", error);
-                // Fallback: Use native scrolling
                 document.documentElement.style.scrollBehavior = 'smooth';
                 scrollContainer.removeAttribute('data-scroll-container');
                 scroll = { on: () => {}, update: () => {}, scrollTo: (target) => { document.querySelector(target).scrollIntoView({ behavior: 'smooth' }); } };
@@ -2020,13 +2073,11 @@
                     ScrollTrigger.refresh();
                 }
 
-                // Initialize the new methodology canvases after the initial site content is loaded
                 initBackgroundParticles();
                 initializeCanvases();
-                checkStepsVisibility(); // Initial check for methodology visibility
+                checkStepsVisibility(); 
                 
                 document.getElementById('loadingOverlay').classList.add('hidden');
-
 
                 const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.2 } });
                 tl.to(header, { y: '0%', duration: 1, ease: 'power2.out' }, 0.5)
@@ -2085,18 +2136,16 @@
             // --- Utility Functions ---
             if (footerYear) footerYear.textContent = new Date().getFullYear();
 
-            // Native scroll listener for fixed elements, back-to-top, and methodology checks
+            // Native scroll listener for fixed elements and back-to-top
             window.addEventListener('scroll', () => {
                 header.classList.toggle('scrolled', window.scrollY > 50);
                 backToTopBtn.classList.toggle('show', window.scrollY > window.innerHeight);
-                checkStepsVisibility(); // Methodology visibility and line progress update
-                // applyParallax(); // Removed native parallax to avoid conflicts with Locomotive/GSAP
+                checkStepsVisibility(); 
             });
             
             // If Locomotive Scroll is active, also trigger visibility checks on its scroll event
             if (scroll && typeof scroll.on === 'function') {
                 scroll.on('scroll', (instance) => {
-                    // Check visibility using Locomotive's current scroll value (y)
                     checkStepsVisibility();
                 });
             }
@@ -2113,50 +2162,20 @@
             };
             const toggleTheme = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
-            // --- Translations ---
-            const translations = {
-                en: {
-                    logo: "Eng.r Antonio GITHOP", nav_services: "Services", nav_process: "Process", nav_portfolio: "Portfolio", nav_testimonials: "Testimonials", nav_contact: "Contact", hero_title: "Masterful Designs, Meticulously Crafted.", hero_subtitle: "We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.", hero_cta_drive: "View More on Google Drive", hero_cta_portfolio: "See Our Portfolio", services_title: "Core", service_1_title: "Architectural & Interior Design", service_1_desc: "Creating functional and aesthetic spaces that reflect your unique identity.", service_2_title: "3D Visualization & Rendering", service_2_desc: "Bringing concepts to life with hyper-realistic 3D models and interactive renderings.", service_3_title: "Smart Lighting & Electrical", service_3_desc: "Designing intelligent and efficient lighting and electrical plans for modern living.", service_4_title: "Commercial & Residential Planning", service_4_desc: "Expert planning for both commercial and residential spaces to maximize utility.", service_5_title: "Project Management & B2B", service_5_desc: "Providing strategic B2B consulting and end-to-end project management.", service_6_title: "Smart Home Solutions", service_6_desc: "Integrating cutting-edge technology to create intelligent and secure homes.", service_7_title: "Business Setup Consultant", service_7_desc: "Expert advice for new ventures and business expansions.", service_8_title: "Lighting Electrical Planner", service_8_desc: "Efficient and compliant electrical system and lighting planning.", process_title: "Our Methodology", process_1_title: "Consultation & Briefing", process_1_desc: "Understanding your vision, requirements, and goals. This stage involves deep client consultation, site analysis, and defining the precise scope and aesthetic direction of the project.", process_2_title: "Concept & Design", process_2_desc: "Developing initial concepts, sketches, and space planning. We iterate on floor plans, architectural structure, material palettes, and core design elements until the perfect concept emerges.", process_3_title: "3D Visualization", process_3_desc: "Creating hyper-realistic 3D models and interactive walk-throughs for client review and refinement. This ensures the final vision is perfectly aligned before construction begins, minimizing errors.", process_4_title: "Execution & Delivery", process_4_desc: "Managing the project to ensure quality and timely completion. This includes coordination with contractors, site supervision, and final installation and quality checks to hand over the finished space.", portfolio_title: "Our Portfolio", testimonials_title: "What Our Clients Say", testimonial_1_text: "\"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer.\"", testimonial_1_author: "- CEO, Tech Innovators Inc.", testimonial_2_text: "\"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional.\"", testimonial_2_author: "- J. Anderson, Private Residence", contact_title: "Let's Build Together", contact_info_title: "Get in Touch", contact_info_desc: "Have a project in mind or need a consultation? We are here to help you.", custom_apps_text: "We can build a website for you and your business.", contact_form_name: "Your Name", contact_form_email: "Your Email", contact_form_message: "Your Message", contact_form_submit: "Send Message", footer_text: `© ${new Date().getFullYear()} Eng.r Antonio GITHOP. All Rights Reserved.`, toggle_neon: "Toggle Neon Glow (Electric)", toggle_hvac: "Toggle Piping/HVAC Systems", hero_instructions: "Use your mouse/touch to orbit and explore the scene.",
-                },
-                ar: {
-                    logo: "م. أنطونيو جيثوب", nav_services: "خدماتنا", nav_process: "منهجيتنا", nav_portfolio: "أعمالنا", nav_testimonials: "آراء العملاء", nav_contact: "اتصل بنا", hero_title: "تصاميم بارعة، منفذة بإتقان.", hero_subtitle: "نحن متخصصون في الحلول المعمارية والداخلية المخصصة، نحول رؤيتك إلى واقع خالد من خلال تصورات ثلاثية الأبعاد فائقة الواقعية واهتمام لا مثيل له بالتفاصيل.", hero_cta_drive: "شاهد المزيد على Google Drive", hero_cta_portfolio: "تصفح أعمالنا", services_title: "خبراتنا", service_1_title: "التصميم المعماري والداخلي", service_1_desc: "نصنع مساحات وظيفية وجمالية تعكس هويتك الفريدة.", service_2_title: "التصور والعرض ثلاثي الأبعاد", service_2_desc: "نُحيي المفاهيم بنماذج ثلاثية الأبعاد واقعية وعروض تفاعلية.", service_3_title: "الإضاءة الذكية والكهرباء", service_3_desc: "نصمم خطط إضاءة وكهرباء ذكية وفعالة للمعيشة العصرية.", service_4_title: "التخطيط التجاري والسكني", service_4_desc: "تخطيط احترافي للمساحات التجارية والسكنية لتعظيم الاستفادة منها.", service_5_title: "إدارة المشاريع و B2B", service_5_desc: "نقدم استشارات استراتيجية بين الشركات وإدارة شاملة للمشاريع.", service_6_title: "حلول المنزل الذكي", service_6_desc: "ندمج أحدث التقنيات لإنشاء منازل ذكية وآمنة.", service_7_title: "استشاري تأسيس أعمال", service_7_desc: "نصائح الخبراء للمشاريع الجديدة وتوسعات الأعمال.", service_8_title: "مخطط كهرباء وإضاءة", service_8_desc: "تخطيط فعال ومتوافق للأنظمة الكهربائية والإضاءة.", process_title: "منهجيتنا", process_1_title: "الاستشارة والتعريف", process_1_desc: "فهم رؤيتك ومتطلباتك وأهدافك. تتضمن هذه المرحلة استشارة عميقة للعميل، وتحليل الموقع، وتحديد النطاق الدقيق والاتجاه الجمالي للمشروع.", process_2_title: "المفهوم والتصميم", process_2_desc: "تطوير المفاهيم الأولية والرسومات وتخطيط المساحات. نكرر العمل على مخططات الطوابق، والهيكل المعماري، ولوحات المواد، وعناصر التصميم الأساسية حتى يظهر المفهوم المثالي.", process_3_title: "التصور ثلاثي الأبعاد", process_3_desc: "إنشاء نماذج ثلاثية الأبعاد فائقة الواقعية وعروض تفاعلية للمراجعة والتعديل من قبل العميل. يضمن ذلك توافق الرؤية النهائية تمامًا قبل بدء التنفيذ، مما يقلل الأخطاء.", process_4_title: "التنفيذ والتسليم", process_4_desc: "إدارة المشروع لضمان الجودة والإنجاز في الوقت المحدد. يشمل ذلك التنسيق مع المقاولين، والإشراف على الموقع، والتركيب النهائي وفحوصات الجودة لتسليم المساحة النهائية.", portfolio_title: "معرض أعمالنا", testimonials_title: "ماذا يقول عملاؤنا", testimonial_1_text: "\"فريق أنطونيو حوّل مساحتنا بعين لا تصدق للتفاصيل. التصورات ثلاثية الأبعاد كانت نقلة نوعية.\"", testimonial_1_author: "- الرئيس التنفيذي، Tech Innovators Inc.", testimonial_2_text: "\"تكامل المنزل الذكي كان سلسًا وغيّر بشكل جذري طريقة تجربتنا لمنزلنا. احترافية حقيقية.\"", testimonial_2_author: "- ج. أندرسون، إقامة خاصة", contact_title: "لنبنِ معًا", contact_info_title: "تواصل معنا", contact_info_desc: "هل لديك مشروع في ذهنك أو تحتاج إلى استشارة؟ نحن هنا لمساعدتك.", custom_apps_text: "يمكننا بناء موقع إلكتروني لك ولعملك.", contact_form_name: "اسمك", contact_form_email: "بريدك الإلكتروني", contact_form_message: "رسالتك", contact_form_submit: "إرسال الرسالة", footer_text: `© ${new Date().getFullYear()} م. أنطونيو جيثوب. جميع الحقوق محفوظة.`, toggle_neon: "تبديل توهج النيون (كهرباء)", toggle_hvac: "تبديل أنظمة الأنابيب/التكييف", hero_instructions: "استخدم الماوس/اللمس للدوران واستكشاف المشهد.",
-                },
-                // ... (Other languages remain the same)
-            };
-            const applyLanguage = (lang) => {
-                const langData = translations[lang];
-                document.documentElement.lang = lang; 
-                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.body.classList.toggle('is-rtl', lang === 'ar'); 
-                
-                document.querySelectorAll('[data-lang-key]').forEach(el => { 
-                    const key = el.getAttribute('data-lang-key'); 
-                    if (langData[key]) el.textContent = langData[key]; 
-                });
-                
-                document.querySelectorAll('[data-lang-placeholder]').forEach(el => { 
-                    const key = el.getAttribute('data-lang-placeholder'); 
-                    if (langData[key]) el.placeholder = langData[key]; 
-                });
-                
-                currentLangSpan.textContent = lang.toUpperCase(); 
-                localStorage.setItem('language', lang);
-                if (scroll) scroll.update();
-                ScrollTrigger.refresh();
-            };
-            const currentLanguage = localStorage.getItem('language') || 'en';
-
             const handleFormSubmit = async (e) => {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
                 if (formData.get('website')) return;
                 const object = { access_key: "YOUR_ACCESS_KEY_HERE", ...Object.fromEntries(formData) };
                 const json = JSON.stringify(object);
+                
                 formStatus.textContent = translations[currentLanguage].form_status_sending || "Sending...";
-                formStatus.style.color = 'var(--muted)';
+                formStatus.style.color = 'var(--primary)';
+                
                 try {
                     const res = await fetch("https://api.web3forms.com/submit", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: json });
                     const result = await res.json();
+                    
                     if (result.success) {
                         formStatus.textContent = translations[currentLanguage].form_status_success || "Message sent successfully!";
                         formStatus.style.color = 'green';
@@ -2236,12 +2255,19 @@
             if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
             if (langSelector) {
                 langSelector.addEventListener('click', (e) => { e.stopPropagation(); const isOpen = langSelector.classList.toggle('open'); gsap.to(langChevron, { rotation: isOpen ? 180 : 0, duration: 0.3 }); });
-                langDropdown.addEventListener('click', (e) => { if (e.target.matches('[data-lang]')) { applyLanguage(e.target.dataset.lang); } });
+                langDropdown.addEventListener('click', (e) => { 
+                    if (e.target.matches('[data-lang]')) { 
+                        applyLanguage(e.target.dataset.lang); 
+                        closeMobileMenu(); // Close menu after selection
+                        langSelector.classList.remove('open'); // Close dropdown
+                        gsap.to(langChevron, { rotation: 0, duration: 0.3 }); // Reset chevron
+                    } 
+                });
             }
             document.addEventListener('click', () => { if (langSelector && langSelector.classList.contains('open')) { langSelector.classList.remove('open'); gsap.to(langChevron, { rotation: 0, duration: 0.3 }); } });
             if (contactForm) contactForm.addEventListener('submit', handleFormSubmit);
             
-            // Back-to-Top now uses native scroll always
+            // Back-to-Top
             if (backToTopBtn) backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
@@ -2252,7 +2278,6 @@
                     const targetId = this.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        // Use Locomotive Scroll for smooth scrolling if available
                         if (scroll && typeof scroll.scrollTo === 'function') {
                             scroll.scrollTo(targetElement);
                         } else {
@@ -2264,11 +2289,13 @@
             });
 
             applyTheme(currentTheme);
-            applyLanguage(currentLanguage);
+            // APPLY LANGUAGE IS CALLED HERE ONCE TO INIT CORRECT TEXTS AND DIR ATTRIBUTES
+            applyLanguage(currentLanguage); 
             setupCursor();
         });
+
+        // Boids Simulation script removed for stability as instructed.
     </script>
-    <!-- Boids Simulation script removed for stability as instructed. -->
     <script>
     (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="cEKyhomDE8jOET-s6DEK2";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
     </script>
