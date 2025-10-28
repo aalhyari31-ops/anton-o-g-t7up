@@ -1,191 +1,135 @@
-/* ------------------------------------- */
-/* 1. Constants (ثوابت التحكم في السلوك) */
-/* ------------------------------------- */
-const NUM_BOIDS = 100; // عدد الطيور
-const MAX_SPEED = 2;   // أقصى سرعة
-const MAX_FORCE = 0.05; // أقصى قوة دفع لتغيير الاتجاه
-const PERCEPTION_RADIUS = 50; // مدى رؤية الطائر للطيور الأخرى بالبكسل
-const SEPARATION_WEIGHT = 1.5; // وزن التباعد (قوة التجنب)
-const ALIGNMENT_WEIGHT = 1.0;  // وزن المحاذاة (قوة تقليد الاتجاه)
-const COHESION_WEIGHT = 1.0;   // وزن التماسك (قوة التجمع)
+// =================================================================
+            // === الحل الجذري للسلاسة (IntersectionObserver Logic) ===
+            // =================================================================
 
-/* ------------------------------------- */
-/* 2. Vector Class (كلاس المتجهات) */
-/* ------------------------------------- */
-class Vector {
-    constructor(x, y) {
-        this.x = x || 0;
-        this.y = y || 0;
-    }
+            // --- 1. متغيرات لتخزين "حالة" الرسوم المتحركة ---
+            let particleAnimationLoopId = null;
+            const stepAnimationLoops = {
+                canvas1: null, canvas2: null, canvas3: null, canvas4: null
+            };
+            const stepCanvasElements = {
+                canvas1: document.getElementById('canvas1'),
+                canvas2: document.getElementById('canvas2'),
+                canvas3: document.getElementById('canvas3'),
+                canvas4: document.getElementById('canvas4')
+            };
 
-    add(v) { this.x += v.x; this.y += v.y; return this; }
-    sub(v) { this.x -= v.x; this.y -= v.y; return this; }
-    mult(n) { this.x *= n; this.y *= n; return this; }
-    setMag(n) { return this.normalize().mult(n); }
-    normalize() { 
-        const m = this.mag();
-        if (m > 0) return this.div(m); 
-        return this;
-    }
-    mag() { return Math.sqrt(this.x * this.x + this.y * this.y); }
-    div(n) { this.x /= n; this.y /= n; return this; }
-    limit(max) {
-        if (this.mag() > max) {
-            this.setMag(max);
-        }
-        return this;
-    }
-    heading() { return Math.atan2(this.y, this.x); }
-    static sub(v1, v2) { return new Vector(v1.x - v2.x, v1.y - v2.y); }
-    static random2D() { return new Vector(Math.random() * 2 - 1, Math.random() * 2 - 1).normalize(); }
-}
+            // --- 2. تعديل دوال الـ Canvas لتكون قابلة للإيقاف ---
 
-/* ------------------------------------- */
-/* 3. Boid Class (كلاس الطائر الذكي) */
-/* ------------------------------------- */
-class Boid {
-    constructor(x, y, el) {
-        this.position = new Vector(x, y);
-        this.velocity = Vector.random2D().mult(Math.random() * MAX_SPEED);
-        this.acceleration = new Vector();
-        this.element = el;
-    }
-
-    // حساب القوة المطلوبة للوصول إلى سرعة معينة (مطلوبة للتماسك)
-    seek(target) {
-        let desired = Vector.sub(target, this.position);
-        desired.setMag(MAX_SPEED);
-        let steer = Vector.sub(desired, this.velocity);
-        steer.limit(MAX_FORCE);
-        return steer;
-    }
-
-    // تطبيق قواعد السرب
-    flock(boids) {
-        let separation = this.separate(boids).mult(SEPARATION_WEIGHT);
-        let alignment = this.align(boids).mult(ALIGNMENT_WEIGHT);
-        let cohesion = this.cohesion(boids).mult(COHESION_WEIGHT);
-
-        this.acceleration.add(separation).add(alignment).add(cohesion);
-    }
-
-    // قاعدة التباعد: تجنب الاصطدام
-    separate(boids) {
-        let steering = new Vector();
-        let count = 0;
-        for (let other of boids) {
-            let d = Vector.sub(this.position, other.position).mag();
-            if (other !== this && d < PERCEPTION_RADIUS) {
-                let diff = Vector.sub(this.position, other.position);
-                diff.div(d); 
-                steering.add(diff);
-                count++;
+            // (الخلفية الثابتة)
+            function stopBackgroundParticles() {
+                if (particleAnimationLoopId) {
+                    cancelAnimationFrame(particleAnimationLoopId);
+                    particleAnimationLoopId = null;
+                }
             }
-        }
-        if (count > 0) {
-            steering.div(count);
-            steering.setMag(MAX_SPEED);
-            steering.sub(this.velocity);
-            steering.limit(MAX_FORCE);
-        }
-        return steering;
-    }
+            // (ملاحظة: دالة animateBackgroundParticles موجودة عندك أصلاً)
+            // فقط تأكد من أن السطر الأخير فيها هو:
+            // particleAnimationLoopId = requestAnimationFrame(animateBackgroundParticles);
+            // بدلاً من:
+            // requestAnimationFrame(animateBackgroundParticles);
+            // (سأفترض أنك قمت بهذا التعديل)
 
-    // قاعدة المحاذاة: تطابق السرعة
-    align(boids) {
-        let avgVelocity = new Vector();
-        let count = 0;
-        for (let other of boids) {
-            let d = Vector.sub(this.position, other.position).mag();
-            if (other !== this && d < PERCEPTION_RADIUS) {
-                avgVelocity.add(other.velocity);
-                count++;
+            // (الخطوات الأربعة)
+            // نحتاج لتعديل كل دالة من دوال animateStep
+            // هذا مثال لـ animateStep1 (طبق نفس المبدأ على 2, 3, 4)
+
+            /* * اذهب إلى دالة animateStep1(canvas) الأصلية 
+             * وعدل السطر الأخير فيها 
+             * من: requestAnimationFrame(draw);
+             * إلى: stepAnimationLoops.canvas1 = requestAnimationFrame(draw);
+            */
+           
+            // مثال لكيف يجب أن تبدو دالة animateStep1 بعد التعديل:
+            /*
+            function animateStep1(canvas) {
+                const ctx = canvas.getContext('2d');
+                let time = 0;
+                const canvasSize = Math.min(canvas.width, canvas.height);
+                const scaleFactor = canvasSize / 300;
+                
+                function draw() {
+                    if (!canvas.isConnected || !canvas.width) { 
+                        stepAnimationLoops.canvas1 = requestAnimationFrame(draw); // استمر إذا كان الكانفاس غير جاهز
+                        return; 
+                    }
+                    // ... (كل كود الرسم الخاص بك) ...
+                    
+                    time++;
+                    // (هام) هذا هو التعديل
+                    stepAnimationLoops.canvas1 = requestAnimationFrame(draw); 
+                }
+                draw();
             }
-        }
-        if (count > 0) {
-            avgVelocity.div(count);
-            avgVelocity.setMag(MAX_SPEED);
-            let steer = Vector.sub(avgVelocity, this.velocity);
-            steer.limit(MAX_FORCE);
-            return steer;
-        }
-        return new Vector();
-    }
+            // (كرر هذا التعديل لـ animateStep2, animateStep3, animateStep4)
+            // animateStep2 -> stepAnimationLoops.canvas2 = requestAnimationFrame(draw);
+            // animateStep3 -> stepAnimationLoops.canvas3 = requestAnimationFrame(draw);
+            // animateStep4 -> stepAnimationLoops.canvas4 = requestAnimationFrame(draw);
+            */
 
-    // قاعدة التماسك: التحرك نحو المركز
-    cohesion(boids) {
-        let centerOfMass = new Vector();
-        let count = 0;
-        for (let other of boids) {
-            let d = Vector.sub(this.position, other.position).mag();
-            if (other !== this && d < PERCEPTION_RADIUS) {
-                centerOfMass.add(other.position);
-                count++;
+            // دالة عامة لإيقاف أي كانفاس خطوة
+            function stopStepAnimation(canvasId) {
+                if (stepAnimationLoops[canvasId]) {
+                    cancelAnimationFrame(stepAnimationLoops[canvasId]);
+                    stepAnimationLoops[canvasId] = null;
+                }
             }
-        }
-        if (count > 0) {
-            centerOfMass.div(count);
-            return this.seek(centerOfMass);
-        }
-        return new Vector();
-    }
 
-    // التعامل مع حدود الشاشة (يعبر للجانب الآخر)
-    edges() {
-        if (this.position.x > window.innerWidth) this.position.x = 0;
-        else if (this.position.x < 0) this.position.x = window.innerWidth;
-        if (this.position.y > window.innerHeight) this.position.y = 0;
-        else if (this.position.y < 0) this.position.y = window.innerHeight;
-    }
+            // --- 3. إعداد "المراقب" (IntersectionObserver) ---
 
-    // التحديث والرسم
-    update() {
-        this.position.add(this.velocity);
-        this.velocity.add(this.acceleration);
-        this.velocity.limit(MAX_SPEED);
-        this.acceleration.mult(0); // مسح التسارع
-    }
+            // المراقب الأول: للقسم كاملاً (للخلفيات)
+            const processSection = document.getElementById('process');
+            const sectionObserver = new IntersectionObserver((entries) => {
+                const entry = entries[0];
+                if (entry.isIntersecting) {
+                    // القسم دخل الشاشة
+                    processSection.classList.add('is-in-view');
+                    if (!particleAnimationLoopId) {
+                        animateBackgroundParticles(); // شغّل كانفاس الخلفية
+                    }
+                } else {
+                    // القسم خرج من الشاشة
+                    processSection.classList.remove('is-in-view');
+                    stopBackgroundParticles(); // أوقف كانفاس الخلفية
+                }
+            }, {
+                threshold: 0.01 // عندما يظهر 1% من القسم
+            });
 
-    show() {
-        // تحديث الموضع
-        this.element.style.left = `${this.position.x}px`;
-        this.element.style.top = `${this.position.y}px`;
-        
-        // تدوير الطائر ليواجه اتجاه السرعة
-        let angle = this.velocity.heading();
-        this.element.style.transform = `rotate(${angle}rad)`;
-    }
-}
+            // ابدأ بمراقبة القسم
+            if (processSection) {
+                sectionObserver.observe(processSection);
+            }
 
-/* ------------------------------------- */
-/* 4. Main Setup (الإعداد الرئيسي) */
-/* ------------------------------------- */
-const boids = [];
-const container = document.getElementById('boids-container');
+            // المراقب الثاني: لكل "كانفاس" خطوة على حدة
+            const canvasObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const canvasId = entry.target.id;
+                    if (entry.isIntersecting) {
+                        // الكانفاس دخل الشاشة
+                        if (!stepAnimationLoops[canvasId]) {
+                            // شغّل فقط الكانفاس الذي نراه
+                            if (canvasId === 'canvas1') animateStep1(entry.target);
+                            if (canvasId === 'canvas2') animateStep2(entry.target);
+                            if (canvasId === 'canvas3') animateStep3(entry.target);
+                            if (canvasId === 'canvas4') animateStep4(entry.target);
+                        }
+                    } else {
+                        // الكانفاس خرج من الشاشة
+                        stopStepAnimation(canvasId); // أوقف الكانفاس الذي لا نراه
+                    }
+                });
+            }, {
+                threshold: 0.1 // عندما يظهر 10% من الكانفاس
+            });
 
-// تهيئة الطيور
-function setup() {
-    for (let i = 0; i < NUM_BOIDS; i++) {
-        const el = document.createElement('div');
-        el.className = 'boid';
-        container.appendChild(el);
-        let x = Math.random() * window.innerWidth;
-        let y = Math.random() * window.innerHeight;
-        boids.push(new Boid(x, y, el));
-    }
-    animate();
-}
+            // ابدأ بمراقبة الخطوات الأربعة
+            Object.values(stepCanvasElements).forEach(canvas => {
+                if (canvas) {
+                    canvasObserver.observe(canvas);
+                }
+            });
 
-// حلقة التحريك الرئيسية
-function animate() {
-    for (let boid of boids) {
-        boid.flock(boids); 
-        boid.edges(); 
-        boid.update(); 
-        boid.show(); 
-    }
-    requestAnimationFrame(animate); 
-}
-
-// البدء بعد تحميل الصفحة
-window.addEventListener('load', setup);
+            // =================================================================
+            // === نهاية حل السلاسة ===
+            // =================================================================
