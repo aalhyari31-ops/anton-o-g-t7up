@@ -66,7 +66,7 @@
 
     <style>
         /* ========================
-          Theme & Variables (Original)
+           Theme & Variables (Original)
         ======================== */
         :root {
             --bg: #121212;
@@ -94,7 +94,7 @@
         }
 
         /* ========================
-          Base & Resets (Original)
+           Base & Resets (Original)
         ======================== */
         * { box-sizing: border-box; }
         html { scroll-behavior: auto; } /* Disabled for Locomotive Scroll */
@@ -114,7 +114,7 @@
         :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 
         /* ========================
-          Layout & Helpers (Original)
+           Layout & Helpers (Original)
         ======================== */
         .container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
         .full-page-section {
@@ -131,7 +131,7 @@
         .skip-link:focus { top: 8px; }
         
         /* ========================
-          Loader (Original)
+           Loader (Original)
         ======================== */
         .loader {
             position: fixed;
@@ -156,7 +156,7 @@
         }
 
         /* ========================
-          Custom Cursor (Original)
+           Custom Cursor (Original)
         ======================== */
         .cursor, .cursor-follower {
             position: fixed;
@@ -179,9 +179,84 @@
             transform: translate(-50%, -50%);
             transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
         }
+        
+        /* ========================
+           NEW: Logo Follower Animation Styles
+        ======================== */
+        .logo-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9998; /* Below the main cursor elements */
+            pointer-events: none;
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            opacity: 0.05; /* Subtle transparency */
+            transform: translate(-50%, -50%); /* Center on the mouse */
+            filter: blur(2px); /* Add a light blur effect */
+            white-space: nowrap;
+        }
+        @media (pointer: coarse) {
+            .logo-follower { display: none !important; }
+        }
 
         /* ========================
-          Header & Navigation (Original)
+           Floating WhatsApp Button Styles
+        ======================== */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            left: 20px; /* تم التعديل: نقل الزر إلى اليسار */
+            width: 60px;
+            height: 60px;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .floating-whatsapp:hover {
+            background-color: #1DA851;
+            transform: scale(1.1);
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* تم التعديل: إرجاع الزر لمكانه الأصلي بعد نقل الواتسآب */
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: #111;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+
+        /* ========================
+           Header & Navigation (Original)
         ======================== */
         .header {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -222,7 +297,7 @@
         .theme-toggle i { color: var(--primary); }
 
         /* ========================
-          Hero Section (Three.js Container) (Original)
+           Hero Section (Three.js Container) (Original)
         ======================== */
         .hero-section { overflow: clip; background-color: #1a1a1a; } /* Dark background for 3D scene */
         
@@ -313,7 +388,7 @@
         @keyframes bounce { 0%,20%,50%,80%,100% { transform: translate(-50%,0); } 40% { transform: translate(-50%,-12px); } 60% { transform: translate(-50%,-4px); } }
         
         /* ========================
-          General Section Styles (Original)
+           General Section Styles (Original)
         ======================== */
         .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
         .process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; position: relative; }
@@ -343,13 +418,16 @@
         .testimonials-section .section-title { color: #fff; }
         .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
         .testimonial-card { background: rgba(30,30,30,.6); backdrop-filter: blur(8px); border-left: 4px solid var(--primary); border-radius: 8px; padding: 1.3rem; }
+        html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); } /* FIX: RTL border */
         .testimonial-text { font-style: italic; margin: 0 0 1rem; color: #eaeaea; font-family: var(--font-secondary); }
         .testimonial-author { text-align: right; color: var(--primary); font-weight: 700; }
+        html[dir="rtl"] .testimonial-author { text-align: left; } /* FIX: RTL text align */
         .contact-section { background: var(--surface); }
         .contact-wrapper { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
         .contact-info h3 { font-size: 1.4rem; color: var(--primary); margin: 0 0 .6rem; }
         .contact-info p { margin: 0 0 1rem; color: var(--muted); }
         .info-item { display: inline-flex; align-items: center; gap: .7rem; margin: 0 1rem 1rem 0; padding: .6rem .9rem; border: 1px dashed var(--border); border-radius: 8px; }
+        html[dir="rtl"] .info-item { margin: 0 0 1rem 1rem; } /* FIX: RTL margin */
         .info-item i { color: var(--primary); }
         .contact-form { display: grid; gap: .8rem; align-content: start; }
         .contact-form input, .contact-form textarea { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: border-color .2s ease, box-shadow .2s ease; }
@@ -358,7 +436,7 @@
         .form-status { min-height: 1.2rem; margin: .3rem 0 0; color: var(--muted); }
         
         /* ========================
-          Footer (Original)
+           Footer (Original)
         ======================== */
         .footer { text-align: center; padding: 2rem 0; background: var(--surface-2); position: relative; }
         .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; position: relative; z-index: 10; }
@@ -379,7 +457,7 @@
         .boid { display: none; } /* Explicitly hiding boid elements */
 
         /* ========================
-          New Premium Services Section (Original)
+           New Premium Services Section (Original)
         ======================== */
         .services-section-premium {
             background-color: #0f0f0f;
@@ -472,7 +550,7 @@
         }
 
         /* =========================================================================
-          NEW METHODOLOGY SECTION STYLES (Kept from original main file for structure)
+           NEW METHODOLOGY SECTION STYLES (Kept from original main file for structure)
         ========================================================================= */
         /* Reset and Base Overrides for New Section (Use Inter for new content) */
         .methodology-container, .methodology-container * {
@@ -948,7 +1026,7 @@
         }
         
         /* ========================
-          Responsive Media Queries (Original)
+           Responsive Media Queries (Original)
         ======================== */
         @media (max-width: 992px) {
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -971,7 +1049,7 @@
         }
 
         /* ========================
-          RTL (Right-to-Left) Styles (Original + Fixes)
+           RTL (Right-to-Left) Styles (Original + Fixes)
         ======================== */
         html[dir="rtl"] body { 
             direction: rtl; 
@@ -997,7 +1075,7 @@
         }
 
         /* ========================
-          Accessibility & Touch Devices (Original)
+           Accessibility & Touch Devices (Original)
         ======================== */
         @media (pointer: coarse) {
             body { cursor: auto !important; }
@@ -1021,9 +1099,12 @@
     <a class="skip-link" href="#main-container">Skip to content</a>
     <div class="cursor" aria-hidden="true"></div>
     <div class="cursor-follower" aria-hidden="true"></div>
+    <div class="logo-follower" aria-hidden="true">Eng.r Antonio GITHOP</div>
 
     <button class="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
-    <a class="floating-whatsapp" href="https://wa.me/905315865489" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+    
+    <a class="floating-whatsapp" href="https://wa.me/905315865489" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i></a>
 
     <div data-scroll-container>
         <header class="header" role="banner" data-scroll-section>
@@ -1865,6 +1946,7 @@
                         ctx.shadowBlur = 15 * light.opacity;
                         ctx.arc(drawX, drawY, light.radius, 0, Math.PI * 2);
                         ctx.fill();
+                        ctx.shadowBlur = 0;
                     });
                 }
                 ctx.restore();
@@ -1963,6 +2045,9 @@
             const footerYear = document.getElementById('year');
             const scrollContainer = document.querySelector('[data-scroll-container]');
             
+            // NEW: Get the logo follower element
+            const logoFollower = document.querySelector('.logo-follower');
+            
             // --- Translations Data (Updated with form status messages) ---
             const translations = {
                 en: {
@@ -2019,8 +2104,13 @@
                 document.querySelector('[data-lang-key="toggle_hvac"]').textContent = langData['toggle_hvac'];
                 
                 // 4. Update span element content, like the logo text and year.
-                document.getElementById('current-lang').textContent = lang.toUpperCase(); 
-                document.getElementById('year').textContent = new Date().getFullYear(); // Year update is outside the language data map, re-run for safety.
+                currentLangSpan.textContent = lang.toUpperCase(); 
+                footerYear.textContent = new Date().getFullYear(); // Year update is outside the language data map, re-run for safety.
+                
+                // NEW: Update Logo Follower text
+                if (logoFollower) {
+                    logoFollower.textContent = langData['logo'] || "Eng.r Antonio GITHOP";
+                }
 
                 localStorage.setItem('language', lang);
                 
@@ -2194,13 +2284,19 @@
                 if (window.matchMedia('(pointer: coarse)').matches) return;
                 const cursor = document.querySelector('.cursor');
                 const follower = document.querySelector('.cursor-follower');
+                const logoFollower = document.querySelector('.logo-follower'); // New element selection
+                
                 document.querySelectorAll('a, button, .service-card-premium, .portfolio-item').forEach(el => {
                     el.addEventListener('mouseenter', () => { gsap.to(follower, { duration: 0.3, scale: 1.5, backgroundColor: 'rgba(205, 164, 94, 0.2)' }); });
                     el.addEventListener('mouseleave', () => { gsap.to(follower, { duration: 0.3, scale: 1, backgroundColor: 'transparent' }); });
                 });
+                
+                // NEW: Mousemove logic for the logo follower
                 window.addEventListener('mousemove', e => {
                     gsap.to(cursor, { duration: 0.2, x: e.clientX, y: e.clientY });
                     gsap.to(follower, { duration: 0.6, x: e.clientX, y: e.clientY, ease: 'power2.out' });
+                    // Added subtle lag for the logo follower
+                    gsap.to(logoFollower, { duration: 1.5, x: e.clientX, y: e.clientY, ease: 'expo.out' });
                 });
             };
             
