@@ -1,66 +1,1016 @@
 /* ========================
-   أضف هذا في أي مكان في الـ STYLE
-   ======================== */
-
-/* (هام) إيقاف كل الرسوم المتحركة في الخلفية افتراضياً */
-.ambient-background .ray,
-.ambient-background .grid-lines,
-.title-glow {
-    animation-play-state: paused; /* إيقاف الحركة */
-    opacity: 0; /* إخفاؤها */
-    transition: opacity 0.5s ease;
+    Theme & Variables (Original)
+======================== */
+:root {
+    --bg: #121212;
+    --text: #e0e0e0;
+    --muted: #bdbdbd;
+    --primary: #cda45e;
+    --surface: #1e1e1e;
+    --surface-2: #171717;
+    --border: #333;
+    --focus: #ffd27a;
+    --shadow: 0 10px 25px rgba(0,0,0,0.35);
+    --radius: 12px;
+    --font-primary: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --font-secondary: 'Cairo', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
-
-/* (هام) تشغيل الرسوم المتحركة فقط عندما يكون القسم مرئياً */
-#process.is-in-view .ambient-background .ray,
-#process.is-in-view .ambient-background .grid-lines,
-#process.is-in-view .title-glow {
-    animation-play-state: running; /* تشغيل الحركة */
-    opacity: 1; /* إظهارها */
-}
-/* إذا كانت الـ grid-lines لها opacity خاص بها، عدّلها هكذا: */
-#process.is-in-view .ambient-background .grid-lines {
-    opacity: 1; /* أو القيمة الأصلية للـ grid-lines */
-}
-#process.is-in-view .title-glow {
-    opacity: 0.8; /* أو القيمة الأصلية للـ glow */
+html[data-theme="light"] {
+    --bg: #f7f7f7;
+    --text: #171717;
+    --muted: #444;
+    --primary: #b3872d;
+    --surface: #ffffff;
+    --surface-2: #f2f2f2;
+    --border: #e2e2e2;
+    --shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 /* ========================
-   تحسينات أداء إضافية (تسريع العتاد GPU)
-   ======================== */
+    Base & Resets (Original)
+======================== */
+* { box-sizing: border-box; }
+html { scroll-behavior: auto; } /* Disabled for Locomotive Scroll */
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-primary);
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none; /* For custom cursor */
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; cursor: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: none; }
+:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
 
-/* أخبر المتصفح أن هذه العناصر ستتغير */
-.methodology-step,
-.step-visual,
-.step-text {
-    /* سيتم تحريكها، جهّز كرت الشاشة */
-    will-change: transform, opacity;
+/* ========================
+    Layout & Helpers (Original)
+======================== */
+.container { max-width: 1240px; margin: 0 auto; padding: 0 2rem; width: 100%; }
+.full-page-section {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; padding: 8rem 0;
+}
+.skip-link {
+    position: absolute; left: 8px; top: -40px;
+    background: var(--primary); color: #000;
+    padding: 8px 12px; border-radius: 6px; z-index: 9999;
+    transition: top .2s ease;
+}
+.skip-link:focus { top: 8px; }
+
+/* ========================
+    Loader (Original)
+======================== */
+.loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+.loader-logo {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    animation: pulse 2s infinite ease-in-out;
+}
+.loader.hidden { opacity: 0; visibility: hidden; }
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.98); }
+}
+
+/* ========================
+    Custom Cursor (Original)
+======================== */
+.cursor, .cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+}
+.cursor {
+    width: 8px;
+    height: 8px;
+    background-color: var(--primary);
+    transform: translate(-50%, -50%);
+}
+.cursor-follower {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--primary);
+    transform: translate(-50%, -50%);
+    transition: background-color 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+}
+
+/* ========================
+    NEW: Logo Follower Animation Styles
+======================== */
+.logo-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998; /* Below the main cursor elements */
+    pointer-events: none;
+    font-family: var(--font-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    opacity: 0.05; /* Subtle transparency */
+    transform: translate(-50%, -50%); /* Center on the mouse */
+    filter: blur(2px); /* Add a light blur effect */
+    white-space: nowrap;
+}
+@media (pointer: coarse) {
+    .logo-follower { display: none !important; }
+}
+
+/* ========================
+    Floating WhatsApp Button Styles
+======================== */
+.floating-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /* تم التعديل: نقل الزر إلى اليسار */
+    width: 60px;
+    height: 60px;
+    background-color: #25D366; /* WhatsApp Green */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.floating-whatsapp:hover {
+    background-color: #1DA851;
+    transform: scale(1.1);
+}
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; /* تم التعديل: إرجاع الزر لمكانه الأصلي بعد نقل الواتسآب */
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    color: #111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+.back-to-top:hover {
+    transform: scale(1.1);
+}
+
+
+/* ========================
+    Header & Navigation (Original)
+======================== */
+.header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(18,18,18,.75);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: background .3s ease, border-color .3s ease;
+    transform: translateY(-100%);
+}
+html[data-theme="light"] .header { background: rgba(255,255,255,.75); }
+.header.scrolled { background: rgba(18,18,18,.92); border-color: var(--border); }
+html[data-theme="light"] .header.scrolled { background: rgba(255,255,255,.92); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; }
+.logo { font-weight: 700; font-size: 1.25rem; white-space: nowrap; }
+.navbar { display: block; }
+.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; padding: 0; margin: 0; }
+.nav-links a { position: relative; padding: 6px; color: var(--text); transition: transform 0.2s ease; }
+.nav-links a:hover { transform: scale(1.1); }
+.nav-links a::after {
+    content: ""; position: absolute; left: 50%; bottom: 0; width: 0; height: 2px;
+    transform: translateX(-50%); background: var(--primary); transition: width .25s;
+}
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a.active { color: var(--primary); }
+.menu-toggle { display: none; width: 42px; height: 42px; border-radius: 8px; border: 1px solid var(--border); align-items: center; justify-content: center; }
+.menu-icon, .menu-icon::before, .menu-icon::after { content: ""; display: block; width: 20px; height: 2px; background: var(--text); border-radius: 2px; position: relative; }
+.menu-icon::before { position: absolute; top: -6px; }
+.menu-icon::after { position: absolute; top: 6px; }
+.controls { display: flex; align-items: center; gap: .75rem; }
+.language-selector { position: relative; }
+.lang-selected { display: flex; align-items: center; gap: .5rem; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; }
+.lang-selected .fa-chevron-down { transition: transform 0.3s ease; }
+.lang-dropdown { position: absolute; top: calc(100% + 6px); right: 0; width: 180px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: none; box-shadow: var(--shadow); z-index: 10; }
+.language-selector.open .lang-dropdown { display: block; }
+.lang-dropdown li { padding: 10px 12px; cursor: pointer; }
+.lang-dropdown li:hover { background: var(--primary); color: #111; }
+.theme-toggle { width: 42px; height: 42px; border: 1px solid var(--border); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+.theme-toggle i { color: var(--primary); }
+
+/* ========================
+    Hero Section (Three.js Container) (Original)
+======================== */
+.hero-section { overflow: clip; background-color: #1a1a1a; } /* Dark background for 3D scene */
+
+/* Three.js Container */
+#scene-container { 
+    position: absolute; 
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    display: block; 
+}
+#scene-container canvas { 
+    display: block; 
+}
+.spline-container { display: none; }
+#boids-container-hero { display: none; }
+
+/* Loading Overlay (Hidden after load) */
+#loading-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(17, 24, 39, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5; /* Above 3D scene, below content */
+    color: #ccc;
+    transition: opacity 0.5s;
+}
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #00ffff;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Three.js Controls & Instructions */
+#threejs-controls {
+    position: absolute;
+    top: 4rem; 
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow);
+    z-index: 3;
+    display: flex;
+    gap: 1.5rem;
+}
+.instruction-box {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    z-index: 3;
+}
+
+/* Toggle Switch Styles */
+#threejs-controls input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #00ffff;
+}
+#threejs-controls input:checked ~ .block {
+    background-color: #008888;
+}
+.toggle-label { color: #fff; font-weight: 500; font-size: 0.875rem; text-align: right; }
+
+.hero-content { position: relative; z-index: 2; padding: 2rem; border-radius: var(--radius); background: rgba(0,0,0,.4); backdrop-filter: blur(6px); max-width: 900px; text-align: center; }
+html[data-theme="light"] .hero-content { background: rgba(255,255,255,.45); }
+.hero-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 700; margin: 0 0 1rem; }
+.hero-subtitle { font-size: clamp(1rem, 2.4vw, 1.2rem); margin: 0 auto 1.5rem; font-family: var(--font-secondary); max-width: 700px; color: var(--muted); }
+.cta-button { display: inline-block; padding: 12px 28px; border: 2px solid var(--primary); background: var(--primary); color: #111; border-radius: 999px; font-weight: 700; transition: all .25s ease; }
+.cta-button:hover { background: transparent; color: var(--primary); transform: scale(1.05); box-shadow: 0 0 15px var(--primary); }
+.cta-button-secondary { background: transparent; color: var(--primary); }
+.cta-button-secondary:hover { background: var(--primary); color: #111; }
+.scroll-down-indicator { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 1.25rem; z-index: 3; animation: bounce 2s infinite; }
+@keyframes bounce { 0%,20%,50%,80%,100% { transform: translate(-50%,0); } 40% { transform: translate(-50%,-12px); } 60% { transform: translate(-50%,-4px); } }
+
+/* ========================
+    General Section Styles (Original)
+======================== */
+.section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); color: var(--primary); text-align: center; margin: 0 0 2.5rem; }
+.process-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; position: relative; }
+.process-timeline::before { content: ""; position: absolute; top: 34px; left: 5%; right: 5%; height: 2px; background: repeating-linear-gradient(90deg, var(--border), var(--border) 10px, transparent 10px, transparent 20px); }
+.process-step { text-align: center; position: relative; z-index: 1; }
+.process-icon { width: 68px; height: 68px; display: grid; place-items: center; border-radius: 50%; background: var(--surface); border: 2px solid var(--primary); color: var(--primary); font-size: 1.6rem; margin: 0 auto 1rem; transition: transform .2s; }
+.process-step:hover .process-icon { transform: scale(1.08); }
+.process-step h3 { margin: 0 0 .5rem; font-size: 1.08rem; }
+.process-step p { margin: 0; font-size: .95rem; color: var(--muted); font-family: var(--font-secondary); }
+.portfolio-section { background: var(--surface); }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.portfolio-item { border-radius: 12px; overflow: hidden; position: relative; background: var(--surface-2); transform: translateZ(0); }
+.portfolio-item img { width: 100%; height: 320px; object-fit: cover; transition: transform .4s ease; }
+.portfolio-item:hover img { transform: scale(1.05); }
+.portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+.portfolio-item:hover .portfolio-overlay { opacity: 1; }
+.portfolio-overlay * { transform: translateY(15px); transition: transform 0.4s ease; }
+.portfolio-item:hover .portfolio-overlay * { transform: translateY(0); }
+.portfolio-overlay h3 { margin: 0; font-size: 1.2rem; color: #fff; }
+.portfolio-overlay p { margin: 0.2rem 0 0; font-size: 0.9rem; color: var(--primary); }
+.portfolio-overlay span { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 1.5rem; color: #fff; }
+.portfolio-more-projects { text-align: center; margin-top: 2.5rem; }
+.testimonials-section { position: relative; }
+.parallax-bg { position: absolute; inset: 0; background-image: url('https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover; background-position: center; }
+.testimonials-section::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.85); z-index: 1; }
+.testimonials-section .container { position: relative; z-index: 2; }
+.testimonials-section .section-title { color: #fff; }
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+.testimonial-card { background: rgba(30,30,30,.6); backdrop-filter: blur(8px); border-left: 4px solid var(--primary); border-radius: 8px; padding: 1.3rem; }
+html[dir="rtl"] .testimonial-card { border-left: 0; border-right: 4px solid var(--primary); } /* FIX: RTL border */
+.testimonial-text { font-style: italic; margin: 0 0 1rem; color: #eaeaea; font-family: var(--font-secondary); }
+.testimonial-author { text-align: right; color: var(--primary); font-weight: 700; }
+html[dir="rtl"] .testimonial-author { text-align: left; } /* FIX: RTL text align */
+.contact-section { background: var(--surface); }
+.contact-wrapper { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
+.contact-info h3 { font-size: 1.4rem; color: var(--primary); margin: 0 0 .6rem; }
+.contact-info p { margin: 0 0 1rem; color: var(--muted); }
+.info-item { display: inline-flex; align-items: center; gap: .7rem; margin: 0 1rem 1rem 0; padding: .6rem .9rem; border: 1px dashed var(--border); border-radius: 8px; }
+html[dir="rtl"] .info-item { margin: 0 0 1rem 1rem; } /* FIX: RTL margin */
+.info-item i { color: var(--primary); }
+.contact-form { display: grid; gap: .8rem; align-content: start; }
+.contact-form input, .contact-form textarea { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: border-color .2s ease, box-shadow .2s ease; }
+.contact-form input:focus, .contact-form textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(205,164,94,.15); }
+.hp-field { position: absolute; left: -9999px; opacity: 0; }
+.form-status { min-height: 1.2rem; margin: .3rem 0 0; color: var(--muted); }
+
+/* ========================
+    Footer (Original)
+======================== */
+.footer { text-align: center; padding: 2rem 0; background: var(--surface-2); position: relative; }
+.footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; position: relative; z-index: 10; }
+.social-icons { display: flex; gap: 1.5rem; }
+.social-icons a { font-size: 1.3rem; color: var(--muted); transition: color 0.3s ease, transform 0.3s ease; }
+.social-icons a:hover { color: var(--primary); transform: translateY(-5px); }
+
+/* Boids Simulation in Footer Design - CRITICAL FIX: Disable Boids CSS */
+#boids-container-footer {
+    display: none; /* Disabling Boids for Stability */
+    position: absolute;
+    inset: 0;
+    z-index: 1; 
+    pointer-events: none; 
+    background: transparent; /* Changed from gradient to transparent after disabling Boids */
+}
+
+.boid { display: none; } /* Explicitly hiding boid elements */
+
+/* ========================
+    New Premium Services Section (Original)
+======================== */
+.services-section-premium {
+    background-color: #0f0f0f;
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.section-title-premium {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 600;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 80px;
+    position: relative;
+}
+.section-title-premium .gold-accent { color: #d4af37; }
+.section-title-premium::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: #d4af37;
+    overflow: hidden;
+}
+.section-title-premium .shimmer {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, white, transparent);
+    opacity: 0.8;
+}
+.services-grid-premium {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+.service-card-premium {
+    position: relative;
+    padding: 40px 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+}
+.service-card-premium:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.15);
+}
+.card-icon {
+    margin-bottom: 25px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-icon svg {
+    width: 50px;
+    height: 50px;
+    stroke: #d4af37;
+    stroke-width: 1.5;
+    fill: none;
+}
+.card-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 15px;
+}
+.card-content p {
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    color: #a0a0a0;
+    line-height: 1.7;
+}
+
+/* =========================================================================
+    NEW METHODOLOGY SECTION STYLES (Kept from original main file for structure)
+========================================================================= */
+/* Reset and Base Overrides for New Section (Use Inter for new content) */
+.methodology-container, .methodology-container * {
+    font-family: 'Inter', var(--font-primary);
+}
+
+/* Full Page Background Elements - Adjusted to use fixed particle canvas */
+.ambient-background {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+}
+
+.light-rays {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    overflow: hidden;
+}
+
+.ray {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    /* Use a similar gold color to primary but adjust opacity */
+    background: linear-gradient(to bottom, transparent, rgba(205, 164, 94, 0.3), transparent); 
+    animation: rayMove 15s infinite linear;
+}
+
+.ray:nth-child(1) { left: 10%; animation-delay: 0s; }
+.ray:nth-child(2) { left: 30%; animation-delay: 3s; }
+.ray:nth-child(3) { left: 50%; animation-delay: 6s; }
+.ray:nth-child(4) { left: 70%; animation-delay: 9s; }
+.ray:nth-child(5) { left: 90%; animation-delay: 12s; }
+
+@keyframes rayMove {
+    0% { transform: translateY(-100%) rotate(5deg); opacity: 0; }
+    50% { opacity: 0.3; }
+    100% { transform: translateY(100%) rotate(5deg); opacity: 0; }
+}
+
+/* Architectural Grid Lines */
+.grid-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(205, 164, 94, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(205, 164, 94, 0.03) 1px, transparent 1px);
+    background-size: 100px 100px;
+    animation: gridFloat 20s infinite linear;
+}
+
+@keyframes gridFloat {
+    0% { transform: perspective(1000px) rotateX(60deg) translateZ(0px); }
+    100% { transform: perspective(1000px) rotateX(60deg) translateZ(100px); }
+}
+
+/* Particle Canvas (Background) - Positioned with the section */
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Main Container */
+.methodology-container {
+    position: relative;
+    z-index: 10;
+    /* Override full-page-section height for content flow */
+    min-height: 100vh;
+    padding: 100px 20px;
+    perspective: 2000px;
+}
+
+/* Section Title */
+.section-title h1 {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, #fff 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    opacity: 0;
+    transform: translateY(50px) rotateX(-20deg);
+    animation: titleEntrance 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 150px;
+    perspective: 1000px;
+}
+
+@keyframes titleEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) rotateX(-20deg);
+        filter: blur(10px);
+    }
+    60% {
+        background-position: 200% 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+        filter: blur(0);
+        background-position: 200% 0;
+    }
+}
+
+.title-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(205, 164, 94, 0.3) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: glowPulse 3s infinite ease-in-out;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes glowPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+}
+
+/* Methodology Steps */
+.steps-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Connecting Line */
+.connecting-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    display: none; /* Hide by default and show only on desktop */
+}
+@media (min-width: 1025px) {
+    .connecting-line { display: block; }
+}
+
+.line-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, transparent, var(--primary), var(--primary));
+    box-shadow: 0 0 20px rgba(205, 164, 94, 0.8);
+    transition: height 0.3s ease-out;
+}
+
+/* Individual Step */
+.methodology-step {
+    position: relative;
+    margin-bottom: 200px;
+    opacity: 0;
+    transform: translateY(100px) rotateX(-15deg);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.methodology-step.visible {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+}
+
+.step-content {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    position: relative;
+}
+
+.step-content.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Step Number & Icon */
+.step-number-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
 }
 
 .step-number {
-    /* سيتم تدويرها، جهّز كرت الشاشة */
-    will-change: transform;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--primary);
+    position: relative;
+    box-shadow: 0 0 40px rgba(205, 164, 94, 0.4),
+                inset 0 0 20px rgba(205, 164, 94, 0.1);
+    transition: all 0.5s ease;
+}
+
+.methodology-step:hover .step-number {
+    transform: scale(1.2) rotate(360deg);
+    box-shadow: 0 0 60px rgba(205, 164, 94, 0.8),
+                inset 0 0 30px rgba(205, 164, 94, 0.3);
+}
+
+.step-number::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    border: 1px solid rgba(205, 164, 94, 0.2);
+    animation: ripple 2s infinite;
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Step Visual Area */
+.step-visual {
+    flex: 1;
+    height: 400px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.methodology-step:hover .step-visual {
+    transform: translateZ(30px);
+}
+
+.visual-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+    border: 1px solid rgba(205, 164, 94, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
 .visual-container::before {
-    /* سيتم تحريكها، جهّز كرت الشاشة */
-    will-change: left;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(205, 164, 94, 0.3), transparent);
+    transition: left 0.8s ease;
 }
 
-/* (هام جداً)
-   اجعل الخلفية الثابتة #particleCanvas تتوقف عن العمل 
-   عندما لا نكون في قسم "Methodology"
-*/
-#particleCanvas {
-    /* ... إعداداتك الحالية ... */
-    visibility: hidden; /* مخفية افتراضياً */
+.methodology-step:hover .visual-container::before {
+    left: 100%;
+}
+
+/* Canvas for each step */
+.step-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Step Text Content */
+.step-text {
+    flex: 1;
+    padding: 40px;
+    transform-style: preserve-3d;
+}
+
+/* Adjust Step Number position on desktop for the line gap */
+@media (min-width: 1025px) {
+    .step-text { text-align: left; }
+    .step-content.reverse .step-text { text-align: right; }
+    .step-content .step-number-container { 
+        left: -100px; 
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .step-content.reverse .step-number-container { 
+        left: auto;
+        right: -100px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    /* RTL adjustments for desktop */
+    html[dir="rtl"] .step-content .step-number-container { 
+        left: auto;
+        right: -100px;
+    }
+    html[dir="rtl"] .step-content.reverse .step-number-container { 
+        left: -100px;
+        right: auto;
+    }
+}
+
+
+.step-title {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.step-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    transition: width 0.6s ease;
+}
+
+.methodology-step:hover .step-title::after {
+    width: 200px;
+}
+
+.step-content.reverse .step-title::after {
+    left: auto;
+    right: 0;
+    background: linear-gradient(90deg, transparent, var(--primary));
+}
+
+/* RTL line adjustments */
+html[dir="rtl"] .step-title::after {
+    left: auto;
+    right: 0;
+    background: linear-gradient(90deg, transparent, var(--primary));
+}
+html[dir="rtl"] .step-content.reverse .step-title::after {
+    left: 0;
+    right: auto;
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+
+.step-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+}
+
+/* Glow Effects */
+.glow-orb {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(205, 164, 94, 0.2) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+    animation: orbFloat 6s infinite ease-in-out;
+    z-index: -1;
+}
+
+.glow-orb.top-left { top: -100px; left: -100px; }
+.glow-orb.bottom-right { bottom: -100px; right: -100px; animation-delay: 3s; }
+
+@keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.2); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .step-content {
+        flex-direction: column !important;
+        gap: 40px;
+    }
+
+    .step-number-container {
+        position: relative;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        margin-bottom: 20px;
+    }
+
+    .connecting-line {
+        display: none;
+    }
+
+    .methodology-step {
+        margin-bottom: 120px;
+    }
+    
+    .step-text { text-align: center !important; }
+    .step-title::after { left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, transparent, var(--primary), transparent) !important; }
+    .step-content.reverse .step-title::after { left: 50%; right: auto; transform: translateX(-50%); }
+
+}
+
+/* Loading Animation */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.loading-overlay.hidden {
     opacity: 0;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    visibility: hidden;
 }
 
-/* أظهرها فقط عندما يكون القسم مرئياً */
-#process.is-in-view #particleCanvas {
-    visibility: visible;
-    opacity: 1;
+.loader-new {
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(205, 164, 94, 0.2);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-overlay h2 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================
+    Responsive Media Queries (Original)
+======================== */
+@media (max-width: 992px) {
+    .contact-wrapper { grid-template-columns: 1fr; }
+    .process-timeline::before { display: none; }
+}
+@media (max-width: 860px) {
+    .navbar { display: none; }
+    .menu-toggle { display: inline-flex; }
+    .navbar.open {
+        display: block; position: absolute; top: 100%; right: 0; left: 0;
+        background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .nav-links { flex-direction: column; align-items: stretch; gap: 0; }
+    .nav-links li { border-top: 1px solid var(--border); }
+    .nav-links a { padding: 1rem 1.2rem; display: block; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .services-grid-premium { grid-template-columns: 1fr; }
+}
+
+/* ========================
+    RTL (Right-to-Left) Styles (Original + Fixes)
+======================== */
+html[dir="rtl"] body { 
+    direction: rtl; 
+    text-align: right; 
+    font-family: var(--font-secondary); 
+}
+html[dir="rtl"] .header-inner { flex-direction: row-reverse; }
+/* FIX: Ensure dropdown respects RTL */
+html[dir="rtl"] .lang-dropdown { right: auto; left: 0; } 
+html[dir="rtl"] .testimonial-card { 
+    border-left: 0; 
+    border-right: 4px solid var(--primary); 
+}
+html[dir="rtl"] .testimonial-author { text-align: left; }
+/* FIX: Contact items spacing */
+html[dir="rtl"] .info-item { margin: 0 0 1rem 1rem; } 
+/* FIX: Three.js controls label alignment */
+html[dir="rtl"] .toggle-label { text-align: left; } 
+/* FIX: Process steps horizontal alignment (overridden by responsive styles on mobile) */
+@media (min-width: 1025px) {
+    html[dir="rtl"] .step-text { text-align: right; }
+    html[dir="rtl"] .step-content.reverse .step-text { text-align: left; }
+}
+
+/* ========================
+    Accessibility & Touch Devices (Original)
+======================== */
+@media (pointer: coarse) {
+    body { cursor: auto !important; }
+    .cursor, .cursor-follower { display: none !important; }
 }
