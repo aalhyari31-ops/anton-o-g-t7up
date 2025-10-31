@@ -1,1 +1,394 @@
-efg
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Eng.r Antonio GITHOP | Architectural & Interior Design</title>
+    <meta name="description" content="Pioneering Architectural & Interior Design, Hyper-realistic 3D Visualization, and Smart Home Solutions by Eng.r Antonio GITHOP." />
+    <meta name="keywords" content="interior designer, 3D visualization, smart home consultant, architectural design, B2B consulting, Antonio GITHOP, luxury design" />
+    <meta name="theme-color" content="#121212" />
+
+    <link rel="canonical" href="https://example.com/" />
+    <link rel="alternate" hreflang="en" href="https://example.com/" />
+    <link rel="alternate" hreflang="ar" href="https://example.com/ar/" />
+    <link rel="alternate" hreflang="tr" href="https://example.com/tr/" />
+    <link rel="alternate" hreflang="fr" href="https://example.com/fr/" />
+    <link rel="alternate" hreflang="es" href="https://example.com/es/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Eng.r Antonio GITHOP | Architectural & Interior Design" />
+    <meta property="og:description" content="Hyper-realistic 3D visualization and innovative design that brings your vision to life." />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:image" content="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1200" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Eng.r Antonio GITHOP | Architectural & Interior Design" />
+    <meta name="twitter:description" content="Hyper-realistic 3D visualization and innovative design that brings your vision to life." />
+    <meta name="twitter:image" content="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1200" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Poppins:wght@300;400;600;700&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://images.pexels.com" crossorigin />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Custom import for OrbitControls to ensure it attaches to the correct THREE object
+        (function() {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+            document.head.appendChild(script);
+        })();
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context":"https://schema.org",
+        "@type":"Organization",
+        "name":"Eng.r Antonio GITHOP",
+        "url":"https://example.com/",
+        "logo":"https://example.com/logo.png",
+        "sameAs":[],
+        "contactPoint":[{
+        "@type":"ContactPoint",
+        "telephone":"+90 531 586 5489",
+        "contactType":"customer service",
+        "areaServed":"Worldwide",
+        "availableLanguage":["en","ar","tr","fr","es"]
+        }]
+    }
+    </script>
+
+</head>
+<body class="bg-gray-900">
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader-new"></div>
+        <h2 data-lang-key="loading_methodology_text">Initializing Methodology Visuals...</h2>
+    </div>
+    
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="loader">
+        <div class="loader-logo">A. GITHOP</div>
+    </div>
+
+    <a class="skip-link" href="#main-container">Skip to content</a>
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
+    <div class="logo-follower" aria-hidden="true">Eng.r Antonio GITHOP</div>
+
+    <button class="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+    
+    <a class="floating-whatsapp" href="https://wa.me/905315865489" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+
+    <div data-scroll-container>
+        <header class="header" role="banner" data-scroll-section>
+            <div class="container header-inner">
+                <a href="#hero" class="logo" data-lang-key="logo" aria-label="Homepage">Eng.r Antonio GITHOP</a>
+                <button class="menu-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="menu-icon" aria-hidden="true"></span>
+                </button>
+                <nav id="primary-nav" class="navbar" aria-label="Primary">
+                    <ul class="nav-links">
+                        <li><a href="#services" class="nav-link" data-lang-key="nav_services">Services</a></li>
+                        <li><a href="#process" class="nav-link" data-lang-key="nav_process">Process</a></li>
+                        <li><a href="#portfolio" class="nav-link" data-lang-key="nav_portfolio">Portfolio</a></li>
+                        <li><a href="#testimonials" class="nav-link" data-lang-key="nav_testimonials">Testimonials</a></li>
+                        <li><a href="#contact" class="nav-link" data-lang-key="nav_contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="controls">
+                    <div class="language-selector" aria-label="Language selector">
+                        <button class="lang-selected" aria-haspopup="listbox" aria-expanded="false">
+                            <i class="fas fa-globe" aria-hidden="true"></i>
+                            <span id="current-lang">EN</span>
+                            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <ul class="lang-dropdown" role="listbox">
+                            <li role="option" data-lang="en" aria-selected="true">English (EN)</li>
+                            <li role="option" data-lang="ar">العربية (AR)</li>
+                            <li role="option" data-lang="tr">Türkçe (TR)</li>
+                            <li role="option" data-lang="fr">Français (FR)</li>
+                            <li role="option" data-lang="es">Español (ES)</li>
+                        </ul>
+                    </div>
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-container" tabindex="-1">
+            <section id="hero" class="hero-section full-page-section" aria-label="Hero" data-scroll-section>
+                
+                <div id="scene-container"></div>
+
+                <div id="loading-overlay">
+                    <div class="spinner mb-4"></div>
+                    <p class="text-xl font-medium" data-lang-key="loading_3d_text">Loading 3D Architectural Scene...</p>
+                    <p class="text-sm mt-2 text-gray-400" data-lang-key="loading_3d_note">(This is a complex scene and may take a moment)</p>
+                </div>
+
+                <div id="threejs-controls">
+                    <label for="neonToggle" class="flex items-center cursor-pointer">
+                        <div class="relative">
+                            <input type="checkbox" id="neonToggle" class="sr-only" onchange="toggleNeonGlow(this.checked)">
+                            <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
+                        </div>
+                        <div class="ml-3 toggle-label">
+                            <span data-lang-key="toggle_neon">Toggle Neon Glow (Electric)</span>
+                        </div>
+                    </label>
+                    
+                    <label for="hvacToggle" class="flex items-center cursor-pointer">
+                        <div class="relative">
+                            <input type="checkbox" id="hvacToggle" class="sr-only" onchange="toggleHVACHiding(this.checked)">
+                            <div class="block bg-gray-600 w-14 h-8 rounded-full transition duration-300 block"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform duration-300 ease-in-out dot"></div>
+                        </div>
+                        <div class="ml-3 toggle-label">
+                            <span data-lang-key="toggle_hvac">Toggle Piping/HVAC Systems</span>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="instruction-box hidden md:block" data-lang-key="hero_instructions">
+                    Use your mouse/touch to orbit and explore the scene.
+                </div>
+                <div class="hero-content">
+                    <h1 class="hero-title" data-lang-key="hero_title">Masterful Designs, Meticulously Crafted.</h1>
+                    <p class="hero-subtitle" data-lang-key="hero_subtitle">
+                        We specialize in bespoke architectural and interior solutions, transforming your vision into a timeless reality with hyper-realistic 3D visualization and unparalleled attention to detail.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#portfolio" class="cta-button cta-button-secondary" data-lang-key="hero_cta_portfolio">See Our Portfolio</a>
+                    </div>
+                </div>
+                <a href="#services" class="scroll-down-indicator" aria-label="Scroll to services">
+                    <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                </a>
+            </section>
+
+            <section id="services" class="services-section-premium" aria-label="Services" data-scroll-section>
+                <div class="container">
+                    <h2 class="section-title-premium">
+                        <span data-lang-key="services_title">Core </span><span class="gold-accent">Expertise</span>
+                        <div class="shimmer"></div>
+                    </h2>
+                    <div class="services-grid-premium">
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-arch"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 21V11.8139C4 11.3934 4.22638 11.0093 4.59883 10.823L11.5988 7.32303C11.8513 7.20092 12.1487 7.20092 12.4012 7.32303L19.4012 10.823C19.7736 11.0093 20 11.3934 20 11.8139V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 21V17C14 15.8954 13.1046 15 12 15C10.8954 15 10 15.8954 10 17V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12L12 3L22 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_1_title">Architectural & Interior Design</h3>
+                                <p data-lang-key="service_1_desc">Creating functional and aesthetic spaces that reflect your unique identity.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-3d"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 5L12 10L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 14V19L12 24L3 19V14" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 24V10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10L20.87 5.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.13 5.5L12 10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L21 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 1L3 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_2_title">3D Visualization & Rendering</h3>
+                                <p data-lang-key="service_2_desc">Bringing concepts to life with hyper-realistic 3D models and interactive renderings.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-light"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke-width="1.5"/><path d="M12 4V2" stroke-width="1.5" stroke-linecap="round"/><path d="M12 22V20" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 5.63604L19.7782 4.22183" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 19.7782L5.63599 18.364" stroke-width="1.5" stroke-linecap="round"/><path d="M20 12H22" stroke-width="1.5" stroke-linecap="round"/><path d="M2 12H4" stroke-width="1.5" stroke-linecap="round"/><path d="M18.364 18.364L19.7782 19.7782" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2218 4.22183L5.63599 5.63602" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_3_title">Smart Lighting & Electrical</h3>
+                                <p data-lang-key="service_3_desc">Designing intelligent and efficient lighting and electrical plans for modern living.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-plan"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3H8V9H2V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3H19V9H13V3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 15H8V21H2V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 15H19V21H13V15Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_4_title">Commercial & Residential Planning</h3>
+                                <p data-lang-key="service_4_desc">Expert planning for both commercial and residential spaces to maximize utility.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-manage"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 18 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15H15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_5_title">Project Management & B2B</h3>
+                                <p data-lang-key="service_5_desc">Providing strategic B2B consulting and end-to-end project management.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-smart"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3L2 12H5V21H19V12H22L12 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 15C10.8954 15 10 15.8954 10 17C10 18.1046 10.8954 19 12 19C13.1046 19 14 18.1046 14 17C14 15.8954 13.1046 15 12 15Z" stroke-width="1.5"/><path d="M12 12V13" stroke-width="1.5" stroke-linecap="round"/><path d="M15.5355 13.4645L14.8284 14.1716" stroke-width="1.5" stroke-linecap="round"/><path d="M8.46448 13.4645L9.17158 14.1716" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_6_title">Smart Home Solutions</h3>
+                                <p data-lang-key="service_6_desc">Integrating cutting-edge technology to create intelligent and secure homes.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-business"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 11C10.7091 11 12.5 9.20914 12.5 7C12.5 4.79086 10.7091 3 8.5 3C6.29086 3 4.5 4.79086 4.5 7C4.5 9.20914 6.29086 11 8.5 11Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 11L19 13L23 9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_7_title">Business Setup Consultant</h3>
+                                <p data-lang-key="service_7_desc">Expert advice for new ventures and business expansions.</p>
+                            </div>
+                        </article>
+                        <article class="service-card-premium">
+                            <div class="card-icon" id="icon-electric"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                            <div class="card-content">
+                                <h3 data-lang-key="service_8_title">Lighting Electrical Planner</h3>
+                                <p data-lang-key="service_8_desc">Efficient and compliant electrical system and lighting planning.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="process" class="process-section" aria-label="Process" data-scroll-section>
+                <div class="ambient-background">
+                    <div class="light-rays">
+                        <div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div><div class="ray"></div>
+                    </div>
+                    <div class="grid-lines"></div>
+                </div>
+                <div class="methodology-container">
+                    <div class="section-title">
+                        <h1 data-lang-key="process_title">Our Methodology</h1>
+                        <div class="title-glow"></div>
+                    </div>
+                    <div class="steps-container">
+                        <div class="connecting-line"><div class="line-progress" id="lineProgress"></div></div>
+
+                        <div class="methodology-step" id="step1">
+                            <div class="step-content">
+                                <div class="step-visual">
+                                    <div class="glow-orb top-left"></div>
+                                    <div class="visual-container"><canvas id="canvas1" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">1</div></div>
+                                    <h2 class="step-title" data-lang-key="process_1_title">Consultation & Briefing</h2>
+                                    <p class="step-description" data-lang-key="process_1_desc">Understanding your vision, requirements, and goals. This stage involves deep client consultation, site analysis, and defining the precise scope and aesthetic direction of the project.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="methodology-step" id="step2">
+                            <div class="step-content reverse">
+                                <div class="step-visual">
+                                    <div class="glow-orb bottom-right"></div>
+                                    <div class="visual-container"><canvas id="canvas2" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">2</div></div>
+                                    <h2 class="step-title" data-lang-key="process_2_title">Concept & Design</h2>
+                                    <p class="step-description" data-lang-key="process_2_desc">Developing initial concepts, sketches, and space planning. We iterate on floor plans, architectural structure, material palettes, and core design elements until the perfect concept emerges.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="methodology-step" id="step3">
+                            <div class="step-content">
+                                <div class="step-visual">
+                                    <div class="glow-orb top-left"></div>
+                                    <div class="visual-container"><canvas id="canvas3" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">3</div></div>
+                                    <h2 class="step-title" data-lang-key="process_3_title">3D Visualization</h2>
+                                    <p class="step-description" data-lang-key="process_3_desc">Creating hyper-realistic 3D models and interactive walk-throughs for client review and refinement. This ensures the final vision is perfectly aligned before construction begins, minimizing errors.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="methodology-step" id="step4">
+                            <div class="step-content reverse">
+                                <div class="step-visual">
+                                    <div class="glow-orb bottom-right"></div>
+                                    <div class="visual-container"><canvas id="canvas4" class="step-canvas"></canvas></div>
+                                </div>
+                                <div class="step-text">
+                                    <div class="step-number-container"><div class="step-number">4</div></div>
+                                    <h2 class="step-title" data-lang-key="process_4_title">Execution & Delivery</h2>
+                                    <p class="step-description" data-lang-key="process_4_desc">Managing the project to ensure quality and timely completion. This includes coordination with contractors, site supervision, and final installation and quality checks to hand over the finished space.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="portfolio" class="portfolio-section full-page-section" aria-label="Portfolio" data-scroll-section>
+                <div class="container">
+                    <h2 class="section-title" data-lang-key="portfolio_title">Our Portfolio</h2>
+                    <div class="portfolio-grid" role="list">
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury residential interior"/><figcaption class="portfolio-overlay"><h3>Modern Living Room</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern office space"/><figcaption class="portfolio-overlay"><h3>Corporate Office</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt="3D architectural render"/><figcaption class="portfolio-overlay"><h3>Villa Exterior Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Minimalist living room"/><figcaption class="portfolio-overlay"><h3>Minimalist Interior</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Luxury modern hotel lobby"/><figcaption class="portfolio-overlay"><h3>Hotel Lobby Design</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6492397/pexels-photo-6492397.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cozy modern bedroom"/><figcaption class="portfolio-overlay"><h3>Master Bedroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/1841121/pexels-photo-1841121.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Detailed 3D render of a house"/><figcaption class="portfolio-overlay"><h3>Modern House Render</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Collaborative corporate meeting room"/><figcaption class="portfolio-overlay"><h3>Startup Meeting Room</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Elegant home library"/><figcaption class="portfolio-overlay"><h3>Home Library</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/260689/pexels-photo-260689.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Open plan office"/><figcaption class="portfolio-overlay"><h3>Creative Workspace</h3><p>Commercial</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/2254030/pexels-photo-2254030.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Kitchen 3D render"/><figcaption class="portfolio-overlay"><h3>Kitchen Visualization</h3><p>3D Render</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                        <figure class="portfolio-item" role="listitem"><img loading="lazy" decoding="async" src="https://images.pexels.com/photos/6284222/pexels-photo-6284222.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Modern bathroom interior"/><figcaption class="portfolio-overlay"><h3>Luxury Bathroom</h3><p>Residential</p><span><i class="fas fa-search-plus"></i></span></figcaption></figure>
+                    </div>
+                    <div class="portfolio-more-projects">
+                        <a href="https://drive.google.com/drive/folders/1cxbUPjSZVS2jOr6C4NEvYw6GREUCPeOo?usp=drive_link" target="_blank" rel="noopener noreferrer" class="cta-button" data-lang-key="hero_cta_drive">View More on Google Drive</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="testimonials" class="testimonials-section full-page-section" aria-label="Testimonials" data-scroll-section>
+                <div class="parallax-bg" data-scroll data-scroll-speed="-3"></div>
+                <div class="container">
+                    <h2 class="section-title" data-lang-key="testimonials_title">What Our Clients Say</h2>
+                    <div class="testimonials-grid">
+                        <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_1_text">"Antonio's team transformed our space with an incredible eye for detail. The 3D visualizations were a game-changer."</p><footer class="testimonial-author" data-lang-key="testimonial_1_author">- CEO, Tech Innovators Inc.</footer></blockquote>
+                        <blockquote class="testimonial-card"><p class="testimonial-text" data-lang-key="testimonial_2_text">"The smart home integration was seamless and has fundamentally changed how we experience our home. Truly professional."</p><footer class="testimonial-author" data-lang-key="testimonial_2_author">- J. Anderson, Private Residence</footer></blockquote>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="contact" class="contact-section full-page-section" aria-label="Contact" data-scroll-section>
+                <div class="container">
+                    <h2 class="section-title" data-lang-key="contact_title">Let's Build Together</h2>
+                    <div class="contact-wrapper">
+                        <div class="contact-info"><h3 data-lang-key="contact_info_title">Get in Touch</h3><p data-lang-key="contact_info_desc">Have a project in mind or need a consultation? We are here to help you.</p><a class="info-item" href="tel:+905315865489" aria-label="Phone"><i class="fas fa-phone" aria-hidden="true"></i><span>+90 531 586 5489</span></a><a class="info-item" href="mailto:mr.ahmad.tr@gmail.com" aria-label="Email"><i class="fas fa-envelope" aria-hidden="true"></i><span>mr.ahmad.tr@gmail.com</span></a><div class="custom-apps-promo"><i class="fas fa-laptop-code" aria-hidden="true"></i><p data-lang-key="custom_apps_text">We can build a website for you and your business.</p></div></div>
+                        <form id="contact-form" class="contact-form" novalidate><input type="text" name="name" autocomplete="name" required data-lang-placeholder="contact_form_name" placeholder="Your Name" /><input type="email" name="email" autocomplete="email" required data-lang-placeholder="contact_form_email" placeholder="Your Email" /><textarea name="message" rows="5" required data-lang-placeholder="contact_form_message" placeholder="Your Message"></textarea><input type="text" name="website" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true" /><button type="submit" class="cta-button" data-lang-key="contact_form_submit">Send Message</button><p class="form-status" aria-live="polite" role="status"></p></form>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer" role="contentinfo" data-scroll-section>
+                <div id="boids-container-footer"></div>
+                <div class="container">
+                    <div class="footer-content">
+                        <p data-lang-key="footer_text">© <span id="year"></span> Eng.r Antonio GITHOP. All Rights Reserved.</p>
+                        <div class="social-icons">
+                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Behance"><i class="fab fa-behance-square"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <script src="script.js" defer></script> 
+    
+    <script>
+    (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="cEKyhomDE8jOET-s6DEK2";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    </script>
+</body>
+</html>
